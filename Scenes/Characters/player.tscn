@@ -160,7 +160,7 @@ collision_layer = 2
 collision_mask = 15
 script = ExtResource("1_cvnsp")
 coyote_time = 0.07
-health = 2
+health = 3
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
@@ -189,7 +189,6 @@ collision_mask = 15
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitBox" groups=["Player"]]
 position = Vector2(-26, -1)
 shape = SubResource("ConvexPolygonShape2D_6t5aa")
-disabled = true
 debug_color = Color(2.0214916e-06, 0.5992533, 0.70622456, 0.41960785)
 
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]

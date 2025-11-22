@@ -175,8 +175,6 @@ color_ramp = SubResource("Gradient_ymxu1")
 hue_variation_max = 1.0
 
 [connection signal="body_entered" from="Attack area" to="." method="_on_attack_area_body_entered"]
-[connection signal="body_entered" from="Attack area" to="." method="on_attack_area_body_entered"]
-[connection signal="body_exited" from="Attack area" to="." method="on_attack_area_body_exited"]
 [connection signal="body_exited" from="Attack area" to="." method="_on_attack_area_body_exited"]
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]
 [connection signal="timeout" from="PlayerLossSightTimer" to="." method="_on_timer_timeout"]

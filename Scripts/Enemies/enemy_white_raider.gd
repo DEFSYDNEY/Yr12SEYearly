@@ -163,9 +163,7 @@ func _on_timer_timeout():
 func _on_attack_area_body_entered(body):
 	if body.is_in_group("Player"):
 		current_state = states.Attack
-		print("Attack2")
 		if attack_cooldown == false:
-			print("Attack3")
 			attack(body)
 
 func _on_attack_area_body_exited(body):
@@ -174,12 +172,11 @@ func _on_attack_area_body_exited(body):
 
 func attack(body):
 	attack_cooldown = true
-	print("Attack4")
 	#play animation
 	#Check if it should chase or keep attacking
+	# check if colliding with sword hit box somewhere
 	body.take_damage(damage)
 	attack_timer.start()
-	print("Attack5")
 # ----------------------------------------------------
 #                 PARRY SYSTEM
 # ----------------------------------------------------
@@ -191,7 +188,7 @@ func on_player_attack_started():
 	if randf() >= parry_chance:
 		return  # didn't parry this attack
 	# activate parry window
-	emit_signal("enemy_parry")
+	emit_signal("enemy_parry") # Not using yet might not need to could call a function in player to do the effects of knockback etc
 	parry_active = true
 	parry_consumed = false
 	#current_state = states.Parry
@@ -210,10 +207,15 @@ func is_player_attack_dangerous() -> bool:
 	if not player:
 		return false
 	
-	# If player's sword hitbox is overlapping enemy hurtbox
-	# The player's sword hitbox must have a group "PlayerAttack" or similar
-	var overlaps = player.get_node("SwordHitBox").get_overlapping_bodies()
-	return self in overlaps
+	var sword_shape = player.sword_hit_box.shape
+	var sword_transform = player.sword_hit_box.global_transform
+
+	# Get enemy CollisionShape2D
+	var enemy_shape = $CollisionShape2D.shape
+	var enemy_transform = global_transform
+
+	# Test collision
+	return sword_shape.collide(sword_transform, enemy_shape, enemy_transform)
 
 # ----------------------------------------------------
 #                DAMAGE HANDLING
@@ -251,4 +253,3 @@ func perform_parry_effects():
 
 func _on_attack_timer_timeout():
 	attack_cooldown = false
-	print("Attack6")
