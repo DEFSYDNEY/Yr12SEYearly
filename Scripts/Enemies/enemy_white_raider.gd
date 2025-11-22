@@ -51,6 +51,8 @@ func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)
 	right_bounds = self.position + Vector2(right_bound_range, 0)
 	player.connect("attack_started", Callable(self, "on_player_attack_started"))
+	sprite.connect("frame_changed", Callable(self, "_on_sprite_frame_changed"))
+	sprite.connect("animation_finished", Callable(self, "_on_sprite_animation_finished"))
 	if stationary == true:
 		current_state = states.Lookout
 
@@ -61,7 +63,6 @@ func _physics_process(delta):
 	change_direction()
 	look_for_player()
 	
-
 
 func handle_gravity(delta):
 	velocity.y += gravity * delta
@@ -173,10 +174,35 @@ func _on_attack_area_body_exited(body):
 func attack(body):
 	attack_cooldown = true
 	#play animation
+	sprite.play("Attack")
 	#Check if it should chase or keep attacking
 	# check if colliding with sword hit box somewhere
-	body.take_damage(damage)
+	
 	attack_timer.start()
+
+func _on_sprite_frame_changed():
+	if sprite.animation == "Attack" and not attack_cooldown:
+		# Check if on the damage frames
+		var frame = sprite.frame
+		if frame == 2 or frame == 3 or frame == 4:
+			print("Attackkkk")
+			# Check if player is still inside attack area
+			for body in attack_area.get_overlapping_bodies():
+				print("PLayerssss")
+				if body.is_in_group("Player"):
+					body.take_damage(damage)
+					attack_cooldown = true
+					attack_timer.start()
+					break
+
+func _on_sprite_animation_finished():
+	if sprite.animation == "Attack":
+		if ray_cast.is_colliding() and ray_cast.get_collider().is_in_group("Player"):
+			# player still in range, attack again
+			sprite.play("Attack")
+		else:
+			# go back to previous state
+			current_state = states.Chase if ray_cast.is_colliding() else states.Patrol
 # ----------------------------------------------------
 #                 PARRY SYSTEM
 # ----------------------------------------------------
