@@ -136,7 +136,7 @@ radius = 11.0
 height = 46.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5cc0"]
-size = Vector2(54, 45)
+size = Vector2(55, 45)
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_6t5aa"]
 points = PackedVector2Array(11, -22, 45, -18, 64, -13, 64, -5, 50, 2, 31, 5, 8, 5, 4, 3)
@@ -175,11 +175,13 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack area"]
-position = Vector2(-37, 2)
+position = Vector2(-37.5, 2)
 shape = SubResource("RectangleShape2D_v5cc0")
 
 [node name="SwordHitBox" type="Area2D" parent="."]
 position = Vector2(26, 1)
+collision_layer = 2
+collision_mask = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitBox"]
 position = Vector2(-26, -1)

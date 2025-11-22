@@ -179,6 +179,7 @@ func _on_sprite_frame_changed():
 		var frame = sprite.frame
 		if frame == 4 or frame == 5 or frame == 6:
 			sword_hitbox_collision.disabled = false
+			print("arrad")
 
 func _on_sword_hit_box_body_entered(body):
 	if body.is_in_group("Player"):
@@ -270,6 +271,5 @@ func _on_attack_timer_timeout():
 	
 	for body in attack_area.get_overlapping_bodies():
 		if body.is_in_group("Player"):
-			print("Re attack")
 			attack()
 			break
