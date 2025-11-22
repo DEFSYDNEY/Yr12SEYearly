@@ -9,7 +9,7 @@ extends CharacterBody2D
 @export var stationary:bool = false
 
 @export var parry_chance := 0.25
-@export var parry_window := 0.18   # how long the parry can block hits
+@export var parry_window := 0.25   # how long the parry can block hits
 
 @export var left_bound_range = -150 # So i can have multiple enemies with different patrol route distances
 @export var right_bound_range = 150 # Remeber left must be negative right positive 
@@ -41,7 +41,6 @@ enum states {
 	Patrol,
 	Chase,
 	Attack,
-	Parry,
 }
 
 var current_state = states.Patrol
@@ -75,8 +74,6 @@ func movement(delta):
 		states.Chase:
 			velocity = velocity.move_toward(dir * chase_speed, accel * delta)
 		states.Attack:
-			velocity = Vector2.ZERO
-		states.Parry:
 			velocity = Vector2.ZERO
 		states.Lookout:
 			velocity = Vector2.ZERO
@@ -165,44 +162,39 @@ func _on_attack_area_body_entered(body):
 	if body.is_in_group("Player"):
 		current_state = states.Attack
 		if attack_cooldown == false:
-			attack(body)
+			attack()
 
 func _on_attack_area_body_exited(body):
 	if body.is_in_group("Player"):
 		current_state = states.Chase
 
-func attack(body):
-	attack_cooldown = true
+func attack():
 	#play animation
 	sprite.play("Attack")
-	#Check if it should chase or keep attacking
 	# check if colliding with sword hit box somewhere
-	
-	attack_timer.start()
 
 func _on_sprite_frame_changed():
-	if sprite.animation == "Attack" and not attack_cooldown:
+	if sprite.animation == "Attack" and attack_cooldown == false:
 		# Check if on the damage frames
 		var frame = sprite.frame
-		if frame == 2 or frame == 3 or frame == 4:
-			print("Attackkkk")
-			# Check if player is still inside attack area
-			for body in attack_area.get_overlapping_bodies():
-				print("PLayerssss")
-				if body.is_in_group("Player"):
-					body.take_damage(damage)
-					attack_cooldown = true
-					attack_timer.start()
-					break
+		if frame == 4 or frame == 5 or frame == 6:
+			sword_hitbox_collision.disabled = false
+
+func _on_sword_hit_box_body_entered(body):
+	if body.is_in_group("Player"):
+		body.take_damage(damage)
+		attack_cooldown = true
+		attack_timer.start()
 
 func _on_sprite_animation_finished():
 	if sprite.animation == "Attack":
-		if ray_cast.is_colliding() and ray_cast.get_collider().is_in_group("Player"):
-			# player still in range, attack again
-			sprite.play("Attack")
-		else:
-			# go back to previous state
-			current_state = states.Chase if ray_cast.is_colliding() else states.Patrol
+		sword_hitbox_collision.disabled = true
+		if ray_cast.is_colliding():
+			if ray_cast.get_collider().is_in_group("Player"):
+				current_state = states.Chase
+			else:
+				current_state = states.Patrol
+
 # ----------------------------------------------------
 #                 PARRY SYSTEM
 # ----------------------------------------------------
@@ -217,7 +209,6 @@ func on_player_attack_started():
 	emit_signal("enemy_parry") # Not using yet might not need to could call a function in player to do the effects of knockback etc
 	parry_active = true
 	parry_consumed = false
-	#current_state = states.Parry
 	sprite.play("Parry")
 	# schedule closing of parry window
 	var t = get_tree().create_timer(parry_window)
@@ -225,9 +216,6 @@ func on_player_attack_started():
 
 func _on_parry_window_timeout():
 	parry_active = false
-	# return to chase if player is nearby, else patrol
-	#if current_state == states.Parry:
-	#	current_state = states.Patrol
 
 func is_player_attack_dangerous() -> bool:
 	if not player:
@@ -279,3 +267,9 @@ func perform_parry_effects():
 
 func _on_attack_timer_timeout():
 	attack_cooldown = false
+	
+	for body in attack_area.get_overlapping_bodies():
+		if body.is_in_group("Player"):
+			print("Re attack")
+			attack()
+			break
