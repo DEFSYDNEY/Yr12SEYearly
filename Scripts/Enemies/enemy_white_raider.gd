@@ -6,9 +6,13 @@ extends CharacterBody2D
 @export var accel:int = 2000
 @export var health: int = 2
 @export var damage: int = 1
+@export var stationary:bool = false
 
 @export var parry_chance := 0.25
 @export var parry_window := 0.18   # how long the parry can block hits
+
+@export var left_bound_range = -150 # So i can have multiple enemies with different patrol route distances
+@export var right_bound_range = 150 # Remeber left must be negative right positive 
 
 @onready var sprite = $Sprite
 @onready var ray_cast = $Sprite/RayCast2D
@@ -33,6 +37,7 @@ var parry_consumed: bool = false      # player's current attack already blocked?
 signal enemy_parry
 
 enum states {
+	Lookout,
 	Patrol,
 	Chase,
 	Attack,
@@ -43,9 +48,11 @@ var current_state = states.Patrol
 
 
 func _ready():
-	left_bounds = self.position + Vector2(-150, 0)
-	right_bounds = self.position + Vector2(150, 0)
+	left_bounds = self.position + Vector2(left_bound_range, 0)
+	right_bounds = self.position + Vector2(right_bound_range, 0)
 	player.connect("attack_started", Callable(self, "on_player_attack_started"))
+	if stationary == true:
+		current_state = states.Lookout
 
 
 func _physics_process(delta):
@@ -69,6 +76,8 @@ func movement(delta):
 		states.Attack:
 			velocity = Vector2.ZERO
 		states.Parry:
+			velocity = Vector2.ZERO
+		states.Lookout:
 			velocity = Vector2.ZERO
 
 	move_and_slide()
