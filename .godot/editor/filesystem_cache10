@@ -1,0 +1,28 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1763773655
+icon.svg::CompressedTexture2D::5289248671878863312::1762059115::1762059121::1::::<><><>0<>0<>145ca7476687530cb9d15a3522f8db4d<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+::res://Art/::1763462040
+blood.png::CompressedTexture2D::7659496696266837114::1763435182::1763435184::1::::<><><>0<>0<>b7674e3b99664cbe73fcda6ac5b49444<>res://.godot/imported/blood.png-e7c6616f95572139c5296b49ff974612.ctex::
+Enemy 1-pARRY.png::CompressedTexture2D::6309348762651284063::1763461971::1763462040::1::::<><><>0<>0<>33a2b94f0da5a604a3ac4c555fd4ceb2<>res://.godot/imported/Enemy 1-pARRY.png-8287536a9e2a6e5f9084a78ae7afb616.ctex::
+Enemy main.png::CompressedTexture2D::5496998083665209027::1763274755::1763274804::1::::<><><>0<>0<>6c972f5e8539b0c0bd4aa127f45e9e39<>res://.godot/imported/Enemy main.png-ee86c24c9c09a2383f009308e11ac664.ctex::
+Good point light texture.webp::CompressedTexture2D::5283797656931863744::1762941907::1762941913::1::::<><><>0<>0<>99a4ec1e7b0b728a745182658b112133<>res://.godot/imported/Good point light texture.webp-4900fdac24aee9eb50045f2e51cee8a7.ctex::
+Player-Sheet-Attack.png::CompressedTexture2D::5142566535869529476::1763179343::1763179343::1::::<><><>0<>0<>f60b5b7ea85c43bbad72005e3bdfb1dd<>res://.godot/imported/Player-Sheet-Attack.png-006a64402eed7612335f41d2e159ab7e.ctex::
+Player-Sheet.png::CompressedTexture2D::7092773176445907313::1763179065::1763179065::1::::<><><>0<>0<>45a0c16257cc0a4dbced88253de6f3c9<>res://.godot/imported/Player-Sheet.png-744972d4a4390a9a2d2704ea29362a59.ctex::
+Sprite-0001.png::CompressedTexture2D::8983706532501339040::1763441063::1763441065::1::::<><><>0<>0<>b090e9bbee4ccfc9089b5cea660fa832<>res://.godot/imported/Sprite-0001.png-20ab68b34e6ca5e9f36261a766341a31.ctex::
+tileset-Recovered-Sheet.png::CompressedTexture2D::999483945008936917::1763184014::1763184014::1::::<><><>0<>0<>51eec0a38e28e76de409ed3c75b78ecf<>res://.godot/imported/tileset-Recovered-Sheet.png-2eef621de2ab4b983ffefa733135ab8f.ctex::
+::res://Levels/::1763773505
+test_level.tscn::PackedScene::5422096624668385135::1763773505::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://chmffgx5iad7e::::res://icon.svg<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn
+::res://Scenes/::1763180791
+::res://Scenes/Characters/::1763621781
+Enemy_white_raider.tscn::PackedScene::4687618030953236861::1763621781::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy main.png
+player.tscn::PackedScene::1855016947018763096::1763621678::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/player.gd<>uid://c8b165je6roll::::res://Art/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player-Sheet-Attack.png
+::res://Scenes/World/::1763443655
+camera_lock_zone.tscn::PackedScene::5115425601424680621::1763443655::0::1::::<><><>0<>0<><>::uid://bjw0wmta37uql::::res://Scripts/Camera/camera_lock_zone.gd
+::res://Scripts/::1763435472
+::res://Scripts/Camera/::1763181716
+camera_lock_zone.gd::GDScript::3065094458979961339::1763181716::0::1::::<>Area2D<><>0<>1<><>::
+::res://Scripts/Enemies/::1763621781
+enemy_white_raider.gd::GDScript::5023313945702723397::1763621781::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Scripts/player/::1763533223
+player.gd::GDScript::5691874206560303447::1763533223::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Scripts/World/::1763516320

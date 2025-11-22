@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce47ku87iwb3b"]
+
+[ext_resource type="Script" uid="uid://bjw0wmta37uql" path="res://Scripts/Camera/camera_lock_zone.gd" id="1_najdt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_najdt"]
+size = Vector2(20, 512)
+
+[node name="CameraLockZone" type="Area2D"]
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_najdt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 255)
+shape = SubResource("RectangleShape2D_najdt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

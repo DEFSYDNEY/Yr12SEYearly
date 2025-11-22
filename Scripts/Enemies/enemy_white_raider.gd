@@ -1,0 +1,245 @@
+extends CharacterBody2D
+
+@export var player: CharacterBody2D
+@export var speed:int = 100
+@export var chase_speed:int = 250
+@export var accel:int = 2000
+@export var health: int = 2
+@export var damage: int = 1
+
+@export var parry_chance := 0.25
+@export var parry_window := 0.18   # how long the parry can block hits
+
+@onready var sprite = $Sprite
+@onready var ray_cast = $Sprite/RayCast2D
+@onready var timer = $PlayerLossSightTimer
+@onready var attack_area = $"Attack area"
+@onready var sword_hitbox_collision = $SwordHitBox/CollisionShape2D
+@onready var blood_particles = $BloodParticles
+@onready var parry_particles = $ParryParticles
+@onready var attack_timer = $Attack_timer
+
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var dir := Vector2.ZERO
+var right_bounds: Vector2
+var left_bounds: Vector2
+var patrol_paused: bool = false
+var attack_cooldown:bool = false
+
+# -------- PARRY SYSTEM --------
+var parry_active: bool = false        # parry window currently open
+var parry_consumed: bool = false      # player's current attack already blocked?
+
+signal enemy_parry
+
+enum states {
+	Patrol,
+	Chase,
+	Attack,
+	Parry,
+}
+
+var current_state = states.Patrol
+
+
+func _ready():
+	left_bounds = self.position + Vector2(-150, 0)
+	right_bounds = self.position + Vector2(150, 0)
+	player.connect("attack_started", Callable(self, "on_player_attack_started"))
+
+
+func _physics_process(delta):
+	handle_gravity(delta)
+	movement(delta)
+	change_direction()
+	look_for_player()
+	
+
+
+func handle_gravity(delta):
+	velocity.y += gravity * delta
+
+
+func movement(delta):
+	match current_state:
+		states.Patrol:
+			velocity = velocity.move_toward(dir * speed, accel * delta)
+		states.Chase:
+			velocity = velocity.move_toward(dir * chase_speed, accel * delta)
+		states.Attack:
+			velocity = Vector2.ZERO
+		states.Parry:
+			velocity = Vector2.ZERO
+
+	move_and_slide()
+
+
+func change_direction():
+
+	# ------------------- PATROL -------------------
+	if current_state == states.Patrol:
+		if sprite.flip_h:
+			if self.position.x <= right_bounds.x:
+				dir = Vector2(1,0)
+			else:
+				pause_and_flip(Vector2(-1,0), false, -125, -1, 1)
+		else:
+			if self.position.x >= left_bounds.x:
+				dir = Vector2(-1,0)
+			else:
+				pause_and_flip(Vector2(1,0), true, 125, 1, -1)
+
+	# -------------------- CHASE --------------------
+	elif current_state == states.Chase:
+		if !player: return
+		var x_only = player.position - self.position
+		x_only.y = 0
+		dir = x_only.normalized()
+
+		if dir.x == 1:
+			sprite.flip_h = true
+			ray_cast.target_position = Vector2(125,0)
+			attack_area.scale.x = -1
+			sword_hitbox_collision.scale.x = 1
+			parry_particles.position.x = 18
+		else:
+			sprite.flip_h = false
+			ray_cast.target_position = Vector2(-125,0)
+			attack_area.scale.x = 1
+			sword_hitbox_collision.scale.x = -1
+			parry_particles.position.x = -18
+
+func pause_and_flip(new_dir: Vector2, flip_h: bool, raycast_new_pos: int, sword_hitbox_scale: int, attack_hitbox: int):
+	if current_state != states.Patrol: return
+
+	patrol_paused = true
+	dir = Vector2.ZERO
+
+	await get_tree().create_timer(1).timeout
+
+	if current_state == states.Attack or current_state == states.Chase:
+		return
+
+	sprite.flip_h = flip_h
+	ray_cast.target_position.x = raycast_new_pos
+	dir = new_dir
+	sword_hitbox_collision.scale.x = sword_hitbox_scale
+	attack_area.scale.x = attack_hitbox
+	patrol_paused = false
+
+func look_for_player():
+	if !player: return
+
+	if ray_cast.is_colliding():
+		var collider = ray_cast.get_collider()
+		if collider.is_in_group("Player") and current_state != states.Attack:
+			chase_player()
+		elif current_state == states.Chase:
+			stop_chase()
+
+	elif current_state == states.Chase:
+		stop_chase()
+
+func chase_player():
+	timer.stop()
+	current_state = states.Chase
+
+func stop_chase():
+	if timer.time_left <= 0:
+		timer.start()
+
+func _on_timer_timeout():
+	current_state = states.Patrol
+
+func _on_attack_area_body_entered(body):
+	if body.is_in_group("Player"):
+		current_state = states.Attack
+		print("Attack2")
+		if attack_cooldown == false:
+			print("Attack3")
+			attack(body)
+
+func _on_attack_area_body_exited(body):
+	if body.is_in_group("Player"):
+		current_state = states.Chase
+
+func attack(body):
+	attack_cooldown = true
+	print("Attack4")
+	#play animation
+	#Check if it should chase or keep attacking
+	body.take_damage(damage)
+	attack_timer.start()
+	print("Attack5")
+# ----------------------------------------------------
+#                 PARRY SYSTEM
+# ----------------------------------------------------
+func on_player_attack_started():
+	
+	if not is_player_attack_dangerous():
+		return
+	
+	if randf() >= parry_chance:
+		return  # didn't parry this attack
+	# activate parry window
+	emit_signal("enemy_parry")
+	parry_active = true
+	parry_consumed = false
+	#current_state = states.Parry
+	sprite.play("Parry")
+	# schedule closing of parry window
+	var t = get_tree().create_timer(parry_window)
+	t.timeout.connect(Callable(self, "_on_parry_window_timeout"))
+
+func _on_parry_window_timeout():
+	parry_active = false
+	# return to chase if player is nearby, else patrol
+	#if current_state == states.Parry:
+	#	current_state = states.Patrol
+
+func is_player_attack_dangerous() -> bool:
+	if not player:
+		return false
+	
+	# If player's sword hitbox is overlapping enemy hurtbox
+	# The player's sword hitbox must have a group "PlayerAttack" or similar
+	var overlaps = player.get_node("SwordHitBox").get_overlapping_bodies()
+	return self in overlaps
+
+# ----------------------------------------------------
+#                DAMAGE HANDLING
+# ----------------------------------------------------
+func take_damage(amount: int):
+	# --- Blocked because enemy is currently parrying ---
+	if parry_active and not parry_consumed:
+		parry_consumed = true
+		perform_parry_effects()
+		return
+
+	# If parry was active but already consumed, ignore extra hit
+	if parry_active and parry_consumed:
+		return
+	
+	# -------- Take Damage Normally ---------
+	health -= amount
+	blood_particles.emitting = true
+	if sprite.flip_h:
+		ray_cast.target_position = Vector2(-125,0)
+	else:
+		ray_cast.target_position = Vector2(125,0)
+
+	if health <= 0:
+		queue_free()
+
+func perform_parry_effects():
+	# Small hitstop
+	#Engine.time_scale = 0.01
+	#await get_tree().create_timer(2).timeout
+	#Engine.time_scale = 1.0
+	parry_particles.emitting = true
+
+	# Optional: push player back, play sound, particles, etc.
+
+func _on_attack_timer_timeout():
+	attack_cooldown = false
+	print("Attack6")

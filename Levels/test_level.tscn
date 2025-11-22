@@ -1,0 +1,148 @@
+[gd_scene load_steps=9 format=4 uid="uid://cjirey7kexnpf"]
+
+[ext_resource type="Texture2D" uid="uid://oifmb4fcuafl" path="res://Art/tileset-Recovered-Sheet.png" id="1_i4ak4"]
+[ext_resource type="PackedScene" uid="uid://1ot4f7uvan0c" path="res://Scenes/Characters/player.tscn" id="1_ormqy"]
+[ext_resource type="Texture2D" uid="uid://chmffgx5iad7e" path="res://icon.svg" id="2_00vsl"]
+[ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
+[ext_resource type="PackedScene" uid="uid://b71yncaw8ag18" path="res://Scenes/Characters/Enemy_white_raider.tscn" id="5_3158n"]
+[ext_resource type="Texture2D" uid="uid://chjrm1agg7odc" path="res://Art/Good point light texture.webp" id="6_ub4j8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3158n"]
+texture = ExtResource("1_i4ak4")
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.4749136, 8, -6.4749136, 8, 8, -8, 8)
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+16:0/0 = 0
+17:0/0 = 0
+18:0/0 = 0
+19:0/0 = 0
+20:0/0 = 0
+21:0/0 = 0
+22:0/0 = 0
+23:0/0 = 0
+24:0/0 = 0
+25:0/0 = 0
+26:0/0 = 0
+27:0/0 = 0
+28:0/0 = 0
+29:0/0 = 0
+30:0/0 = 0
+31:0/0 = 0
+32:0/0 = 0
+33:0/0 = 0
+34:0/0 = 0
+35:0/0 = 0
+36:0/0 = 0
+37:0/0 = 0
+38:0/0 = 0
+39:0/0 = 0
+40:0/0 = 0
+41:0/0 = 0
+42:0/0 = 0
+43:0/0 = 0
+44:0/0 = 0
+45:0/0 = 0
+46:0/0 = 0
+47:0/0 = 0
+48:0/0 = 0
+49:0/0 = 0
+50:0/0 = 0
+52:0/0 = 0
+52:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.4749136, 8, -6.4749136, 8, 8, -8, 8)
+53:0/0 = 0
+53:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.4749136, 8, -6.4749136, 8, 8, -8, 8)
+54:0/0 = 0
+55:0/0 = 0
+55:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.4749136, 8, -6.4749136, 8, 8, -8, 8)
+56:0/0 = 0
+57:0/0 = 0
+58:0/0 = 0
+59:0/0 = 0
+59:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.4749136, 8, -6.4749136, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_ub4j8"]
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 15
+sources/0 = SubResource("TileSetAtlasSource_3158n")
+
+[node name="Test_level" type="Node2D"]
+
+[node name="TileMap" type="Node2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="TileMap"]
+tile_map_data = PackedByteArray("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")
+tile_set = SubResource("TileSet_ub4j8")
+
+[node name="Player" parent="." instance=ExtResource("1_ormqy")]
+position = Vector2(378, 453)
+
+[node name="Camera" type="Camera2D" parent="Player"]
+position = Vector2(-1, -214)
+limit_smoothed = true
+position_smoothing_enabled = true
+
+[node name="ParralaxBackground" type="Node2D" parent="."]
+
+[node name="Trees" type="Parallax2D" parent="ParralaxBackground"]
+z_index = -2
+scale = Vector2(2.3690772, 2.5714777)
+scroll_scale = Vector2(0.8, 0.8)
+scroll_offset = Vector2(0, 182)
+repeat_size = Vector2(126.325, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="ParralaxBackground/Trees"]
+position = Vector2(64, 64)
+texture = ExtResource("2_00vsl")
+
+[node name="CameraZones" type="Node2D" parent="."]
+
+[node name="CameraLock" type="Node2D" parent="CameraZones"]
+
+[node name="1st house" parent="CameraZones/CameraLock" instance=ExtResource("2_4k50d")]
+position = Vector2(816, -112)
+lock_camera = true
+room_position = Vector2(0.3, 0)
+room_size = Vector2(800, 450)
+
+[node name="CameraUnlock" type="Node2D" parent="CameraZones"]
+
+[node name="After 1st house" parent="CameraZones/CameraUnlock" instance=ExtResource("2_4k50d")]
+position = Vector2(1657, 166)
+room_position = Vector2(0.3, 0)
+room_size = Vector2(500, 300)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
+position = Vector2(1226, 455)
+player = NodePath("../../Player")
+
+[node name="EnemyWhiteRaider2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
+position = Vector2(1502, 443)
+scale = Vector2(1.5, 1.5)
+player = NodePath("../../Player")
+health = 5
+damage = 2
+parry_chance = 0.4
+
+[node name="EnemyWhiteRaider3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
+position = Vector2(885, 453)
+player = NodePath("../../Player")
+
+[node name="GoodPointLightTexture" type="Sprite2D" parent="."]
+position = Vector2(1406, 220)
+texture = ExtResource("6_ub4j8")
