@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://cjirey7kexnpf"]
+[gd_scene load_steps=8 format=4 uid="uid://cjirey7kexnpf"]
 
 [ext_resource type="Texture2D" uid="uid://oifmb4fcuafl" path="res://Art/tileset-Recovered-Sheet.png" id="1_i4ak4"]
 [ext_resource type="PackedScene" uid="uid://1ot4f7uvan0c" path="res://Scenes/Characters/player.tscn" id="1_ormqy"]
 [ext_resource type="Texture2D" uid="uid://chmffgx5iad7e" path="res://icon.svg" id="2_00vsl"]
 [ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
 [ext_resource type="PackedScene" uid="uid://b71yncaw8ag18" path="res://Scenes/Characters/Enemy_white_raider.tscn" id="5_3158n"]
-[ext_resource type="Texture2D" uid="uid://chjrm1agg7odc" path="res://Art/Good point light texture.webp" id="6_ub4j8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3158n"]
 texture = ExtResource("1_i4ak4")
@@ -142,7 +141,3 @@ parry_chance = 0.4
 [node name="EnemyWhiteRaider3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
 position = Vector2(885, 453)
 player = NodePath("../../Player")
-
-[node name="GoodPointLightTexture" type="Sprite2D" parent="."]
-position = Vector2(1406, 220)
-texture = ExtResource("6_ub4j8")
