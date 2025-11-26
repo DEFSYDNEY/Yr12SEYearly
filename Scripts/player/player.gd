@@ -22,6 +22,7 @@ var is_attacking:bool = false
 var coyote_timer = 0.0
 var camera_locked:bool = false
 var look_ahead_offset: Vector2 = Vector2.ZERO
+var parry_active :bool = false
 
 signal attack_started # So the ai can parry on time looking cooler
 
@@ -85,6 +86,10 @@ func _process(delta):
 		attack()
 		is_attacking = true
 	
+	if Input.is_action_just_pressed("parry"):
+		parry()
+		parry_active = true
+	
 	####### Handles the sword collisions #######   Use this to disable collision when rolling or copy for parrying
 	if sprite.animation == "Attack":
 		var frame = sprite.frame
@@ -129,6 +134,13 @@ func take_damage(amount: int):
 
 func die():
 	queue_free()
+###################################
+
+######## Parry ####################
+
+func parry():
+	sprite.play("Attack")
+
 ###################################
 
 ######### Camera Locking and movement ##########
