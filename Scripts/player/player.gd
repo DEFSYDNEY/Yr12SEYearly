@@ -20,6 +20,7 @@ var parry_consumed: bool = false      # player's current attack not blocked
 @onready var cam = $Camera
 @onready var parry_box = $ParryHitBox
 @onready var parry_shape = $ParryHitBox/CollisionShape2D
+@onready var parry_particles = $ParryParticles
 # Get the gravity from the project settings so you can sync with rigid body nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -117,7 +118,7 @@ func _process(delta):
 	if sprite.animation == "Parry":
 		var frame = sprite.frame
 		# Enable hitbox on specific frames
-		if frame == 1 or frame == 2 or frame == 0 or frame == 4:
+		if frame == 0 or frame == 1 or frame == 2 or frame == 3:
 			parry_shape.disabled = false
 		else:
 			parry_shape.disabled = true
@@ -165,15 +166,15 @@ func _on_sword_hit_box_body_entered(body):
 func parry():
 	sprite.play("Parry")
 	parry_active = true
-	parry_block = false   # Reset the block at the start of parry
 	await sprite.animation_finished
 	sprite.play("Idle")
 	parry_active = false
 	parry_block = false   # Reset after parry window ends
 
 func _on_parry_hit_box_area_entered(area):
-	if area.is_in_group("EnemyWeapon") and parry_active and not parry_block:
+	if area.is_in_group("Enemy") and parry_active and not parry_block:
 		parry_block = true     # Block further damage for this attack
+		parry_particles.emitting = true
 		hitstop(0.018)
 		print("Parry!")
 ###################################

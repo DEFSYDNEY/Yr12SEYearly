@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://1ot4f7uvan0c"]
+[gd_scene load_steps=33 format=3 uid="uid://1ot4f7uvan0c"]
 
 [ext_resource type="Script" uid="uid://cndglpdj0yk1l" path="res://Scripts/player/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://c8b165je6roll" path="res://Art/Player/Player-Sheet.png" id="1_v0iea"]
@@ -191,6 +191,13 @@ points = PackedVector2Array(11, -22, 45, -18, 64, -13, 64, -5, 50, 2, 31, 5, 8, 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_gy20a"]
 points = PackedVector2Array(-8, 2, 0, 0, 8, -6, 19, -6, 28, -1, 28, 4, 24, 9, 18, 11, 6, 12, -18, 12, -14, 7)
 
+[sub_resource type="Curve" id="Curve_gy20a"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0.21348321), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_cqrjx"]
+colors = PackedColorArray(1, 0.47843137, 0, 1, 1, 1, 0, 1)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
 collision_layer = 2
@@ -235,6 +242,25 @@ collision_mask = 15
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ParryHitBox"]
 position = Vector2(4, -1)
 shape = SubResource("ConvexPolygonShape2D_gy20a")
+
+[node name="ParryParticles" type="CPUParticles2D" parent="."]
+z_index = 4096
+position = Vector2(27, -2.0000005)
+rotation = -2.8042183
+emitting = false
+amount = 45
+lifetime = 0.58
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 70.305)
+initial_velocity_min = 69.16
+initial_velocity_max = 107.58
+damping_max = 70.103
+angle_max = 267.2
+scale_amount_curve = SubResource("Curve_gy20a")
+color_ramp = SubResource("Gradient_cqrjx")
+hue_variation_max = 1.0
 
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]
 [connection signal="area_entered" from="ParryHitBox" to="." method="_on_parry_hit_box_area_entered"]

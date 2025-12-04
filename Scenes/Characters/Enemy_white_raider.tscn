@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b71yncaw8ag18"]
+[gd_scene load_steps=26 format=3 uid="uid://b71yncaw8ag18"]
 
 [ext_resource type="Script" uid="uid://cdtlinjcepr7j" path="res://Scripts/Enemies/enemy_white_raider.gd" id="1_v5cc0"]
 [ext_resource type="Texture2D" uid="uid://cv5kb1qem70jj" path="res://Art/Enemy/Enemy 1-pARRY.png" id="2_mqpak"]
@@ -32,10 +32,6 @@ region = Rect2(800, 0, 160, 80)
 [sub_resource type="AtlasTexture" id="AtlasTexture_xmdaa"]
 atlas = ExtResource("2_ymxu1")
 region = Rect2(960, 0, 160, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_h5cpu"]
-atlas = ExtResource("2_ymxu1")
-region = Rect2(1120, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ymxu1"]
 atlas = ExtResource("2_mqpak")
@@ -88,9 +84,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xmdaa")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_h5cpu")
 }],
 "loop": false,
 "name": &"Attack",
@@ -136,7 +129,7 @@ radius = 11.0
 height = 46.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5cc0"]
-size = Vector2(55, 45)
+size = Vector2(60, 45)
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_6t5aa"]
 points = PackedVector2Array(11, -22, 45, -18, 64, -13, 64, -5, 50, 2, 31, 5, 8, 5, 4, 3)
@@ -160,6 +153,8 @@ script = ExtResource("1_v5cc0")
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
 animation = &"Attack"
+frame = 6
+frame_progress = 1.0
 
 [node name="RayCast2D" type="RayCast2D" parent="Sprite"]
 position = Vector2(0, -17)
@@ -175,7 +170,7 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack area"]
-position = Vector2(-37.5, 2)
+position = Vector2(-35, 2)
 shape = SubResource("RectangleShape2D_v5cc0")
 
 [node name="SwordHitBox" type="Area2D" parent="." groups=["Enemy"]]
@@ -195,6 +190,7 @@ wait_time = 4.0
 one_shot = true
 
 [node name="Attack_timer" type="Timer" parent="."]
+wait_time = 0.75
 one_shot = true
 
 [node name="BloodParticles" type="CPUParticles2D" parent="."]
@@ -238,4 +234,4 @@ hue_variation_max = 1.0
 [connection signal="body_exited" from="Attack area" to="." method="_on_attack_area_body_exited"]
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]
 [connection signal="timeout" from="PlayerLossSightTimer" to="." method="_on_timer_timeout"]
-[connection signal="timeout" from="Attack_timer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="Attack_timer" to="." method="on_attack_timer_timeout"]

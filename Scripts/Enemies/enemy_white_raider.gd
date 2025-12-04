@@ -176,7 +176,9 @@ func _on_sprite_frame_changed():
 	if sprite.animation == "Attack" and attack_cooldown == false:
 		# Check if on the damage frames
 		var frame = sprite.frame
-		if frame == 4 or frame == 5 or frame == 6:
+		if frame == 4 or frame == 5:
+			sword_hitbox_collision.disabled = false
+		if frame == 6:
 			sword_hitbox_collision.disabled = false
 
 
@@ -189,6 +191,10 @@ func _on_sword_hit_box_body_entered(body):
 func _on_sprite_animation_finished():
 	if sprite.animation == "Attack":
 		sword_hitbox_collision.disabled = true
+		#await get_tree().create_timer(0.75).timeout
+		for body in attack_area.get_overlapping_bodies():
+			if body.is_in_group("Player"):
+				attack()
 		if ray_cast.is_colliding():
 			if ray_cast.get_collider().is_in_group("Player"):
 				current_state = states.Chase
@@ -265,7 +271,7 @@ func perform_parry_effects():
 
 	# Optional: push player back, play sound, particles, etc.
 
-func _on_attack_timer_timeout():
+func on_attack_timer_timeout():
 	attack_cooldown = false
 	
 	for body in attack_area.get_overlapping_bodies():
