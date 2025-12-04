@@ -9,10 +9,10 @@ extends CharacterBody2D
 @export var stationary:bool = false
 
 @export var parry_chance := 0.25
-@export var parry_window := 0.25   # how long the parry can block hits
+@export var parry_window := 0.25   # how long the parry can block hits makes it so every parry guarantees to register
 
 @export var left_bound_range = -150 # So i can have multiple enemies with different patrol route distances
-@export var right_bound_range = 150 # Remeber left must be negative right positive 
+@export var right_bound_range = 150 # Remeber left must be negative, right positive 
 
 @onready var sprite = $Sprite
 @onready var ray_cast = $Sprite/RayCast2D
@@ -32,7 +32,7 @@ var attack_cooldown:bool = false
 
 # -------- PARRY SYSTEM --------
 var parry_active: bool = false        # parry window currently open
-var parry_consumed: bool = false      # player's current attack already blocked?
+var parry_consumed: bool = false      # player's current attack not blocked
 
 signal enemy_parry
 
@@ -44,7 +44,6 @@ enum states {
 }
 
 var current_state = states.Patrol
-
 
 func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)

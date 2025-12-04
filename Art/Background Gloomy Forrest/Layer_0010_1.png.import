@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv5kb1qem70jj"
-path="res://.godot/imported/Enemy 1-pARRY.png-8287536a9e2a6e5f9084a78ae7afb616.ctex"
+uid="uid://b6bq1na1rueb6"
+path="res://.godot/imported/Layer_0010_1.png-3d550a744984b217b75d9946ddaeea6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Enemy 1-pARRY.png"
-dest_files=["res://.godot/imported/Enemy 1-pARRY.png-8287536a9e2a6e5f9084a78ae7afb616.ctex"]
+source_file="res://Art/Background Gloomy Forrest/Layer_0010_1.png"
+dest_files=["res://.godot/imported/Layer_0010_1.png-3d550a744984b217b75d9946ddaeea6a.ctex"]
 
 [params]
 

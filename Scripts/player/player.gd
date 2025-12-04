@@ -10,9 +10,16 @@ extends CharacterBody2D
 @export var decel := 3000.0       # how fast you stop when letting go
 @export var health:int = 1000
 
+@export var parry_window := 0.25   # how long the parry can block hits makes it so every parry guarantees to register
+var parry_active: bool = false        # parry window currently open
+var parry_consumed: bool = false      # player's current attack not blocked
+
+
 @onready var sprite = $Sprite
 @onready var sword_hit_box = $SwordHitBox/CollisionShape2D
 @onready var cam = $Camera
+@onready var parry_box = $ParryHitBox
+@onready var parry_shape = $ParryHitBox/CollisionShape2D
 # Get the gravity from the project settings so you can sync with rigid body nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -22,7 +29,7 @@ var is_attacking:bool = false
 var coyote_timer = 0.0
 var camera_locked:bool = false
 var look_ahead_offset: Vector2 = Vector2.ZERO
-var parry_active :bool = false
+var parry_block = false
 
 signal attack_started # So the ai can parry on time looking cooler
 
@@ -41,6 +48,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and coyote_timer > 0:
 		velocity.y = jump_speed
 		coyote_timer = 0
+		print(health)
 
 	# Get the input direction.
 	var direction = Input.get_axis("left", "right")
@@ -104,6 +112,19 @@ func _process(delta):
 	
 	#############################################
 
+		###### Parry collisions#########
+	
+	if sprite.animation == "Parry":
+		var frame = sprite.frame
+		# Enable hitbox on specific frames
+		if frame == 1 or frame == 2 or frame == 0 or frame == 4:
+			parry_shape.disabled = false
+		else:
+			parry_shape.disabled = true
+	else:
+		# Not attacking, always disable hitbox
+		parry_shape.disabled = true
+
 ####### Attacking Code ############
 
 func attack():
@@ -120,28 +141,58 @@ func hitstop(duration: float):
 	
 func _on_sword_hit_box_body_entered(body):
 	if body.is_in_group("Enemy"):
-		
 		hitstop(0.018)  # 18ms hitstop this is perfect for soft hits but still shows impact, 0.01 = 10ms,
 		body.take_damage(damage)
 
-
-func take_damage(amount: int):
-	health -= amount
-	
-	if health <= 0:
-		die()
-
-
-func die():
-	queue_free()
 ###################################
 
 ######## Parry ####################
 
-func parry():
-	sprite.play("Attack")
+#func parry():
+#	sprite.play("Parry")
+#	await sprite.animation_finished
+#	sprite.play("Idle")
+#	parry_active = false
+	
+	
+#func _on_parry_hit_box_area_entered(area):
+#	print("Collision")
+#	if area.is_in_group("Enemy"):
+#		parry_active = true
+#		hitstop(0.018)
+#		print("Parry")
 
+func parry():
+	sprite.play("Parry")
+	parry_active = true
+	parry_block = false   # Reset the block at the start of parry
+	await sprite.animation_finished
+	sprite.play("Idle")
+	parry_active = false
+	parry_block = false   # Reset after parry window ends
+
+func _on_parry_hit_box_area_entered(area):
+	if area.is_in_group("EnemyWeapon") and parry_active and not parry_block:
+		parry_block = true     # Block further damage for this attack
+		hitstop(0.018)
+		print("Parry!")
 ###################################
+
+################## DAMAGE ####################
+
+func take_damage(amount: int):
+	print("before attack: ", + health)
+	if parry_block:
+		return
+	
+	health -= amount
+	print("after attack: ", + health)
+	if health <= 0:
+		die()
+
+func die():
+	queue_free()
+############################################
 
 ######### Camera Locking and movement ##########
 func lock_camera_to_room(pos: Vector2, size: Vector2):

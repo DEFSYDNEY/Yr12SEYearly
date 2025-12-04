@@ -14,7 +14,8 @@ extends Area2D
 
 func _draw():
 	# Draw rectangle outline
-	draw_rect(Rect2(room_position, room_size), Color(0, 0.6, 1, 1), false)
+	draw_rect(Rect2(room_position, room_size), Color(0, 0.6, 1, 1), false) # Comment out to make invisible
+	pass
 
 func _on_body_entered(body):
 	if body.is_in_group("Player"):

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ba1fxidnjk8ud"
-path="res://.godot/imported/Enemy 1-Attack.png-bd0dd8ae0feb1d5aece3c3e9138f1cdb.ctex"
+uid="uid://c41t33qegua35"
+path="res://.godot/imported/Layer_0002_7.png-5d1e71723db3a03f638e07b674bde092.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Enemy 1-Attack.png"
-dest_files=["res://.godot/imported/Enemy 1-Attack.png-bd0dd8ae0feb1d5aece3c3e9138f1cdb.ctex"]
+source_file="res://Art/Background Gloomy Forrest/Layer_0002_7.png"
+dest_files=["res://.godot/imported/Layer_0002_7.png-5d1e71723db3a03f638e07b674bde092.ctex"]
 
 [params]
 

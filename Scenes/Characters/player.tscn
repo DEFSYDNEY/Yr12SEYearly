@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://1ot4f7uvan0c"]
+[gd_scene load_steps=31 format=3 uid="uid://1ot4f7uvan0c"]
 
 [ext_resource type="Script" uid="uid://cndglpdj0yk1l" path="res://Scripts/player/player.gd" id="1_cvnsp"]
-[ext_resource type="Texture2D" uid="uid://c8b165je6roll" path="res://Art/Player-Sheet.png" id="1_v0iea"]
-[ext_resource type="Texture2D" uid="uid://cfjdk4l6ichyi" path="res://Art/Player-Sheet-Attack.png" id="2_6t5aa"]
+[ext_resource type="Texture2D" uid="uid://c8b165je6roll" path="res://Art/Player/Player-Sheet.png" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://cfjdk4l6ichyi" path="res://Art/Player/Player-Sheet-Attack.png" id="2_6t5aa"]
+[ext_resource type="Texture2D" uid="uid://duood3l0hafdc" path="res://Art/Player/Player-Sheet-Parry.png" id="4_gy20a"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
 atlas = ExtResource("2_6t5aa")
@@ -72,6 +73,22 @@ region = Rect2(1440, 0, 160, 80)
 atlas = ExtResource("1_v0iea")
 region = Rect2(1600, 0, 160, 80)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqrjx"]
+atlas = ExtResource("4_gy20a")
+region = Rect2(160, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khnq4"]
+atlas = ExtResource("4_gy20a")
+region = Rect2(320, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_utp2y"]
+atlas = ExtResource("4_gy20a")
+region = Rect2(480, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdgf0"]
+atlas = ExtResource("4_gy20a")
+region = Rect2(640, 0, 160, 80)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_cvnsp"]
 animations = [{
 "frames": [{
@@ -137,6 +154,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_cqrjx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khnq4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_utp2y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gdgf0")
+}],
+"loop": false,
+"name": &"Parry",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("1_v0iea")
 }],
 "loop": true,
@@ -154,20 +188,23 @@ height = 44.0
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_6t5aa"]
 points = PackedVector2Array(11, -22, 45, -18, 64, -13, 64, -5, 50, 2, 31, 5, 8, 5, 4, 3)
 
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_gy20a"]
+points = PackedVector2Array(-8, 2, 0, 0, 8, -6, 19, -6, 28, -1, 28, 4, 24, 9, 18, 11, 6, 12, -18, 12, -14, 7)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
 collision_layer = 2
 collision_mask = 15
 script = ExtResource("1_cvnsp")
 coyote_time = 0.07
-health = 3
+health = 5
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
-animation = &"Attack"
-frame = 4
-frame_progress = 0.6492367
+animation = &"Parry"
+frame = 1
+frame_progress = 0.24376957
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 1)
@@ -191,4 +228,14 @@ position = Vector2(-26, -1)
 shape = SubResource("ConvexPolygonShape2D_6t5aa")
 debug_color = Color(2.0214916e-06, 0.5992533, 0.70622456, 0.41960785)
 
+[node name="ParryHitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ParryHitBox"]
+position = Vector2(4, -1)
+shape = SubResource("ConvexPolygonShape2D_gy20a")
+
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]
+[connection signal="area_entered" from="ParryHitBox" to="." method="_on_parry_hit_box_area_entered"]
+[connection signal="area_shape_entered" from="ParryHitBox" to="." method="_on_parry_hit_box_area_shape_entered"]
