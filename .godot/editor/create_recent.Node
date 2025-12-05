@@ -1,3 +1,8 @@
+AnimationPlayer
+CanvasModulate
+Label      - Matches the "text" keyword.
+Button
+CanvasLayer
 CollisionShape2D
 Area2D
 Sprite2D
@@ -8,7 +13,3 @@ Timer
 TileMapLayer
 Node2D
 Camera2D
-AnimationPlayer
-Parallax2D
-Polygon2D
-StaticBody2D

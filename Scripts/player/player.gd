@@ -21,6 +21,12 @@ var parry_consumed: bool = false      # player's current attack not blocked
 @onready var parry_box = $ParryHitBox
 @onready var parry_shape = $ParryHitBox/CollisionShape2D
 @onready var parry_particles = $ParryParticles
+
+
+## Will change but for now ##
+@onready var death_screen = $"../CanvasLayer"
+@onready var death_player = $"../CanvasModulate/AnimationPlayer"
+#############################
 # Get the gravity from the project settings so you can sync with rigid body nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -33,6 +39,7 @@ var look_ahead_offset: Vector2 = Vector2.ZERO
 var parry_block = false
 
 signal attack_started # So the ai can parry on time looking cooler
+signal parried # To make the enemy stunned
 
 func _ready():
 	sprite.play("Idle")
@@ -67,11 +74,15 @@ func _physics_process(delta):
 			sprite.flip_h = true
 			sword_hit_box.scale.x = -1
 			sword_hit_box.scale.y = 1
+			parry_box.scale.x = -1
+			parry_particles.position.x = -27
 	elif velocity.x > 0:
 		if is_attacking == false:
 			sprite.flip_h = false
 			sword_hit_box.scale.x = 1
 			sword_hit_box.scale.y = 1
+			parry_box.scale.x = 1
+			parry_particles.position.x = 27
 	
 		# Look-ahead based on horizontal movement
 	look_ahead_offset.x = lerp(look_ahead_offset.x, direction * look_ahead_distance, delta * look_ahead_speed)
@@ -175,7 +186,10 @@ func _on_parry_hit_box_area_entered(area):
 	if area.is_in_group("Enemy") and parry_active and not parry_block:
 		parry_block = true     # Block further damage for this attack
 		parry_particles.emitting = true
+		emit_signal("parried")
 		hitstop(0.018)
+		get_parent()
+		
 		print("Parry!")
 ###################################
 
@@ -192,7 +206,14 @@ func take_damage(amount: int):
 		die()
 
 func die():
-	queue_free()
+	death_screen.visible = true
+	hide()
+	set_physics_process(false)
+	set_process(false)
+	set_collision_layer_value(2, false)
+	death_player.play("Death")
+	#queue_free()
+	
 ############################################
 
 ######### Camera Locking and movement ##########
@@ -208,6 +229,7 @@ func lock_camera_to_room(pos: Vector2, size: Vector2):
 	# Move to room center
 	var room_center = global_position + size / 2
 	cam.global_position = room_center
+	
 func unlock_camera():
 	camera_locked = false
 	cam.position.y = -59

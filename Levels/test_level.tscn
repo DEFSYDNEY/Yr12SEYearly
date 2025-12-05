@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=4 uid="uid://cjirey7kexnpf"]
+[gd_scene load_steps=17 format=4 uid="uid://cjirey7kexnpf"]
 
 [ext_resource type="Texture2D" uid="uid://oifmb4fcuafl" path="res://Art/tileset-Recovered-Sheet.png" id="1_i4ak4"]
+[ext_resource type="Script" uid="uid://b5smusjg4a0h4" path="res://Scripts/World/test_level_game_manager.gd" id="1_k8b6b"]
 [ext_resource type="PackedScene" uid="uid://1ot4f7uvan0c" path="res://Scenes/Characters/player.tscn" id="1_ormqy"]
 [ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
 [ext_resource type="Texture2D" uid="uid://d31muh1hug2uk" path="res://Art/Background Gloomy Forrest/Layer_0003_6.png" id="3_3158n"]
@@ -82,7 +83,45 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 15
 sources/0 = SubResource("TileSetAtlasSource_3158n")
 
+[sub_resource type="Animation" id="Animation_k8b6b"]
+resource_name = "Death"
+length = 1.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0666667),
+"transitions": PackedFloat32Array(1, 0.6),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lx7qo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lx7qo"]
+_data = {
+&"Death": SubResource("Animation_k8b6b"),
+&"RESET": SubResource("Animation_lx7qo")
+}
+
 [node name="Test_level" type="Node2D"]
+script = ExtResource("1_k8b6b")
 
 [node name="TileMap" type="Node2D" parent="."]
 
@@ -167,7 +206,7 @@ position_smoothing_enabled = true
 
 [node name="1st house" parent="CameraZones/CameraLock" instance=ExtResource("2_4k50d")]
 z_index = 4096
-position = Vector2(813, -125)
+position = Vector2(812, 78)
 lock_camera = true
 room_position = Vector2(0.3, 0)
 room_size = Vector2(800, 450)
@@ -191,9 +230,42 @@ position = Vector2(1226, 455)
 player = NodePath("../../Player")
 
 [node name="EnemyWhiteRaider2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
-position = Vector2(1502, 443)
-scale = Vector2(1.5, 1.5)
+position = Vector2(1501, 451)
+scale = Vector2(1.105, 1.105)
 player = NodePath("../../Player")
 health = 5
 damage = 2
 parry_chance = 0.4
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 288.0
+offset_top = 117.0
+offset_right = 375.0
+offset_bottom = 140.0
+text = "Game Over"
+
+[node name="Label2" type="Label" parent="CanvasLayer"]
+offset_left = 298.0
+offset_top = 149.0
+offset_right = 366.0
+offset_bottom = 172.0
+text = "You died"
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_left = 298.0
+offset_top = 184.0
+offset_right = 363.0
+offset_bottom = 215.0
+text = "Restart"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasModulate"]
+libraries = {
+&"": SubResource("AnimationLibrary_lx7qo")
+}
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

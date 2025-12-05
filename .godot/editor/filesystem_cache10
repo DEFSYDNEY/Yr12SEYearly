@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1764830868
+::res://::1764891821
 icon.svg::CompressedTexture2D::5289248671878863312::1762059115::1762059121::1::::<><><>0<>0<>145ca7476687530cb9d15a3522f8db4d<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1763779589::0::1::::<><><>0<>0<><>::
 ::res://Art/::1764827630
@@ -26,19 +26,19 @@ Enemy main.png::CompressedTexture2D::5496998083665209027::1763274755::1764827625
 Player-Sheet-Attack.png::CompressedTexture2D::5142566535869529476::1763179343::1764827628::1::::<><><>0<>0<>7fb7219b0f44332c072b20edec81a4a1<>res://.godot/imported/Player-Sheet-Attack.png-c3e898dd5515a49b69bf736ba45b920d.ctex::
 Player-Sheet-Parry.png::CompressedTexture2D::8592797096469131340::1764827892::1764827892::1::::<><><>0<>0<>a06f254ebaa87735263008da021e46e1<>res://.godot/imported/Player-Sheet-Parry.png-ae4068f951d9f5c9ff516c2f16e50d60.ctex::
 Player-Sheet.png::CompressedTexture2D::7092773176445907313::1764827741::1764827741::1::::<><><>0<>0<>6fa49ebb038bd00064e162415f139316<>res://.godot/imported/Player-Sheet.png-83732f9d9b14cc104602efb0aa2b17b5.ctex::
-::res://Levels/::1764830577
-test_level.tscn::PackedScene::5422096624668385135::1764830577::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
+::res://Levels/::1764840949
+test_level.tscn::PackedScene::5422096624668385135::1764840949::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
 ::res://Scenes/::1763180791
-::res://Scenes/Characters/::1764830360
-Enemy_white_raider.tscn::PackedScene::4687618030953236861::1764830360::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png
-player.tscn::PackedScene::1855016947018763096::1764830357::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/player.gd<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
+::res://Scenes/Characters/::1764840879
+Enemy_white_raider.tscn::PackedScene::4687618030953236861::1764840879::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png
+player.tscn::PackedScene::1855016947018763096::1764834568::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/player.gd<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
 ::res://Scenes/World/::1763443655
 camera_lock_zone.tscn::PackedScene::5115425601424680621::1763443655::0::1::::<><><>0<>0<><>::uid://bjw0wmta37uql::::res://Scripts/Camera/camera_lock_zone.gd
 ::res://Scripts/::1763435472
 ::res://Scripts/Camera/::1764830534
 camera_lock_zone.gd::GDScript::3065094458979961339::1764830534::0::1::::<>Area2D<><>0<>1<><>::
-::res://Scripts/Enemies/::1764829616
-enemy_white_raider.gd::GDScript::5023313945702723397::1764829616::0::1::::<>CharacterBody2D<><>0<>0<><>::
-::res://Scripts/player/::1764830186
-player.gd::GDScript::5691874206560303447::1764830186::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Scripts/Enemies/::1764840663
+enemy_white_raider.gd::GDScript::5023313945702723397::1764840663::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Scripts/player/::1764833124
+player.gd::GDScript::5691874206560303447::1764833124::0::1::::<>CharacterBody2D<><>0<>0<><>::
 ::res://Scripts/World/::1763516320

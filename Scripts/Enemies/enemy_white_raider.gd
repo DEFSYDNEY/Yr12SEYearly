@@ -41,6 +41,7 @@ enum states {
 	Patrol,
 	Chase,
 	Attack,
+	Stunned,
 }
 
 var current_state = states.Patrol
@@ -49,6 +50,7 @@ func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)
 	right_bounds = self.position + Vector2(right_bound_range, 0)
 	player.connect("attack_started", Callable(self, "on_player_attack_started"))
+	player.connect("parried", Callable(self, "stun_parried"))
 	sprite.connect("frame_changed", Callable(self, "_on_sprite_frame_changed"))
 	sprite.connect("animation_finished", Callable(self, "_on_sprite_animation_finished"))
 	if stationary == true:
@@ -70,12 +72,19 @@ func movement(delta):
 	match current_state:
 		states.Patrol:
 			velocity = velocity.move_toward(dir * speed, accel * delta)
+			handle_gravity(delta)
 		states.Chase:
 			velocity = velocity.move_toward(dir * chase_speed, accel * delta)
+			handle_gravity(delta)
 		states.Attack:
 			velocity = Vector2.ZERO
+			handle_gravity(delta)
 		states.Lookout:
 			velocity = Vector2.ZERO
+			handle_gravity(delta)
+		states.Stunned:
+			velocity = Vector2.ZERO
+			handle_gravity(delta)
 
 	move_and_slide()
 
@@ -191,11 +200,13 @@ func _on_sword_hit_box_body_entered(body):
 func _on_sprite_animation_finished():
 	if sprite.animation == "Attack":
 		sword_hitbox_collision.disabled = true
+		if current_state == states.Stunned:
+			return
 		#await get_tree().create_timer(0.75).timeout
-		for body in attack_area.get_overlapping_bodies():
-			if body.is_in_group("Player"):
-				attack()
-		if ray_cast.is_colliding():
+		#for body in attack_area.get_overlapping_bodies():
+		#	if body.is_in_group("Player"):
+		#		attack()
+		if ray_cast.is_colliding() and current_state != states.Stunned:
 			if ray_cast.get_collider().is_in_group("Player"):
 				current_state = states.Chase
 			else:
@@ -236,6 +247,15 @@ func is_player_attack_dangerous() -> bool:
 
 	# Test collision
 	return sword_shape.collide(sword_transform, enemy_shape, enemy_transform)
+
+##### When Player parries #########
+
+func stun_parried():
+	current_state = states.Stunned
+	
+	## Add animation of being stunned
+	## Recheck player position for chase or attack
+
 
 # ----------------------------------------------------
 #                DAMAGE HANDLING

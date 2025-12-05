@@ -245,7 +245,6 @@ shape = SubResource("ConvexPolygonShape2D_gy20a")
 
 [node name="ParryParticles" type="CPUParticles2D" parent="."]
 z_index = 4096
-position = Vector2(27, -2.0000005)
 rotation = -2.8042183
 emitting = false
 amount = 45
