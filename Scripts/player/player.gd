@@ -162,7 +162,7 @@ func _on_sword_hit_box_body_entered(body):
 ######## Parry ####################
 
 func parry():
-	parry_box.set_deferred("monitoring", true)
+	parry_box.monitoring = true
 	print(parry_box.monitoring)
 	sprite.play("Parry")
 	parry_active = true
