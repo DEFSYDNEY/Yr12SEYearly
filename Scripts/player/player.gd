@@ -37,6 +37,7 @@ var coyote_timer = 0.0
 var camera_locked:bool = false
 var look_ahead_offset: Vector2 = Vector2.ZERO
 var parry_block = false
+var parried_attack = false
 
 signal attack_started # So the ai can parry on time looking cooler
 signal parried # To make the enemy stunned
@@ -160,21 +161,9 @@ func _on_sword_hit_box_body_entered(body):
 
 ######## Parry ####################
 
-#func parry():
-#	sprite.play("Parry")
-#	await sprite.animation_finished
-#	sprite.play("Idle")
-#	parry_active = false
-	
-	
-#func _on_parry_hit_box_area_entered(area):
-#	print("Collision")
-#	if area.is_in_group("Enemy"):
-#		parry_active = true
-#		hitstop(0.018)
-#		print("Parry")
-
 func parry():
+	parry_box.set_deferred("monitoring", true)
+	print(parry_box.monitoring)
 	sprite.play("Parry")
 	parry_active = true
 	await sprite.animation_finished
@@ -184,11 +173,19 @@ func parry():
 
 func _on_parry_hit_box_area_entered(area):
 	if area.is_in_group("Enemy") and parry_active and not parry_block:
+		if parried_attack:
+			return
+		
+		parried_attack = true
 		parry_block = true     # Block further damage for this attack
 		parry_particles.emitting = true
 		emit_signal("parried")
-		hitstop(0.018)
-		get_parent()
+		#hitstop(0.019)
+		parry_box.set_deferred("monitoring", false)
+		print(parry_box.monitoring)
+		#parry_shape.set_deferred("disabled", true)
+		#parry_shape.disabled = true
+		#get_parent()
 		
 		print("Parry!")
 ###################################

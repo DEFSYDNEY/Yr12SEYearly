@@ -263,4 +263,3 @@ hue_variation_max = 1.0
 
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]
 [connection signal="area_entered" from="ParryHitBox" to="." method="_on_parry_hit_box_area_entered"]
-[connection signal="area_shape_entered" from="ParryHitBox" to="." method="_on_parry_hit_box_area_shape_entered"]

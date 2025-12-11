@@ -29,7 +29,7 @@ var right_bounds: Vector2
 var left_bounds: Vector2
 var patrol_paused: bool = false
 var attack_cooldown:bool = false
-
+var is_stunned:bool = false
 # -------- PARRY SYSTEM --------
 var parry_active: bool = false        # parry window currently open
 var parry_consumed: bool = false      # player's current attack not blocked
@@ -83,14 +83,17 @@ func movement(delta):
 			velocity = Vector2.ZERO
 			handle_gravity(delta)
 		states.Stunned:
-			velocity = Vector2.ZERO
+			#velocity = Vector2.ZERO
 			handle_gravity(delta)
 
 	move_and_slide()
 
 
 func change_direction():
-
+	
+	if current_state == states.Stunned:
+		return
+	
 	# ------------------- PATROL -------------------
 	if current_state == states.Patrol:
 		if sprite.flip_h:
@@ -257,15 +260,37 @@ func is_player_attack_dangerous() -> bool:
 ##### When Player parries #########
 
 func stun_parried():
-	#sword_hitbox_collision.disabled = true
+	if is_stunned:
+		return  # prevent duplicate stun logic
+
+	is_stunned = true
 	current_state = states.Stunned
+
+	dir = Vector2.ZERO
+	velocity = Vector2.ZERO
+
+	print("STUN triggered once")
+
 	sprite.play("Stagger")
-	await sprite.animation_finished
-	look_for_player()
+	#await sprite.animation_finished
+
+	await get_tree().create_timer(8).timeout
+
+	is_stunned = false  # stun over
+	restore_state_after_stun()
 	## Add animation of being stunned
 	## Recheck player position for chase or attack
 
-
+func restore_state_after_stun():
+	if not ray_cast.is_colliding():
+		current_state = states.Patrol
+	else:
+		var col = ray_cast.get_collider()
+		if col.is_in_group("Player"):
+			current_state = states.Chase
+		else:
+			current_state = states.Patrol
+	
 # ----------------------------------------------------
 #                DAMAGE HANDLING
 # ----------------------------------------------------
