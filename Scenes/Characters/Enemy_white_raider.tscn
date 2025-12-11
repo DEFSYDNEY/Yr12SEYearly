@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://b71yncaw8ag18"]
+[gd_scene load_steps=33 format=3 uid="uid://b71yncaw8ag18"]
 
 [ext_resource type="Script" uid="uid://cdtlinjcepr7j" path="res://Scripts/Enemies/enemy_white_raider.gd" id="1_v5cc0"]
 [ext_resource type="Texture2D" uid="uid://cv5kb1qem70jj" path="res://Art/Enemy/Enemy 1-pARRY.png" id="2_mqpak"]
 [ext_resource type="Texture2D" uid="uid://ckk10xe7vg2gl" path="res://Art/Enemy/Enemy main.png" id="2_v5cc0"]
 [ext_resource type="Texture2D" uid="uid://ba1fxidnjk8ud" path="res://Art/Enemy/Enemy 1-Attack.png" id="2_ymxu1"]
+[ext_resource type="Texture2D" uid="uid://b85a7jeet4264" path="res://Art/Enemy/Enemy 1-Sheet-Stagger.png" id="4_fekck"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ueocl"]
 atlas = ExtResource("2_ymxu1")
@@ -61,6 +62,30 @@ region = Rect2(800, 0, 160, 80)
 atlas = ExtResource("2_mqpak")
 region = Rect2(960, 0, 160, 80)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5cpu"]
+atlas = ExtResource("4_fekck")
+region = Rect2(0, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mtbac"]
+atlas = ExtResource("4_fekck")
+region = Rect2(160, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8la88"]
+atlas = ExtResource("4_fekck")
+region = Rect2(320, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s217h"]
+atlas = ExtResource("4_fekck")
+region = Rect2(480, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iccsl"]
+atlas = ExtResource("4_fekck")
+region = Rect2(640, 0, 160, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f51r8"]
+atlas = ExtResource("4_fekck")
+region = Rect2(800, 0, 160, 80)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_cvnsp"]
 animations = [{
 "frames": [{
@@ -117,6 +142,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_h5cpu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mtbac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8la88")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s217h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iccsl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f51r8")
+}],
+"loop": false,
+"name": &"Stagger",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_v5cc0")
 }],
 "loop": true,
@@ -152,7 +200,7 @@ script = ExtResource("1_v5cc0")
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
-animation = &"Parry"
+animation = &"Test"
 
 [node name="RayCast2D" type="RayCast2D" parent="Sprite"]
 position = Vector2(0, -17)

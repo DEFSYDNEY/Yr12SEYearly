@@ -34,7 +34,7 @@ var attack_cooldown:bool = false
 var parry_active: bool = false        # parry window currently open
 var parry_consumed: bool = false      # player's current attack not blocked
 
-signal enemy_parry
+#signal enemy_parry
 
 enum states {
 	Lookout,
@@ -106,7 +106,12 @@ func change_direction():
 
 	# -------------------- CHASE --------------------
 	elif current_state == states.Chase:
-		if !player: return
+		if !player: 
+			return
+		
+		if current_state == states.Stunned:
+			return
+		
 		var x_only = player.position - self.position
 		x_only.y = 0
 		dir = x_only.normalized()
@@ -125,7 +130,8 @@ func change_direction():
 			parry_particles.position.x = -18
 
 func pause_and_flip(new_dir: Vector2, flip_h: bool, raycast_new_pos: int, sword_hitbox_scale: int, attack_hitbox: int):
-	if current_state != states.Patrol: return
+	if current_state != states.Patrol: 
+		return
 
 	patrol_paused = true
 	dir = Vector2.ZERO
@@ -143,16 +149,17 @@ func pause_and_flip(new_dir: Vector2, flip_h: bool, raycast_new_pos: int, sword_
 	patrol_paused = false
 
 func look_for_player():
-	if !player: return
-
+	if !player:
+		return
+	
 	if ray_cast.is_colliding():
 		var collider = ray_cast.get_collider()
-		if collider.is_in_group("Player") and current_state != states.Attack:
+		if collider.is_in_group("Player") and current_state != states.Attack and current_state != states.Stunned:
 			chase_player()
-		elif current_state == states.Chase:
+		elif current_state == states.Chase and current_state != states.Stunned:
 			stop_chase()
 
-	elif current_state == states.Chase:
+	elif current_state == states.Chase and current_state != states.Stunned:
 		stop_chase()
 
 func chase_player():
@@ -198,14 +205,13 @@ func _on_sword_hit_box_body_entered(body):
 		attack_timer.start()
 
 func _on_sprite_animation_finished():
+	if current_state == states.Stunned:
+		return
+	
 	if sprite.animation == "Attack":
 		sword_hitbox_collision.disabled = true
 		if current_state == states.Stunned:
 			return
-		#await get_tree().create_timer(0.75).timeout
-		#for body in attack_area.get_overlapping_bodies():
-		#	if body.is_in_group("Player"):
-		#		attack()
 		if ray_cast.is_colliding() and current_state != states.Stunned:
 			if ray_cast.get_collider().is_in_group("Player"):
 				current_state = states.Chase
@@ -223,7 +229,7 @@ func on_player_attack_started():
 	if randf() >= parry_chance:
 		return  # didn't parry this attack
 	# activate parry window
-	emit_signal("enemy_parry") # Not using yet might not need to could call a function in player to do the effects of knockback etc
+	#emit_signal("enemy_parry") # Not using yet might not need to could call a function in player to do the effects of knockback etc
 	parry_active = true
 	parry_consumed = false
 	sprite.play("Parry")
@@ -251,8 +257,11 @@ func is_player_attack_dangerous() -> bool:
 ##### When Player parries #########
 
 func stun_parried():
+	#sword_hitbox_collision.disabled = true
 	current_state = states.Stunned
-	
+	sprite.play("Stagger")
+	await sprite.animation_finished
+	look_for_player()
 	## Add animation of being stunned
 	## Recheck player position for chase or attack
 
@@ -297,4 +306,4 @@ func on_attack_timer_timeout():
 	for body in attack_area.get_overlapping_bodies():
 		if body.is_in_group("Player"):
 			attack()
-			break
+			return
