@@ -154,6 +154,9 @@ func pause_and_flip(new_dir: Vector2, flip_h: bool, raycast_new_pos: int, sword_
 func look_for_player():
 	if !player:
 		return
+		
+	if current_state == states.Stunned:
+		return
 	
 	if ray_cast.is_colliding():
 		var collider = ray_cast.get_collider()
@@ -166,6 +169,8 @@ func look_for_player():
 		stop_chase()
 
 func chase_player():
+	if current_state == states.Stunned:
+		return
 	timer.stop()
 	current_state = states.Chase
 
@@ -177,13 +182,17 @@ func _on_timer_timeout():
 	current_state = states.Patrol
 
 func _on_attack_area_body_entered(body):
+	if current_state == states.Stunned:
+			return
 	if body.is_in_group("Player"):
 		current_state = states.Attack
 		if attack_cooldown == false:
 			attack()
 
 func _on_attack_area_body_exited(body):
-	if body.is_in_group("Player"):
+	if current_state == states.Stunned:
+			return
+	if body.is_in_group("Player") and current_state == states.Attack:
 		current_state = states.Chase
 
 func attack():
@@ -196,8 +205,6 @@ func _on_sprite_frame_changed():
 		# Check if on the damage frames
 		var frame = sprite.frame
 		if frame == 4 or frame == 5:
-			sword_hitbox_collision.disabled = false
-		if frame == 6:
 			sword_hitbox_collision.disabled = false
 
 
@@ -260,26 +267,14 @@ func is_player_attack_dangerous() -> bool:
 ##### When Player parries #########
 
 func stun_parried():
-	if is_stunned:
-		return  # prevent duplicate stun logic
-
-	is_stunned = true
 	current_state = states.Stunned
-
+	print(current_state)
 	dir = Vector2.ZERO
 	velocity = Vector2.ZERO
-
-	print("STUN triggered once")
-
 	sprite.play("Stagger")
-	#await sprite.animation_finished
-
-	await get_tree().create_timer(8).timeout
-
-	is_stunned = false  # stun over
+	await sprite.animation_finished
+	#await get_tree().create_timer(1).timeout
 	restore_state_after_stun()
-	## Add animation of being stunned
-	## Recheck player position for chase or attack
 
 func restore_state_after_stun():
 	if not ray_cast.is_colliding():

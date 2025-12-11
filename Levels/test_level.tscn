@@ -209,7 +209,7 @@ z_index = 4096
 position = Vector2(812, 78)
 lock_camera = true
 room_position = Vector2(0.3, 0)
-room_size = Vector2(800, 450)
+room_size = Vector2(800, 292.71)
 
 [node name="CameraUnlock" type="Node2D" parent="CameraZones"]
 
