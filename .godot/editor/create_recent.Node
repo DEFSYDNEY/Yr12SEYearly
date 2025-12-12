@@ -1,15 +1,14 @@
 AnimationPlayer
+Sprite2D
 CanvasModulate
 Label      - Matches the "text" keyword.
 Button
 CanvasLayer
 CollisionShape2D
 Area2D
-Sprite2D
 GPUParticles2D
 CPUParticles2D
 RayCast2D
 Timer
 TileMapLayer
 Node2D
-Camera2D

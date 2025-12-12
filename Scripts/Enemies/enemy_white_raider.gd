@@ -22,6 +22,7 @@ extends CharacterBody2D
 @onready var blood_particles = $BloodParticles
 @onready var parry_particles = $ParryParticles
 @onready var attack_timer = $Attack_timer
+@onready var attack_indication = $Attack_indication/AnimationPlayer
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var dir := Vector2.ZERO
@@ -211,7 +212,9 @@ func _on_sprite_frame_changed():
 	if sprite.animation == "Attack" and attack_cooldown == false:
 		# Check if on the damage frames
 		var frame = sprite.frame
-		if frame == 4 or frame == 5:
+		if frame == 1:
+			attack_indication.play("Attack iminate")
+		elif frame == 4 or frame == 5:
 			sword_hitbox_collision.disabled = false
 	else:
 		sword_hitbox_collision.disabled = true # Fully works but gives an error
