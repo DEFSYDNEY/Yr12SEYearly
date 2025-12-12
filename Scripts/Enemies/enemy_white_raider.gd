@@ -30,6 +30,7 @@ var left_bounds: Vector2
 var patrol_paused: bool = false
 var attack_cooldown:bool = false
 var is_stunned:bool = false
+var aggro:bool = false
 # -------- PARRY SYSTEM --------
 var parry_active: bool = false        # parry window currently open
 var parry_consumed: bool = false      # player's current attack not blocked
@@ -50,7 +51,6 @@ func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)
 	right_bounds = self.position + Vector2(right_bound_range, 0)
 	player.connect("attack_started", Callable(self, "on_player_attack_started"))
-	player.connect("parried", Callable(self, "stun_parried"))
 	sprite.connect("frame_changed", Callable(self, "_on_sprite_frame_changed"))
 	sprite.connect("animation_finished", Callable(self, "_on_sprite_animation_finished"))
 	if stationary == true:
@@ -96,6 +96,7 @@ func change_direction():
 	
 	# ------------------- PATROL -------------------
 	if current_state == states.Patrol:
+		aggro = false
 		if sprite.flip_h:
 			if self.position.x <= right_bounds.x:
 				dir = Vector2(1,0)
@@ -114,6 +115,8 @@ func change_direction():
 		
 		if current_state == states.Stunned:
 			return
+		
+		aggro = true
 		
 		var x_only = player.position - self.position
 		x_only.y = 0
@@ -161,6 +164,7 @@ func look_for_player():
 	if ray_cast.is_colliding():
 		var collider = ray_cast.get_collider()
 		if collider.is_in_group("Player") and current_state != states.Attack and current_state != states.Stunned:
+			aggro = true
 			chase_player()
 		elif current_state == states.Chase and current_state != states.Stunned:
 			stop_chase()
@@ -180,12 +184,14 @@ func stop_chase():
 
 func _on_timer_timeout():
 	current_state = states.Patrol
+	aggro = false
 
 func _on_attack_area_body_entered(body):
 	if current_state == states.Stunned:
 			return
 	if body.is_in_group("Player"):
 		current_state = states.Attack
+		aggro = true
 		if attack_cooldown == false:
 			attack()
 
@@ -206,6 +212,9 @@ func _on_sprite_frame_changed():
 		var frame = sprite.frame
 		if frame == 4 or frame == 5:
 			sword_hitbox_collision.disabled = false
+	else:
+		sword_hitbox_collision.disabled = true # Fully works but gives an error
+
 
 
 func _on_sword_hit_box_body_entered(body):
@@ -225,8 +234,10 @@ func _on_sprite_animation_finished():
 		if ray_cast.is_colliding() and current_state != states.Stunned:
 			if ray_cast.get_collider().is_in_group("Player"):
 				current_state = states.Chase
+				aggro = true
 			else:
 				current_state = states.Patrol
+				aggro = false
 
 # ----------------------------------------------------
 #                 PARRY SYSTEM
@@ -267,8 +278,9 @@ func is_player_attack_dangerous() -> bool:
 ##### When Player parries #########
 
 func stun_parried():
+	#sword_hitbox_collision.disabled = true ## Works kinda but gives errors
+	aggro = true
 	current_state = states.Stunned
-	print(current_state)
 	dir = Vector2.ZERO
 	velocity = Vector2.ZERO
 	sprite.play("Stagger")
@@ -303,10 +315,12 @@ func take_damage(amount: int):
 	# -------- Take Damage Normally ---------
 	health -= amount
 	blood_particles.emitting = true
-	if sprite.flip_h:
-		ray_cast.target_position = Vector2(-125,0)
-	else:
-		ray_cast.target_position = Vector2(125,0)
+	
+	if aggro != true:
+		if sprite.flip_h:
+			ray_cast.target_position = Vector2(-125,0)
+		else:
+			ray_cast.target_position = Vector2(125,0)
 
 	if health <= 0:
 		queue_free()

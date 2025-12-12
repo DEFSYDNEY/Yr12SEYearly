@@ -1,11 +1,11 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1765417267
+::res://::1765528250
 icon.svg::CompressedTexture2D::5289248671878863312::1762059115::1762059121::1::::<><><>0<>0<>145ca7476687530cb9d15a3522f8db4d<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1763779589::0::1::::<><><>0<>0<><>::
 ::res://Art/::1764827630
 Good point light texture.webp::CompressedTexture2D::5283797656931863744::1762941907::1762941913::1::::<><><>0<>0<>99a4ec1e7b0b728a745182658b112133<>res://.godot/imported/Good point light texture.webp-4900fdac24aee9eb50045f2e51cee8a7.ctex::
 tileset-Recovered-Sheet.png::CompressedTexture2D::999483945008936917::1763184014::1763184014::1::::<><><>0<>0<>51eec0a38e28e76de409ed3c75b78ecf<>res://.godot/imported/tileset-Recovered-Sheet.png-2eef621de2ab4b983ffefa733135ab8f.ctex::
-::res://Art/Background Gloomy Forrest/::1764657562
+::res://Art/Background Gloomy Forrest/::1765428873
 Layer_0000_9.png::CompressedTexture2D::1851065525488686864::1764657562::1764657562::1::::<><><>0<>0<>d7db838317d42b7842e10bfe252a3eed<>res://.godot/imported/Layer_0000_9.png-c3de9e56d60851e5d968d3047a5739da.ctex::
 Layer_0001_8.png::CompressedTexture2D::4941780099621891427::1764657562::1764657562::1::::<><><>0<>0<>92e739a79cf1122bea500a5e8a94f632<>res://.godot/imported/Layer_0001_8.png-4fd59aa1cbb77584c915ffae413e8a35.ctex::
 Layer_0002_7.png::CompressedTexture2D::6863196775147816790::1764657562::1764657562::1::::<><><>0<>0<>0ff2d55215f00d6002576eb4d9ee5129<>res://.godot/imported/Layer_0002_7.png-5d1e71723db3a03f638e07b674bde092.ctex::
@@ -18,29 +18,29 @@ Layer_0008_3.png::CompressedTexture2D::5495501304438184550::1764657562::17646575
 Layer_0009_2.png::CompressedTexture2D::4455174967504960239::1764657562::1764657562::1::::<><><>0<>0<>5f240baab21c5d090e4cae6e3ded3c2d<>res://.godot/imported/Layer_0009_2.png-6e0b9211b5b0d81bc466c58ee35dff79.ctex::
 Layer_0010_1.png::CompressedTexture2D::4565357800760336833::1764657562::1764657562::1::::<><><>0<>0<>ae078548da6e6f757734daba641ff083<>res://.godot/imported/Layer_0010_1.png-3d550a744984b217b75d9946ddaeea6a.ctex::
 Layer_0011_0.png::CompressedTexture2D::6471010179044941098::1764657562::1764657562::1::::<><><>0<>0<>85ec396bf1b9ecc269e5ec4ba00c71f8<>res://.godot/imported/Layer_0011_0.png-495f9cb3660cc334967cd5f351869c2a.ctex::
-::res://Art/Enemy/::1765347988
+::res://Art/Enemy/::1765428873
 Enemy 1-Attack.png::CompressedTexture2D::2440439588946633967::1763783316::1764827620::1::::<><><>0<>0<>39332974d691d8d9705a9279a610996d<>res://.godot/imported/Enemy 1-Attack.png-7b11e5d29640d9ba550a16ffeec095a7.ctex::
 Enemy 1-pARRY.png::CompressedTexture2D::6309348762651284063::1763461971::1764827623::1::::<><><>0<>0<>62ca7d54258f24839dc16dc0cff97e8d<>res://.godot/imported/Enemy 1-pARRY.png-cdb37aef5e933222b125af85aff50ebc.ctex::
 Enemy 1-Sheet-Stagger.png::CompressedTexture2D::4764641480872592831::1765347899::1765347988::1::::<><><>0<>0<>6a3a569092e0eede3d68999c1658e3a0<>res://.godot/imported/Enemy 1-Sheet-Stagger.png-658ef24f2168218e20f9d8e87bc61d20.ctex::
 Enemy main.png::CompressedTexture2D::5496998083665209027::1763274755::1764827625::1::::<><><>0<>0<>a5769731e2dbee5b093a0b0f8d4ada55<>res://.godot/imported/Enemy main.png-3dae701a489fedd4affc43dfec591772.ctex::
-::res://Art/Player/::1764827892
+::res://Art/Player/::1765428873
 Player-Sheet-Attack.png::CompressedTexture2D::5142566535869529476::1763179343::1764827628::1::::<><><>0<>0<>7fb7219b0f44332c072b20edec81a4a1<>res://.godot/imported/Player-Sheet-Attack.png-c3e898dd5515a49b69bf736ba45b920d.ctex::
 Player-Sheet-Parry.png::CompressedTexture2D::8592797096469131340::1764827892::1764827892::1::::<><><>0<>0<>a06f254ebaa87735263008da021e46e1<>res://.godot/imported/Player-Sheet-Parry.png-ae4068f951d9f5c9ff516c2f16e50d60.ctex::
 Player-Sheet.png::CompressedTexture2D::7092773176445907313::1764827741::1764827741::1::::<><><>0<>0<>6fa49ebb038bd00064e162415f139316<>res://.godot/imported/Player-Sheet.png-83732f9d9b14cc104602efb0aa2b17b5.ctex::
-::res://Levels/::1764893807
-test_level.tscn::PackedScene::5422096624668385135::1764893807::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
+::res://Levels/::1765425451
+test_level.tscn::PackedScene::5422096624668385135::1765425451::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
 ::res://Scenes/::1763180791
-::res://Scenes/Characters/::1765350931
-Enemy_white_raider.tscn::PackedScene::4687618030953236861::1765350931::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png
-player.tscn::PackedScene::1855016947018763096::1764893721::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/player.gd<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
+::res://Scenes/Characters/::1765426301
+Enemy_white_raider.tscn::PackedScene::4687618030953236861::1765426301::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png
+player.tscn::PackedScene::1855016947018763096::1765421813::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/player.gd<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
 ::res://Scenes/World/::1763443655
 camera_lock_zone.tscn::PackedScene::5115425601424680621::1763443655::0::1::::<><><>0<>0<><>::uid://bjw0wmta37uql::::res://Scripts/Camera/camera_lock_zone.gd
 ::res://Scripts/::1763435472
 ::res://Scripts/Camera/::1764830534
 camera_lock_zone.gd::GDScript::3065094458979961339::1764830534::0::1::::<>Area2D<><>0<>1<><>::
-::res://Scripts/Enemies/::1765350915
-enemy_white_raider.gd::GDScript::5023313945702723397::1765350915::0::1::::<>CharacterBody2D<><>0<>0<><>::
-::res://Scripts/player/::1764894059
-player.gd::GDScript::5691874206560303447::1764894059::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Scripts/Enemies/::1765426165
+enemy_white_raider.gd::GDScript::5023313945702723397::1765426165::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://Scripts/player/::1765425116
+player.gd::GDScript::5691874206560303447::1765425116::0::1::::<>CharacterBody2D<><>0<>0<><>::
 ::res://Scripts/World/::1764892701
 test_level_game_manager.gd::GDScript::4530010071833381823::1764892701::0::1::::<>Node2D<><>0<>0<><>::
