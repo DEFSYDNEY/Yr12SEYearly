@@ -100,12 +100,12 @@ func _process(delta):
 		cam.global_position = cam.global_position.lerp(target_pos, 0.1)
 		
 		
-	if Input.is_action_just_pressed("attack") and can_attack == true:
+	if Input.is_action_just_pressed("attack") and can_attack == true and !parry_active:
 		emit_signal("attack_started")
 		attack()
 		is_attacking = true
 	
-	if Input.is_action_just_pressed("parry"):
+	if Input.is_action_just_pressed("parry") and !is_attacking:
 		parry()
 		parry_active = true
 	

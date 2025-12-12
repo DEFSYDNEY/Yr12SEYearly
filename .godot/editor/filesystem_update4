@@ -1,2 +1,3 @@
 res://Scenes/Characters/player.tscn
 res://Scripts/Enemies/enemy_white_raider.gd
+res://Scripts/player/player.gd
