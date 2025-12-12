@@ -203,6 +203,7 @@ func _on_attack_area_body_exited(body):
 
 func attack():
 	#play animation
+	current_state = states.Attack
 	sprite.play("Attack")
 	# check if colliding with sword hit box somewhere
 
@@ -214,7 +215,6 @@ func _on_sprite_frame_changed():
 			sword_hitbox_collision.disabled = false
 	else:
 		sword_hitbox_collision.disabled = true # Fully works but gives an error
-
 
 
 func _on_sword_hit_box_body_entered(body):
@@ -285,18 +285,16 @@ func stun_parried():
 	velocity = Vector2.ZERO
 	sprite.play("Stagger")
 	await sprite.animation_finished
-	#await get_tree().create_timer(1).timeout
+	#await get_tree().create_timer(1).timeout  ## Could use later
 	restore_state_after_stun()
 
 func restore_state_after_stun():
-	if not ray_cast.is_colliding():
-		current_state = states.Patrol
-	else:
-		var col = ray_cast.get_collider()
-		if col.is_in_group("Player"):
-			current_state = states.Chase
-		else:
-			current_state = states.Patrol
+	for body in attack_area.get_overlapping_bodies():
+		if body.is_in_group("Player"):
+			attack()
+			return
+	
+	current_state = states.Chase
 	
 # ----------------------------------------------------
 #                DAMAGE HANDLING
