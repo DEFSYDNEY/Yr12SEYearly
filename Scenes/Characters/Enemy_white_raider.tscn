@@ -1,10 +1,11 @@
-[gd_scene load_steps=36 format=3 uid="uid://b71yncaw8ag18"]
+[gd_scene load_steps=37 format=3 uid="uid://b71yncaw8ag18"]
 
 [ext_resource type="Script" uid="uid://cdtlinjcepr7j" path="res://Scripts/Enemies/enemy_white_raider.gd" id="1_v5cc0"]
 [ext_resource type="Texture2D" uid="uid://cv5kb1qem70jj" path="res://Art/Enemy/Enemy 1-pARRY.png" id="2_mqpak"]
 [ext_resource type="Texture2D" uid="uid://ckk10xe7vg2gl" path="res://Art/Enemy/Enemy main.png" id="2_v5cc0"]
 [ext_resource type="Texture2D" uid="uid://ba1fxidnjk8ud" path="res://Art/Enemy/Enemy 1-Attack.png" id="2_ymxu1"]
 [ext_resource type="Texture2D" uid="uid://b85a7jeet4264" path="res://Art/Enemy/Enemy 1-Sheet-Stagger.png" id="4_fekck"]
+[ext_resource type="Texture2D" uid="uid://buqk6v75vn4cr" path="res://Art/Player/Flash_Indication.png" id="6_cctcc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ueocl"]
 atlas = ExtResource("2_ymxu1")
@@ -192,64 +193,64 @@ colors = PackedColorArray(1, 0, 0, 1, 0.4745098, 0, 0, 1)
 [sub_resource type="Gradient" id="Gradient_ymxu1"]
 colors = PackedColorArray(1, 0.47843137, 0, 1, 1, 1, 0, 1)
 
-[sub_resource type="Animation" id="Animation_fekck"]
-resource_name = "Attack iminate"
+[sub_resource type="Animation" id="Animation_cctcc"]
+resource_name = "attack"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:skew")
+tracks/0/path = NodePath(".:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.66, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [1.569051, 0.0, 0.0, 1.569051]
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
+tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.66, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.23333333),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 6.2831855, 6.2831855, 0.0]
+"values": [Color(2.065725, 2.065725, 2.065725, 1), Color(0.9098039, 0, 0, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_cctcc"]
+[sub_resource type="Animation" id="Animation_c6xim"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:skew")
+tracks/0/path = NodePath(".:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.569051]
+"update": 1,
+"values": [false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
+tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Color(0.9098039, 0.9098039, 0.9098039, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_c6xim"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3cmju"]
 _data = {
-&"Attack iminate": SubResource("Animation_fekck"),
-&"RESET": SubResource("Animation_cctcc")
+&"RESET": SubResource("Animation_c6xim"),
+&"attack": SubResource("Animation_cctcc")
 }
 
 [node name="EnemyWhiteRaider" type="CharacterBody2D" groups=["Enemy"]]
@@ -337,16 +338,16 @@ scale_amount_curve = SubResource("Curve_v5cc0")
 color_ramp = SubResource("Gradient_ymxu1")
 hue_variation_max = 1.0
 
-[node name="Attack_indication" type="Sprite2D" parent="."]
-modulate = Color(18.892157, 18.892157, 18.892157, 1)
-position = Vector2(4, 0)
-scale = Vector2(0.08, 0.08)
-skew = 1.569051
-texture = ExtResource("2_v5cc0")
+[node name="FlashIndication" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.9098039, 0.9098039, 0.9098039, 1)
+position = Vector2(5, 1)
+scale = Vector2(0.03, 0.03)
+texture = ExtResource("6_cctcc")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Attack_indication"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FlashIndication"]
 libraries = {
-&"": SubResource("AnimationLibrary_c6xim")
+&"": SubResource("AnimationLibrary_3cmju")
 }
 
 [connection signal="body_entered" from="Attack area" to="." method="_on_attack_area_body_entered"]
