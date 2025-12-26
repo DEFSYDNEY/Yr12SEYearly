@@ -1,3 +1,5 @@
-res://Levels/test_level.tscn
 res://Scenes/Characters/Enemy_white_raider.tscn
 res://Scripts/Enemies/enemy_white_raider.gd
+res://Levels/test_level.tscn
+res://Scenes/Characters/Test_enemy.tscn
+res://Scenes/Characters/test_enemy.gd

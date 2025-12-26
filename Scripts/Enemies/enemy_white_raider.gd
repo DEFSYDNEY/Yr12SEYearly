@@ -284,7 +284,6 @@ func is_player_attack_dangerous() -> bool:
 ##### When Player parries #########
 
 func stun_parried():
-	#sword_hitbox_collision.disabled = true ## Works kinda but gives errors
 	aggro = true
 	current_state = states.Stunned
 	dir = Vector2.ZERO
@@ -297,6 +296,7 @@ func stun_parried():
 func restore_state_after_stun():
 	for body in attack_area.get_overlapping_bodies():
 		if body.is_in_group("Player"):
+			#await get_tree().create_timer(1).timeout
 			attack()
 			return
 	

@@ -223,6 +223,7 @@ room_size = Vector2(500, 300)
 [node name="EnemyWhiteRaider3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
 position = Vector2(885, 453)
 player = NodePath("../../Player")
+health = 4
 stationary = true
 
 [node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
