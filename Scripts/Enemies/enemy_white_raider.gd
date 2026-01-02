@@ -206,14 +206,13 @@ func attack():
 	#play animation
 	current_state = states.Attack
 	sprite.play("Attack")
-	# check if colliding with sword hit box somewhere
 
 func _on_sprite_frame_changed():
 	if sprite.animation == "Attack" and attack_cooldown == false:
 		# Check if on the damage frames
 		var frame = sprite.frame
 		if frame == 1:
-			attack_indication.play("attack")
+			attack_indication.play("attack") # Has the blue orb appear so player can react
 		elif frame == 4 or frame == 5:
 			sword_hitbox_collision.disabled = false
 	else:

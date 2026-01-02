@@ -1,5 +1,11 @@
-res://Scenes/Characters/Enemy_white_raider.tscn
-res://Scripts/Enemies/enemy_white_raider.gd
 res://Levels/test_level.tscn
-res://Scenes/Characters/Test_enemy.tscn
-res://Scenes/Characters/test_enemy.gd
+res://Testing/Resources/weapon_stats.gd
+res://Testing/Resources/attack_data.gd
+res://Scenes/Characters/sekiro_player.tscn
+res://Testing/Player/sekiro_player.gd
+res://Testing/Enemy/sekiro_enemy.gd
+res://Scenes/Characters/test_enemy.tscn
+res://Testing/Resources/sword.tres
+res://Testing/Enemy/canvas_layer.gd
+res://Testing/Resources/safe_guard.tscn
+res://Testing/Resources/light attacj.tres
