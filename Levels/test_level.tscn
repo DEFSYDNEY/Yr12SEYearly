@@ -1,7 +1,8 @@
-[gd_scene load_steps=22 format=4 uid="uid://cjirey7kexnpf"]
+[gd_scene load_steps=17 format=4 uid="uid://cjirey7kexnpf"]
 
 [ext_resource type="Texture2D" uid="uid://oifmb4fcuafl" path="res://Art/tileset-Recovered-Sheet.png" id="1_i4ak4"]
 [ext_resource type="Script" uid="uid://b5smusjg4a0h4" path="res://Scripts/World/test_level_game_manager.gd" id="1_k8b6b"]
+[ext_resource type="PackedScene" uid="uid://1ot4f7uvan0c" path="res://Scenes/Characters/player.tscn" id="1_ormqy"]
 [ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
 [ext_resource type="Texture2D" uid="uid://d31muh1hug2uk" path="res://Art/Background Gloomy Forrest/Layer_0003_6.png" id="3_3158n"]
 [ext_resource type="Texture2D" uid="uid://c41t33qegua35" path="res://Art/Background Gloomy Forrest/Layer_0002_7.png" id="3_ub4j8"]
@@ -10,11 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://ca3n7w4vu5lds" path="res://Art/Background Gloomy Forrest/Layer_0007_Lights.png" id="6_k8b6b"]
 [ext_resource type="Texture2D" uid="uid://cyguueuygftkc" path="res://Art/Background Gloomy Forrest/Layer_0011_0.png" id="6_tc6tp"]
 [ext_resource type="Texture2D" uid="uid://ckkcdr0fov847" path="res://Art/Background Gloomy Forrest/Layer_0008_3.png" id="7_tc6tp"]
-[ext_resource type="PackedScene" uid="uid://c6t78sh7ew64g" path="res://Scenes/Characters/sekiro_player.tscn" id="12_lx7qo"]
-[ext_resource type="PackedScene" uid="uid://bbcbtepxkn47i" path="res://Scenes/Characters/test_enemy.tscn" id="13_x458k"]
-[ext_resource type="Resource" uid="uid://dhnrq1fblpmdl" path="res://Testing/Resources/sword.tres" id="15_lrol0"]
-[ext_resource type="Script" uid="uid://p0q6b6sgeynr" path="res://Testing/Resources/code/weapon_stats.gd" id="15_ouwm7"]
-[ext_resource type="Resource" uid="uid://jal6tu8kkoio" path="res://Testing/Resources/light attacj.tres" id="16_ouwm7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3158n"]
 texture = ExtResource("1_i4ak4")
@@ -124,10 +120,6 @@ _data = {
 &"RESET": SubResource("Animation_lx7qo")
 }
 
-[sub_resource type="Resource" id="Resource_cn5b1"]
-script = ExtResource("15_ouwm7")
-metadata/_custom_type_script = "uid://p0q6b6sgeynr"
-
 [node name="Test_level" type="Node2D"]
 script = ExtResource("1_k8b6b")
 
@@ -200,6 +192,14 @@ position = Vector2(193.32422, 177.32996)
 scale = Vector2(0.42210528, 0.38888147)
 texture = ExtResource("6_tc6tp")
 
+[node name="Player" parent="." instance=ExtResource("1_ormqy")]
+position = Vector2(330, 454)
+
+[node name="Camera" type="Camera2D" parent="Player"]
+position = Vector2(-1, -214)
+limit_smoothed = true
+position_smoothing_enabled = true
+
 [node name="CameraZones" type="Node2D" parent="."]
 
 [node name="CameraLock" type="Node2D" parent="CameraZones"]
@@ -222,18 +222,18 @@ room_size = Vector2(500, 300)
 
 [node name="EnemyWhiteRaider3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
 position = Vector2(885, 453)
-player = NodePath("../../Player2")
+player = NodePath("../../Player")
 health = 4
 stationary = true
 
 [node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
 position = Vector2(1226, 455)
-player = NodePath("../../Player2")
+player = NodePath("../../Player")
 
 [node name="EnemyWhiteRaider2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
 position = Vector2(1501, 451)
 scale = Vector2(1.105, 1.105)
-player = NodePath("../../Player2")
+player = NodePath("../../Player")
 health = 5
 damage = 2
 parry_chance = 0.4
@@ -268,18 +268,5 @@ text = "Restart"
 libraries = {
 &"": SubResource("AnimationLibrary_lx7qo")
 }
-
-[node name="Player2" parent="." instance=ExtResource("12_lx7qo")]
-position = Vector2(254, 452)
-weapon = ExtResource("15_lrol0")
-
-[node name="TestEnemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("13_x458k")]
-position = Vector2(172, 455)
-weapon = SubResource("Resource_cn5b1")
-attack = ExtResource("16_ouwm7")
-player = NodePath("../Player2")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(243, 298)
 
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
