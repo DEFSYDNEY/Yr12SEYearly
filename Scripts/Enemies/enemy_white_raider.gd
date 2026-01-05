@@ -23,6 +23,7 @@ extends CharacterBody2D
 @onready var parry_particles = $ParryParticles
 @onready var attack_timer = $Attack_timer
 @onready var attack_indication = $FlashIndication/AnimationPlayer
+@onready var blood = preload("res://Scenes/World/blood.tscn")
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var dir := Vector2.ZERO
@@ -318,6 +319,13 @@ func take_damage(amount: int):
 	# -------- Take Damage Normally ---------
 	health -= amount
 	blood_particles.emitting = true
+	#call_deferred(get_tree().current_scene.add_child(bloods))
+	#get_tree().current_scene.add_child(bloods) # Makes it the child of the whole world not just the enemy
+	#bloods.global_position = global_position
+	#add_child(bloods)
+	var bloods = blood.instantiate()
+	get_tree().current_scene.call_deferred("add_child", bloods)
+	bloods.call_deferred("set_global_position", global_position)
 	
 	if aggro != true:
 		if sprite.flip_h:

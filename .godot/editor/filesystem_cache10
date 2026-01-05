@@ -2,7 +2,8 @@
 ::res://::1767598413
 icon.svg::CompressedTexture2D::5289248671878863312::1762059115::1762059121::1::::<><><>0<>0<>145ca7476687530cb9d15a3522f8db4d<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1763779589::0::1::::<><><>0<>0<><>::
-::res://Art/::1767394592
+::res://Art/::1767598986
+blood.png::CompressedTexture2D::2237018505891704861::1767598986::1767598988::1::::<><><>0<>0<>bd0cf05b13cd0b6d7aec10083561fcf3<>res://.godot/imported/blood.png-e7c6616f95572139c5296b49ff974612.ctex::
 Good point light texture.webp::CompressedTexture2D::5283797656931863744::1762941907::1762941913::1::::<><><>0<>0<>99a4ec1e7b0b728a745182658b112133<>res://.godot/imported/Good point light texture.webp-4900fdac24aee9eb50045f2e51cee8a7.ctex::
 tileset-Recovered-Sheet.png::CompressedTexture2D::999483945008936917::1763184014::1763184014::1::::<><><>0<>0<>51eec0a38e28e76de409ed3c75b78ecf<>res://.godot/imported/tileset-Recovered-Sheet.png-2eef621de2ab4b983ffefa733135ab8f.ctex::
 ::res://Art/Background Gloomy Forrest/::1765428873
@@ -30,8 +31,8 @@ Flash_Indication.png::CompressedTexture2D::3823891283873186241::1765859710::1765
 Player-Sheet-Attack.png::CompressedTexture2D::5142566535869529476::1763179343::1764827628::1::::<><><>0<>0<>7fb7219b0f44332c072b20edec81a4a1<>res://.godot/imported/Player-Sheet-Attack.png-c3e898dd5515a49b69bf736ba45b920d.ctex::
 Player-Sheet-Parry.png::CompressedTexture2D::8592797096469131340::1764827892::1764827892::1::::<><><>0<>0<>a06f254ebaa87735263008da021e46e1<>res://.godot/imported/Player-Sheet-Parry.png-ae4068f951d9f5c9ff516c2f16e50d60.ctex::
 Player-Sheet.png::CompressedTexture2D::7092773176445907313::1764827741::1764827741::1::::<><><>0<>0<>6fa49ebb038bd00064e162415f139316<>res://.godot/imported/Player-Sheet.png-83732f9d9b14cc104602efb0aa2b17b5.ctex::
-::res://Levels/::1767395427
-test_level.tscn::PackedScene::5422096624668385135::1767395427::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://bw08knl1pojg8::::res://Art/Background Red Forrest/tileset-Recovered-Sheet.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
+::res://Levels/::1767598626
+test_level.tscn::PackedScene::5422096624668385135::1767598626::0::1::::<><><>0<>0<><>::uid://oifmb4fcuafl::::res://Art/tileset-Recovered-Sheet.png<>uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://bw08knl1pojg8::::res://Art/Background Red Forrest/tileset-Recovered-Sheet.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
 ::res://Scenes/::1763180791
 ::res://Scenes/Characters/::1767350402
 Enemy_white_raider.tscn::PackedScene::4687618030953236861::1766985922::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png
@@ -39,8 +40,10 @@ player.tscn::PackedScene::1855016947018763096::1767350402::0::1::::<><><>0<>0<><
 sekiro_player.tscn::PackedScene::6989921530153844108::1767335845::0::1::::<><><>0<>0<><>::uid://c6md8f0utms35::::res://Testing/Player/sekiro_player.gd<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
 test_enemy.gd::GDScript::1188503442528516109::1766986467::0::1::::<>CharacterBody2D<><>0<>0<><>::
 test_enemy.tscn::PackedScene::2460833164240602980::1767335627::0::1::::<><><>0<>0<><>::uid://cowdxwidvo8hn::::res://Testing/Enemy/sekiro_enemy.gd<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png<>uid://b0txuuqhojku3::::res://Testing/Enemy/canvas_layer.gd
-::res://Scenes/World/::1763443655
+::res://Scenes/World/::1767598937
 camera_lock_zone.tscn::PackedScene::5115425601424680621::1763443655::0::1::::<><><>0<>0<><>::uid://bjw0wmta37uql::::res://Scripts/Camera/camera_lock_zone.gd
+blood.tscn::PackedScene::2454238807966475953::1767598937::0::1::::<><><>0<>0<><>::uid://cay5230j1wbw2::::res://Scenes/World/blood.gd
+blood.gd::GDScript::4824257669420507451::1767598937::0::1::::<>RigidBody2D<><>0<>0<><>::
 ::res://Scripts/::1763435472
 ::res://Scripts/Camera/::1764830534
 camera_lock_zone.gd::GDScript::3065094458979961339::1764830534::0::1::::<>Area2D<><>0<>1<><>::

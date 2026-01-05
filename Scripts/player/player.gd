@@ -22,7 +22,6 @@ var parry_consumed: bool = false      # player's current attack not blocked
 @onready var parry_shape = $ParryHitBox/CollisionShape2D
 @onready var parry_particles = $ParryParticles
 
-
 ## Will change but for now ##
 @onready var death_screen = $"../CanvasLayer"
 @onready var death_player = $"../CanvasModulate/AnimationPlayer"
