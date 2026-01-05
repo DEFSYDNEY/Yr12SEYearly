@@ -54,7 +54,6 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and coyote_timer > 0:
 		velocity.y = jump_speed
 		coyote_timer = 0
-		print(health)
 
 	# Get the input direction.
 	var direction = Input.get_axis("left", "right")
@@ -175,7 +174,7 @@ func _on_parry_hit_box_area_entered(area):
 		enemy.stun_parried()
 		hitstop(0.019)
 		
-		print("Parry!")
+		#print("Parry!")
 ###################################
 
 ################## DAMAGE ####################
