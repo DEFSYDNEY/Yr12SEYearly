@@ -218,7 +218,7 @@ func lock_camera_to_room(pos: Vector2, size: Vector2):
 	
 func unlock_camera():
 	camera_locked = false
-	cam.position.y = -59
+	cam.position.y = -0
 	# Remove limits so camera follows freely
 	cam.limit_left = -99999
 	cam.limit_right = 99999
