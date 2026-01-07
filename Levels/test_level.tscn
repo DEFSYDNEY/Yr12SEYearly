@@ -32,7 +32,7 @@ texture = ExtResource("4_dkv23")
 
 [sub_resource type="TileSet" id="TileSet_ub4j8"]
 physics_layer_0/collision_layer = 1
-physics_layer_0/collision_mask = 15
+physics_layer_0/collision_mask = 31
 sources/2 = SubResource("TileSetAtlasSource_x458k")
 
 [sub_resource type="Animation" id="Animation_k8b6b"]

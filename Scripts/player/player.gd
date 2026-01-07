@@ -29,7 +29,7 @@ var parry_consumed: bool = false      # player's current attack not blocked
 # Get the gravity from the project settings so you can sync with rigid body nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-var damage = 1 # Can change when blacksmith upgrades sword or if adding multiple swords
+var damage = 100 # Can change when blacksmith upgrades sword or if adding multiple swords
 var can_attack:bool = true
 var is_attacking:bool = false
 var coyote_timer = 0.0
@@ -171,7 +171,7 @@ func _on_parry_hit_box_area_entered(area):
 		parry_block = true     # Block further damage for this attack
 		parry_particles.emitting = true
 		var enemy = area.get_parent()
-		enemy.stun_parried()
+		enemy.posture_damage(damage)
 		hitstop(0.019)
 		
 		#print("Parry!")

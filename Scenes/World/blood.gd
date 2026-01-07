@@ -16,5 +16,5 @@ func _ready():
 	
 func _physics_process(delta):
 	
-	global_position.y += gravity * delta * 0.3
+	global_position.y += gravity * delta * 0.1
 	

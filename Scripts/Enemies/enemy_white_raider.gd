@@ -1,18 +1,24 @@
 extends CharacterBody2D
 
 @export var player: CharacterBody2D
+
+@export_category("Stats")
 @export var speed:int = 100
 @export var chase_speed:int = 250
 @export var accel:int = 2000
 @export var health: int = 2
 @export var damage: int = 1
-@export var stationary:bool = false
+@export var max_posture:int = 100
+@export var posture_reduction: float = 0.9 ## Lower the number the less posture they take, 10 * 0.9 = 9, but 10 * 0.1 = 1
 
+@export_category("Parrying")
 @export var parry_chance := 0.25
 @export var parry_window := 0.25   # how long the parry can block hits makes it so every parry guarantees to register
 
+@export_category("Patrol Limits")
 @export var left_bound_range = -150 # So i can have multiple enemies with different patrol route distances
 @export var right_bound_range = 150 # Remeber left must be negative, right positive 
+@export var stationary:bool = false
 
 @onready var sprite = $Sprite
 @onready var ray_cast = $Sprite/RayCast2D
@@ -33,6 +39,8 @@ var patrol_paused: bool = false
 var attack_cooldown:bool = false
 var is_stunned:bool = false
 var aggro:bool = false
+var current_posture = 0
+
 # -------- PARRY SYSTEM --------
 var parry_active: bool = false        # parry window currently open
 var parry_consumed: bool = false      # player's current attack not blocked
@@ -283,7 +291,7 @@ func is_player_attack_dangerous() -> bool:
 
 ##### When Player parries #########
 
-func stun_parried():
+func staggered():
 	aggro = true
 	current_state = states.Stunned
 	dir = Vector2.ZERO
@@ -301,10 +309,19 @@ func restore_state_after_stun():
 			return
 	
 	current_state = states.Chase
-	
+
+
+func posture_damage(player_damage: int):
+	current_posture += player_damage * posture_reduction
+	print(current_posture)
+	if current_posture >= max_posture:
+		staggered()
+		current_posture = 0
 # ----------------------------------------------------
 #                DAMAGE HANDLING
 # ----------------------------------------------------
+
+
 func take_damage(amount: int):
 	# --- Blocked because enemy is currently parrying ---
 	if parry_active and not parry_consumed:

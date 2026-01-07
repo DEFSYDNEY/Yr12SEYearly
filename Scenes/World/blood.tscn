@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://cay5230j1wbw2" path="res://Scenes/World/blood.gd" id="1_u1gsx"]
 [ext_resource type="Texture2D" uid="uid://64vmrmjt27dp" path="res://Art/blood.png" id="2_377lq"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_377lq"]
+size = Vector2(18.999996, 14.999998)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ri5xg"]
 atlas = ExtResource("2_377lq")
 region = Rect2(0, 0, 116, 128)
@@ -39,13 +42,14 @@ animations = [{
 "speed": 1.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_377lq"]
-size = Vector2(18.999996, 14.999998)
-
-[node name="Blood" type="RigidBody2D"]
-process_mode = 3
+[node name="RigidBody2D" type="RigidBody2D"]
 collision_layer = 16
 script = ExtResource("1_u1gsx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.50000024, 1.5000006)
+scale = Vector2(1.0000001, 1.0000001)
+shape = SubResource("RectangleShape2D_377lq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(2.3841858e-07, -1.0000001)
@@ -54,8 +58,3 @@ scale = Vector2(0.162, 0.162)
 sprite_frames = SubResource("SpriteFrames_4nwq3")
 frame = 3
 frame_progress = 1.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.50000024, 1.5000006)
-scale = Vector2(1.0000001, 1.0000001)
-shape = SubResource("RectangleShape2D_377lq")
