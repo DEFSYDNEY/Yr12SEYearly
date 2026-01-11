@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
 [ext_resource type="Texture2D" uid="uid://d31muh1hug2uk" path="res://Art/Background Gloomy Forrest/Layer_0003_6.png" id="3_3158n"]
 [ext_resource type="Texture2D" uid="uid://c41t33qegua35" path="res://Art/Background Gloomy Forrest/Layer_0002_7.png" id="3_ub4j8"]
-[ext_resource type="Texture2D" uid="uid://8u5p50at5m0j" path="res://Art/tiles.png" id="4_dkv23"]
+[ext_resource type="Texture2D" uid="uid://8u5p50at5m0j" path="res://Art/Tileset/tiles.png" id="4_dkv23"]
 [ext_resource type="Texture2D" uid="uid://cd36k4inukohg" path="res://Art/Background Gloomy Forrest/Layer_0005_5.png" id="4_pvdih"]
 [ext_resource type="PackedScene" uid="uid://b71yncaw8ag18" path="res://Scenes/Characters/Enemy_white_raider.tscn" id="5_3158n"]
 [ext_resource type="Texture2D" uid="uid://ca3n7w4vu5lds" path="res://Art/Background Gloomy Forrest/Layer_0007_Lights.png" id="6_k8b6b"]
@@ -171,12 +171,16 @@ position = Vector2(1657, 166)
 room_position = Vector2(0.3, 0)
 room_size = Vector2(500, 300)
 
+[node name="Before 1st house2" parent="CameraZones/CameraUnlock" instance=ExtResource("2_4k50d")]
+position = Vector2(787, 104)
+room_position = Vector2(0.3, 0)
+room_size = Vector2(500, 300)
+
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="EnemyWhiteRaider3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
 position = Vector2(885, 453)
 player = NodePath("../../Player")
-health = 4
 stationary = true
 
 [node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("5_3158n")]
@@ -215,6 +219,13 @@ offset_right = 363.0
 offset_bottom = 215.0
 text = "Restart"
 
+[node name="Button2" type="Button" parent="CanvasLayer"]
+offset_left = 298.0
+offset_top = 220.0
+offset_right = 363.0
+offset_bottom = 251.0
+text = "Quit"
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasModulate"]
@@ -223,3 +234,4 @@ libraries = {
 }
 
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Button2" to="." method="_on_button_2_pressed"]

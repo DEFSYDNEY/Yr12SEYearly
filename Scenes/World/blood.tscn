@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://ba737prsio8nd"]
 
-[ext_resource type="Script" uid="uid://cay5230j1wbw2" path="res://Scenes/World/blood.gd" id="1_u1gsx"]
-[ext_resource type="Texture2D" uid="uid://64vmrmjt27dp" path="res://Art/blood.png" id="2_377lq"]
+[ext_resource type="Script" uid="uid://cay5230j1wbw2" path="res://Scripts/World/blood.gd" id="1_u1gsx"]
+[ext_resource type="Texture2D" uid="uid://64vmrmjt27dp" path="res://Art/Enemy/blood.png" id="2_377lq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_377lq"]
 size = Vector2(18.999996, 14.999998)

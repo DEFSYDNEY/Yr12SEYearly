@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://oifmb4fcuafl"
-path="res://.godot/imported/tileset-Recovered-Sheet.png-2eef621de2ab4b983ffefa733135ab8f.ctex"
+uid="uid://64vmrmjt27dp"
+path="res://.godot/imported/blood.png-83053ede996aaf069a417436a448a436.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/tileset-Recovered-Sheet.png"
-dest_files=["res://.godot/imported/tileset-Recovered-Sheet.png-2eef621de2ab4b983ffefa733135ab8f.ctex"]
+source_file="res://Art/Enemy/blood.png"
+dest_files=["res://.godot/imported/blood.png-83053ede996aaf069a417436a448a436.ctex"]
 
 [params]
 

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var speed = 300.0
 @export var jump_speed = -400.0
-@export var coyote_time = 0.15  # seconds allowed after walking off a ledge
+@export var coyote_time = 0.15  # seconds allowed after walking off a ledge 0.07
 @export var look_ahead_distance: float = 100.0  # how far ahead to shift
 @export var look_ahead_speed: float = 5.0       # how fast the camera catches up
 @export var vertical_offset: float = -59.0 
@@ -29,7 +29,8 @@ var parry_consumed: bool = false      # player's current attack not blocked
 # Get the gravity from the project settings so you can sync with rigid body nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-var damage = 100 # Can change when blacksmith upgrades sword or if adding multiple swords
+var damage = 1 # Can change when blacksmith upgrades sword or if adding multiple swords
+var posture_damage = 100
 var can_attack:bool = true
 var is_attacking:bool = false
 var coyote_timer = 0.0
@@ -66,7 +67,7 @@ func _physics_process(delta):
 	# Decelerate quickly when no input
 		velocity.x = move_toward(velocity.x, 0, decel * delta)
 	
-	if velocity.x < 0:
+	if velocity.x < 0: # Changing all of the variables to match the players movement
 		if is_attacking == false:
 			sprite.flip_h = true
 			sword_hit_box.scale.x = -1
@@ -93,7 +94,7 @@ func _physics_process(delta):
 	move_and_slide()
 	############################################
 func _process(delta):
-	if not camera_locked:
+	if not camera_locked: # This is for the camera to look slightly ahead of the player while moving
 		var target_pos = global_position + look_ahead_offset + Vector2(0, vertical_offset)
 		cam.global_position = cam.global_position.lerp(target_pos, 0.1)
 		
@@ -107,7 +108,7 @@ func _process(delta):
 		parry()
 		parry_active = true
 	
-	####### Handles the sword collisions #######   Use this to disable collision when rolling or copy for parrying
+	####### Handles the sword collisions #######   
 	if sprite.animation == "Attack":
 		var frame = sprite.frame
 		# Enable hitbox on specific frames
@@ -143,14 +144,14 @@ func attack():
 	is_attacking = false
 
 func hitstop(duration: float):
-	Engine.time_scale = 0.01   # “fake freeze” but timers still work
+	Engine.time_scale = 0.01 # If zero than the timers don't work
 	await get_tree().create_timer(duration).timeout
 	Engine.time_scale = 1.0
 	pass
 	
 func _on_sword_hit_box_body_entered(body):
 	if body.is_in_group("Enemy"):
-		hitstop(0.018)  # 18ms hitstop this is perfect for soft hits but still shows impact, 0.01 = 10ms,
+		hitstop(0.018)  # 18ms hitstop this is for impact, 0.01 = 10ms,
 		body.take_damage(damage)
 
 ###################################
@@ -171,7 +172,7 @@ func _on_parry_hit_box_area_entered(area):
 		parry_block = true     # Block further damage for this attack
 		parry_particles.emitting = true
 		var enemy = area.get_parent()
-		enemy.posture_damage(damage)
+		enemy.posture_damage(posture_damage)
 		hitstop(0.019)
 		
 		#print("Parry!")
@@ -207,7 +208,7 @@ func lock_camera_to_room(pos: Vector2, size: Vector2):
 	# Set camera limits
 	cam.limit_left = global_position.x
 	cam.limit_right = global_position.x + size.x
-	cam.limit_top = global_position.y + 59 * 2
+	cam.limit_top = global_position.y + 59 * 2 # This was an guess and check until it worked
 	cam.limit_bottom = global_position.y - size.y
 
 	# Move to room center

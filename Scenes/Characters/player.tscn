@@ -203,7 +203,7 @@ z_index = 1
 collision_layer = 2
 collision_mask = 15
 script = ExtResource("1_cvnsp")
-coyote_time = 0.07
+coyote_time = 0.09
 decel = 2500.0
 health = 5
 

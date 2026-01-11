@@ -22,7 +22,7 @@ extends CharacterBody2D
 
 @onready var sprite = $Sprite
 @onready var ray_cast = $Sprite/RayCast2D
-@onready var timer = $PlayerLossSightTimer
+@onready var player_loss_sight_timer = $PlayerLossSightTimer
 @onready var attack_area = $"Attack area"
 @onready var sword_hitbox_collision = $SwordHitBox/CollisionShape2D
 @onready var blood_particles = $BloodParticles
@@ -30,6 +30,7 @@ extends CharacterBody2D
 @onready var attack_timer = $Attack_timer
 @onready var attack_indication = $FlashIndication/AnimationPlayer
 @onready var blood = preload("res://Scenes/World/blood.tscn")
+@onready var posture_bar = $"Posture Bar"
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var dir := Vector2.ZERO
@@ -61,11 +62,15 @@ func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)
 	right_bounds = self.position + Vector2(right_bound_range, 0)
 	player.connect("attack_started", Callable(self, "on_player_attack_started"))
-	sprite.connect("frame_changed", Callable(self, "_on_sprite_frame_changed"))
-	sprite.connect("animation_finished", Callable(self, "_on_sprite_animation_finished"))
 	if stationary == true:
 		current_state = states.Lookout
+	
 
+func _process(delta):
+	if current_posture > 0:
+		posture_bar.visible = true
+	else:
+		posture_bar.visible = false
 
 func _physics_process(delta):
 	handle_gravity(delta)
@@ -76,7 +81,6 @@ func _physics_process(delta):
 
 func handle_gravity(delta):
 	velocity.y += gravity * delta
-
 
 func movement(delta):
 	match current_state:
@@ -93,7 +97,6 @@ func movement(delta):
 			velocity = Vector2.ZERO
 			handle_gravity(delta)
 		states.Stunned:
-			#velocity = Vector2.ZERO
 			handle_gravity(delta)
 
 	move_and_slide()
@@ -185,12 +188,12 @@ func look_for_player():
 func chase_player():
 	if current_state == states.Stunned:
 		return
-	timer.stop()
+	player_loss_sight_timer.stop()
 	current_state = states.Chase
 
 func stop_chase():
-	if timer.time_left <= 0:
-		timer.start()
+	if player_loss_sight_timer.time_left <= 0:
+		player_loss_sight_timer.start()
 
 func _on_timer_timeout():
 	current_state = states.Patrol
@@ -212,7 +215,6 @@ func _on_attack_area_body_exited(body):
 		current_state = states.Chase
 
 func attack():
-	#play animation
 	current_state = states.Attack
 	sprite.play("Attack")
 
@@ -289,8 +291,6 @@ func is_player_attack_dangerous() -> bool:
 	# Test collision
 	return sword_shape.collide(sword_transform, enemy_shape, enemy_transform)
 
-##### When Player parries #########
-
 func staggered():
 	aggro = true
 	current_state = states.Stunned
@@ -314,32 +314,34 @@ func restore_state_after_stun():
 func posture_damage(player_damage: int):
 	current_posture += player_damage * posture_reduction
 	print(current_posture)
+	posture_bar.value = current_posture
 	if current_posture >= max_posture:
 		staggered()
 		current_posture = 0
+		
+
 # ----------------------------------------------------
 #                DAMAGE HANDLING
 # ----------------------------------------------------
 
 
 func take_damage(amount: int):
-	# --- Blocked because enemy is currently parrying ---
+	# Blocked because enemy is currently parrying
 	if parry_active and not parry_consumed:
 		parry_consumed = true
 		perform_parry_effects()
 		return
 
-	# If parry was active but already consumed, ignore extra hit
+	# If parry was active but already consumed, ignore a extra hit
 	if parry_active and parry_consumed:
 		return
 	
-	# -------- Take Damage Normally ---------
+	# Take Damage Normally
 	health -= amount
 	blood_particles.emitting = true
-	#call_deferred(get_tree().current_scene.add_child(bloods))
-	#get_tree().current_scene.add_child(bloods) # Makes it the child of the whole world not just the enemy
-	#bloods.global_position = global_position
-	#add_child(bloods)
+	
+	
+	# This is a test to see if I can have the blood stick to the floor for extra effect, doesn't really work
 	var bloods = blood.instantiate()
 	get_tree().current_scene.call_deferred("add_child", bloods)
 	bloods.call_deferred("set_global_position", global_position)
@@ -359,8 +361,6 @@ func perform_parry_effects():
 	#await get_tree().create_timer(2).timeout
 	#Engine.time_scale = 1.0
 	parry_particles.emitting = true
-
-	# Optional: push player back, play sound, particles, etc.
 
 func on_attack_timer_timeout():
 	attack_cooldown = false
