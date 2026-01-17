@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1768094692
+::res://::1768606192
 icon.svg::CompressedTexture2D::5289248671878863312::1762059115::1762059121::1::::<><><>0<>0<>145ca7476687530cb9d15a3522f8db4d<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1763779589::0::1::::<><><>0<>0<><>::
 ::res://Art/::1768094625
@@ -33,8 +33,8 @@ Player-Sheet.png::CompressedTexture2D::7092773176445907313::1764827741::17648277
 ::res://Art/Tileset/::1768094625
 tiles.png::CompressedTexture2D::2359369306175030507::1767613437::1768094624::1::::<><><>0<>0<>55f9edb996bb7ca64b0c5f9b3e16b4e8<>res://.godot/imported/tiles.png-55654c9d08b2acaee020ed3f5f48a34f.ctex::
 tileset-Recovered-Sheet.png::CompressedTexture2D::999483945008936917::1763184014::1768094625::1::::<><><>0<>0<>7ccc773d5ec26690e94a982e4ca47280<>res://.godot/imported/tileset-Recovered-Sheet.png-68bf31a02219b5d11b8ee1dfa58a783b.ctex::
-::res://Levels/::1768094655
-test_level.tscn::PackedScene::5422096624668385135::1768094655::0::1::::<><><>0<>0<><>::uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://8u5p50at5m0j::::res://Art/Tileset/tiles.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
+::res://Levels/::1768547778
+test_level.tscn::PackedScene::5422096624668385135::1768547778::0::1::::<><><>0<>0<><>::uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://1ot4f7uvan0c::::res://Scenes/Characters/player.tscn<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://8u5p50at5m0j::::res://Art/Tileset/tiles.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://b71yncaw8ag18::::res://Scenes/Characters/Enemy_white_raider.tscn<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png
 ::res://Resources (not using currently)/::1767612423
 ::res://Resources (not using currently)/Enemies/::1767612441
 ::res://Resources (not using currently)/Enemies/Resources/::1767612441
@@ -44,16 +44,16 @@ Enemy_resource.gd::GDScript::7013947958438149401::1767612475::0::1::::<>Resource
 ::res://Scenes/Characters/::1768094683
 Enemy_white_raider.tscn::PackedScene::4687618030953236861::1768094173::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png
 player.tscn::PackedScene::1855016947018763096::1768094626::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/player.gd<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
-::res://Scenes/World/::1768094692
-blood.tscn::PackedScene::2454238807966475953::1768094699::0::1::::<><><>0<>0<><>::uid://cay5230j1wbw2::::res://Scripts/blood.gd<>uid://64vmrmjt27dp::::res://Art/Enemy/blood.png
+::res://Scenes/World/::1768094699
+blood.tscn::PackedScene::2454238807966475953::1768094699::0::1::::<><><>0<>0<><>::uid://cay5230j1wbw2::::res://Scripts/World/blood.gd<>uid://64vmrmjt27dp::::res://Art/Enemy/blood.png
 camera_lock_zone.tscn::PackedScene::5115425601424680621::1763443655::0::1::::<><><>0<>0<><>::uid://bjw0wmta37uql::::res://Scripts/Camera/camera_lock_zone.gd
-::res://Scripts/::1768094692
-blood.gd::GDScript::4824257669420507451::1767615056::0::1::::<>RigidBody2D<><>0<>0<><>::
+::res://Scripts/::1768094699
 ::res://Scripts/Camera/::1764830534
 camera_lock_zone.gd::GDScript::3065094458979961339::1764830534::0::1::::<>Area2D<><>0<>1<><>::
 ::res://Scripts/Enemies/::1768094161
 enemy_white_raider.gd::GDScript::5023313945702723397::1768094161::0::1::::<>CharacterBody2D<><>0<>0<><>::
 ::res://Scripts/player/::1768094561
 player.gd::GDScript::5691874206560303447::1768094561::0::1::::<>CharacterBody2D<><>0<>0<><>::
-::res://Scripts/World/::1764892701
-test_level_game_manager.gd::GDScript::4530010071833381823::1764892701::0::1::::<>Node2D<><>0<>0<><>::
+::res://Scripts/World/::1768095321
+blood.gd::GDScript::4824257669420507451::1767615056::0::1::::<>RigidBody2D<><>0<>0<><>::
+test_level_game_manager.gd::GDScript::4530010071833381823::1768095321::0::1::::<>Node2D<><>0<>0<><>::
