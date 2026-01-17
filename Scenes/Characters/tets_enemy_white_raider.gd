@@ -118,7 +118,7 @@ func _physics_process(delta):
 	movement(delta)
 	change_direction()
 	look_for_player()
-	#combat_ai_logic()
+	combat_ai_logic()
 
 func handle_gravity(delta):
 	velocity.y += gravity * delta
@@ -384,47 +384,70 @@ func _on_sprite_animation_finished():
 func on_player_attack_started():
 	# CRITICAL: Don't respond to any signals while stunned
 	if current_state == states.Stunned:
+		print("Ignoring attack signal - enemy is stunned")
 		return
 	
 	if not is_player_attack_dangerous():
+		print("Player attack not dangerous - ignoring")
 		return
 	
 	# Roll for parry attempt
 	if randf() >= parry_chance:
+		print("Failed parry chance roll")
 		return
 	
-	# Determine parry quality
+	print("Enemy attempting parry...")
+	
+	# Determine parry quality and SET PARRY ACTIVE IMMEDIATELY
 	var perfect_roll = randf() < perfect_parry_chance
 	
 	if perfect_roll:
 		parry_type = 1
-		await get_tree().create_timer(parry_prediction_time * 0.8).timeout
 	else:
 		parry_type = 2
+	
+	# CRITICAL: Activate parry NOW, before the delay
+	# This ensures parry_active is true when take_damage is called
+	parry_active = true
+	parry_start_time = Time.get_ticks_msec() / 1000.0
+	last_parry_attempt = parry_start_time
+	
+	# Wait before playing animation (AI reaction time)
+	if perfect_roll:
+		await get_tree().create_timer(parry_prediction_time * 0.8).timeout
+	else:
 		var timing_variation = randf_range(0.9, 1.1)
 		await get_tree().create_timer(parry_prediction_time * timing_variation).timeout
 	
 	# Check again after waiting - might have been stunned during the delay
 	if current_state == states.Stunned:
+		print("Became stunned during parry wait - canceling parry")
+		parry_type = 0
+		parry_active = false
 		return
 	
-	initiate_parry()
+	print("Playing parry animation after delay")
+	play_parry_animation()
 
-func initiate_parry():
-	# Double-check we're not stunned before starting parry
+func play_parry_animation():
+	# Just play the visual animation - parry is already active
 	if current_state == states.Stunned:
+		print("Cannot play parry animation - stunned")
+		parry_active = false
+		parry_type = 0
 		return
-		
-	parry_active = true
-	parry_start_time = Time.get_ticks_msec() / 1000.0
-	last_parry_attempt = parry_start_time
 	
 	sprite.play("Parry")
 	
 	var timer = get_tree().create_timer(parry_window)
 	timer.timeout.connect(Callable(self, "_on_parry_window_timeout"))
 
+func initiate_parry():
+	# DEPRECATED - using on_player_attack_started directly now
+	pass
+
 func _on_parry_window_timeout():
+	print("Enemy parry window timeout")
 	parry_active = false
 	parry_type = 0
 
@@ -483,8 +506,12 @@ func restore_state_after_stun():
 
 # DAMAGE HANDLING WITH PARRY
 func take_damage(amount: int):
+	print("Enemy take_damage called - amount: ", amount, " state: ", current_state)
+	print("  parry_active: ", parry_active, " parry_type: ", parry_type)
+	
 	# If stunned, just take damage and don't try to parry
 	if current_state == states.Stunned:
+		print("  -> Taking damage while stunned")
 		health -= amount
 		blood_particles.emitting = true
 		
@@ -498,15 +525,18 @@ func take_damage(amount: int):
 	
 	# Perfect parry
 	if parry_active and parry_type == 1:
+		print("  -> PERFECT PARRY!")
 		perform_perfect_enemy_parry()
 		return
 	
 	# Good parry
 	if parry_active and parry_type == 2:
+		print("  -> GOOD PARRY!")
 		perform_good_enemy_parry()
 		return
 	
 	# Take damage normally
+	print("  -> Taking normal damage")
 	health -= amount
 	blood_particles.emitting = true
 	
@@ -533,6 +563,7 @@ func perform_perfect_enemy_parry():
 	Engine.time_scale = 0.01
 	await get_tree().create_timer(0.025 * 0.01).timeout
 	Engine.time_scale = 1.0
+	posture_damage(-10)
 	
 	# After successful parry, counter-attack
 	current_state = states.Chase
@@ -545,10 +576,10 @@ func perform_good_enemy_parry():
 	parry_particles.emitting = true
 	parry_particles.modulate = Color(1.0, 1.0, 1.0)
 	
-	current_posture += 10
+	posture_damage(10)
 	
 	if player and player.has_method("take_posture_damage"):
-		player.current_posture += 10
+		player.current_posture += 5
 	
 	Engine.time_scale = 0.01
 	await get_tree().create_timer(0.019 * 0.01).timeout

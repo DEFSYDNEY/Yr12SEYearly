@@ -280,7 +280,7 @@ attack_range_percentage = 0.34
 too_close_percentage = 0.01
 parry_chance = 1.0
 perfect_parry_chance = 0.2
-parry_window = 0.395
+parry_prediction_time = 0.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
