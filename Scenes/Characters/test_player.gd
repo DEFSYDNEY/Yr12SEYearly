@@ -47,6 +47,7 @@ var last_parry_press_time: float = 0.0
 var parry_spam_count: int = 0
 var current_parry_window: float = 0.35  # Starts at poor window
 var parry_successful: bool = false  # Flag to block damage when parry succeeds
+var parry_attack_blocked: bool = false  # Tracks if we've blocked THIS specific attack
 
 # Parry result enum
 enum ParryResult {
@@ -173,7 +174,7 @@ func attack():
 
 func hitstop(duration: float):
 	Engine.time_scale = 0.01
-	await get_tree().create_timer(duration * 0.1).timeout
+	await get_tree().create_timer(duration * 0.01).timeout
 	Engine.time_scale = 1.0
 
 func _on_sword_hit_box_body_entered(body):
@@ -187,6 +188,7 @@ func initiate_parry():
 	parry_start_time = last_parry_press_time
 	parry_active = true
 	parry_successful = false  # Reset flag
+	parry_attack_blocked = false  # Reset for new parry attempt
 	parry_spam_count += 1
 	
 	sprite.play("Parry")
@@ -194,6 +196,7 @@ func initiate_parry():
 	sprite.play("Idle")
 	parry_active = false
 	parry_successful = false  # Clear flag after parry window ends
+	parry_attack_blocked = false  # Reset after animation
 
 func calculate_parry_result(time_before_hit: float) -> ParryResult:
 	# Perfect parry: within perfect window
@@ -212,7 +215,11 @@ func _on_parry_hit_box_area_entered(area):
 	if not area.is_in_group("Enemy") or not parry_active:
 		return
 	
-	# Calculate timing - how long before the attack would have hit
+	# Only allow ONE parry per parry attempt
+	if parry_attack_blocked:
+		return
+	
+	# Calculate timing - how long since parry started
 	var current_time = Time.get_ticks_msec() / 1000.0
 	var parry_reaction_time = current_time - parry_start_time
 	
@@ -225,14 +232,23 @@ func _on_parry_hit_box_area_entered(area):
 	
 	match result:
 		ParryResult.PERFECT:
+			# Mark successful BEFORE performing parry
+			parry_attack_blocked = true
 			perform_perfect_parry(enemy)
 		ParryResult.GOOD:
+			# Mark successful BEFORE performing parry
+			parry_attack_blocked = true
 			perform_good_parry(enemy)
 		ParryResult.POOR:
+			# Mark successful BEFORE performing parry (chip damage handled in function)
+			parry_attack_blocked = true
 			perform_poor_parry(enemy)
 		_:
-			# Missed parry window - take damage
-			pass
+			# Parry was too early/late - outside all windows
+			# Don't mark as blocked, let damage through
+			print("Parry FAILED - outside timing window")
+			parry_attack_blocked = false
+			parry_successful = false
 
 func perform_perfect_parry(enemy):
 	# Perfect deflect - golden sparks, no posture damage, maximum enemy posture damage
@@ -283,20 +299,13 @@ func perform_poor_parry(enemy):
 
 # DAMAGE HANDLING
 func take_damage(amount: int):
-	# If parry successfully blocked/deflected, ignore damage
-	if parry_successful:
+	# If we successfully blocked an attack with this parry, ignore damage
+	if parry_attack_blocked and parry_successful:
 		return
 	
-	# If parry is active but hasn't been triggered yet, wait a frame
-	# This prevents race conditions where damage arrives before parry detection
-	if parry_active:
-		return
-	
+	# If parry is active but hasn't successfully blocked, it's a failed/early parry
 	health -= amount
 	current_posture += 20  # Taking damage increases posture
-	modulate = Color(1.0, 0.3, 0.3)
-	await get_tree().create_timer(0.3).timeout
-	modulate = Color(1.0, 1.0, 1.0)
 	
 	print("Took damage: ", amount, " | Health: ", health)
 	

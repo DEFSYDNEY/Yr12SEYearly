@@ -1,3 +1,4 @@
+Marker2D
 TextureProgressBar
 RigidBody2D
 StaticBody2D
@@ -12,4 +13,3 @@ AnimationPlayer
 CanvasModulate
 Label      - Matches the "text" keyword.
 Button
-GPUParticles2D
