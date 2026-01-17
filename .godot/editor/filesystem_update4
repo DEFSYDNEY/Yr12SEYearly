@@ -1,5 +1,3 @@
-res://Scenes/Characters/test_player.tscn
-res://Scenes/Characters/test_player.gd
-res://Levels/test_level.tscn
 res://Scenes/Characters/tets_Enemy_white_raider.tscn
+res://Levels/test_level.tscn
 res://Scenes/Characters/tets_enemy_white_raider.gd

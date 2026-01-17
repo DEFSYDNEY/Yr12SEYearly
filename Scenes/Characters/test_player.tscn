@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://mpqkj677pfdt"]
+[gd_scene load_steps=32 format=3 uid="uid://mpqkj677pfdt"]
 
 [ext_resource type="Script" uid="uid://cmvuopsha255b" path="res://Scenes/Characters/test_player.gd" id="1_y2jrh"]
 [ext_resource type="Texture2D" uid="uid://cfjdk4l6ichyi" path="res://Art/Player/Player-Sheet-Attack.png" id="2_kcu8b"]
@@ -195,9 +195,6 @@ points = PackedVector2Array(-8, 2, 0, 0, 8, -6, 19, -6, 28, -1, 28, 4, 24, 9, 18
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0.21348321), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="Gradient" id="Gradient_cqrjx"]
-colors = PackedColorArray(1, 0.47843137, 0, 1, 1, 1, 0, 1)
-
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
 collision_layer = 2
@@ -205,7 +202,6 @@ collision_mask = 15
 script = ExtResource("1_y2jrh")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
-modulate = Color(1, 0.13725491, 1, 1)
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
 animation = &"Parry"
@@ -257,7 +253,6 @@ initial_velocity_max = 107.58
 damping_max = 70.103
 angle_max = 267.2
 scale_amount_curve = SubResource("Curve_gy20a")
-color_ramp = SubResource("Gradient_cqrjx")
 hue_variation_max = 1.0
 
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ba737prsio8nd"]
+[gd_scene load_steps=8 format=3 uid="uid://ba737prsio8nd"]
 
 [ext_resource type="Script" uid="uid://cay5230j1wbw2" path="res://Scripts/World/blood.gd" id="1_u1gsx"]
 [ext_resource type="Texture2D" uid="uid://64vmrmjt27dp" path="res://Art/Enemy/blood.png" id="2_377lq"]
@@ -14,10 +14,6 @@ region = Rect2(0, 0, 116, 128)
 atlas = ExtResource("2_377lq")
 region = Rect2(0, 128, 116, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0m58g"]
-atlas = ExtResource("2_377lq")
-region = Rect2(116, 128, 116, 128)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_o8pux"]
 atlas = ExtResource("2_377lq")
 region = Rect2(0, 256, 116, 128)
@@ -32,9 +28,6 @@ animations = [{
 "texture": SubResource("AtlasTexture_sqndy")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0m58g")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_o8pux")
 }],
 "loop": false,
@@ -47,7 +40,7 @@ collision_layer = 16
 script = ExtResource("1_u1gsx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.50000024, 1.5000006)
+position = Vector2(0, -4)
 scale = Vector2(1.0000001, 1.0000001)
 shape = SubResource("RectangleShape2D_377lq")
 
@@ -56,5 +49,5 @@ position = Vector2(2.3841858e-07, -1.0000001)
 rotation = 1.5865043
 scale = Vector2(0.162, 0.162)
 sprite_frames = SubResource("SpriteFrames_4nwq3")
-frame = 3
+frame = 2
 frame_progress = 1.0

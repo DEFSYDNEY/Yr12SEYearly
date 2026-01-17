@@ -276,7 +276,6 @@ collision_mask = 15
 script = ExtResource("1_8leil")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
-modulate = Color(0, 0, 1, 1)
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
 animation = &"Test"
