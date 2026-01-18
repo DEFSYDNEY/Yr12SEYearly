@@ -315,6 +315,8 @@ func posture_damage(player_damage: int):
 	current_posture += player_damage * posture_reduction
 	print(current_posture)
 	posture_bar.value = current_posture
+	Engine.time_scale = 0.01
+	global_position += lerp(global_position, Vector2(70,-30), 1)
 	if current_posture >= max_posture:
 		staggered()
 		current_posture = 0

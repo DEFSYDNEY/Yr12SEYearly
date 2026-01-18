@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://cjirey7kexnpf"]
+[gd_scene load_steps=17 format=4 uid="uid://cjirey7kexnpf"]
 
 [ext_resource type="Script" uid="uid://b5smusjg4a0h4" path="res://Scripts/World/test_level_game_manager.gd" id="1_k8b6b"]
 [ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://ckkcdr0fov847" path="res://Art/Background Gloomy Forrest/Layer_0008_3.png" id="7_tc6tp"]
 [ext_resource type="PackedScene" uid="uid://b71yncaw8ag18" path="res://Scenes/Characters/Enemy_white_raider.tscn" id="11_lx7qo"]
 [ext_resource type="PackedScene" uid="uid://mpqkj677pfdt" path="res://Scenes/Characters/test_player.tscn" id="12_lx7qo"]
-[ext_resource type="PackedScene" uid="uid://dfexrhtm7hgmf" path="res://Scenes/Characters/tets_Enemy_white_raider.tscn" id="13_dkv23"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x458k"]
 texture = ExtResource("4_dkv23")
@@ -170,14 +169,10 @@ room_size = Vector2(500, 300)
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="EnemyWhiteRaider5" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("13_dkv23")]
-position = Vector2(1417, 453)
-player = NodePath("../../Player2")
-stationary = true
-
 [node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("11_lx7qo")]
-position = Vector2(993, 454)
-player = NodePath("../../Player2")
+position = Vector2(736, 448)
+player = NodePath("../../Player")
+stationary = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
@@ -217,12 +212,11 @@ libraries = {
 &"": SubResource("AnimationLibrary_lx7qo")
 }
 
-[node name="Player2" parent="." instance=ExtResource("12_lx7qo")]
-position = Vector2(264, 454)
-health = 3
+[node name="Player" parent="." instance=ExtResource("12_lx7qo")]
+position = Vector2(374, 453)
 
-[node name="Camera" type="Camera2D" parent="Player2"]
-position = Vector2(65, -214)
+[node name="Camera" type="Camera2D" parent="Player"]
+position = Vector2(-45, -213)
 offset = Vector2(0, -31)
 limit_smoothed = true
 position_smoothing_enabled = true
