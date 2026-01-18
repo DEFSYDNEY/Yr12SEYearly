@@ -1,7 +1,2 @@
 res://Scenes/Characters/tets_Enemy_white_raider.tscn
 res://Scenes/Characters/tets_enemy_white_raider.gd
-res://Scenes/Characters/player.tscn
-res://Scripts/player/player.gd
-res://Scenes/Characters/test_player.tscn
-res://Scenes/Characters/test_player.gd
-res://Levels/test_level.tscn

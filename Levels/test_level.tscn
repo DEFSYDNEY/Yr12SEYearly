@@ -172,6 +172,12 @@ room_size = Vector2(500, 300)
 [node name="EnemyWhiteRaider4" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("13_dkv23")]
 position = Vector2(602, 452)
 player = NodePath("../../Player2")
+aggression_level = 1.0
+
+[node name="EnemyWhiteRaider5" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("13_dkv23")]
+position = Vector2(1417, 453)
+player = NodePath("../../Player2")
+stationary = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false

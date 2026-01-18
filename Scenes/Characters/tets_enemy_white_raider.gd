@@ -51,7 +51,7 @@ var dir := Vector2.ZERO
 var right_bounds: Vector2
 var left_bounds: Vector2
 var patrol_paused: bool = false
-var attack_cooldown: bool = false
+var attack_cooldown = 1.5
 var is_stunned: bool = false
 var aggro: bool = false
 var current_posture = 0
@@ -87,7 +87,6 @@ func _ready():
 	right_bounds = self.position + Vector2(right_bound_range, 0)
 	
 	# Calculate thresholds based on percentages
-	attack_range_threshold = max_detection_range * attack_range_percentage
 	too_close_threshold = max_detection_range * too_close_percentage
 	
 	# Set initial raycast length
@@ -101,7 +100,7 @@ func _ready():
 
 func _process(delta):
 	posture_bar.visible = current_posture > 0
-	
+	velocity.y += gravity * delta
 	# Posture recovery
 	if current_posture > 0 and not parry_active:
 		current_posture = max(0, current_posture - int(10.0 * delta))
@@ -113,15 +112,11 @@ func _process(delta):
 		retreat_timer -= delta
 
 func _physics_process(delta):
-	handle_gravity(delta)
 	update_raycast_direction()
 	movement(delta)
 	change_direction()
 	look_for_player()
 	combat_ai_logic()
-
-func handle_gravity(delta):
-	velocity.y += gravity * delta
 
 func update_raycast_direction():
 	# Point raycast toward player if we have one
@@ -311,9 +306,9 @@ func _on_timer_timeout():
 func _on_attack_area_body_entered(body):
 	if current_state == states.Stunned:
 		return
-	if body.is_in_group("Player") and current_state == states.Patrol:
+	if body.is_in_group("Player"):
 		# Player got too close - immediately engage
-		current_state = states.Chase
+		current_state = states.AttackWait
 
 func _on_attack_area_body_exited(body):
 	# AI handles its own positioning - don't change state here
@@ -354,16 +349,19 @@ func _on_sprite_animation_finished():
 			current_state = states.Retreat
 			retreat_timer = 0.4
 		else:
+			var bodies = attack_area.get_overlapping_bodies()
+			if bodies.has(player):
+				current_state = states.AttackWait
 			# Check if player still visible for continued pressure
-			if ray_cast.is_colliding() and ray_cast.get_collider() == player:
+			if ray_cast.is_colliding() and ray_cast.get_collider() == player: ########## Change this to fix enemy
 				var distance = get_raycast_collision_distance()
 				if distance < attack_range_threshold * 2.0:
 					# Stay aggressive
-					current_state = states.Chase
+					current_state = states.AttackWait
 					aggro = true
 				else:
-					current_state = states.Patrol
-					aggro = false
+					current_state = states.Chase
+					aggro = true
 			else:
 				current_state = states.Patrol
 				aggro = false
@@ -374,7 +372,7 @@ func _on_sprite_animation_finished():
 		
 		# After parry animation, don't just stand still - return to combat
 		if current_state != states.Stunned and aggro:
-			current_state = states.Chase
+			current_state = states.AttackWait
 	
 	elif sprite.animation == "Stagger":
 		# Handled by staggered() function - don't do anything here
@@ -432,7 +430,6 @@ func on_player_attack_started():
 func play_parry_animation():
 	# Just play the visual animation - parry is already active
 	if current_state == states.Stunned:
-		print("Cannot play parry animation - stunned")
 		parry_active = false
 		parry_type = 0
 		return
@@ -442,12 +439,7 @@ func play_parry_animation():
 	var timer = get_tree().create_timer(parry_window)
 	timer.timeout.connect(Callable(self, "_on_parry_window_timeout"))
 
-func initiate_parry():
-	# DEPRECATED - using on_player_attack_started directly now
-	pass
-
 func _on_parry_window_timeout():
-	print("Enemy parry window timeout")
 	parry_active = false
 	parry_type = 0
 
@@ -497,8 +489,20 @@ func staggered():
 	restore_state_after_stun()
 
 func restore_state_after_stun():
-	# After stun, immediately re-engage aggressively
-	current_state = states.Chase
+	# After stun, check if player is in attack range for immediate counter
+	if ray_cast.is_colliding() and ray_cast.get_collider() == player:
+		var distance = get_raycast_collision_distance()
+		if distance <= attack_range_threshold and not attack_cooldown:
+			# Player is in attack range - immediately attack!
+			current_state = states.AttackWait
+			attack_hesitation_timer = attack_hesitation_time * 0.5  # Faster counter-attack
+		else:
+			# Too far - chase
+			current_state = states.Chase
+	else:
+		# Can't see player - go back to patrol
+		current_state = states.Patrol
+		aggro = false
 	
 	# Clear any lingering parry state
 	parry_active = false
@@ -506,12 +510,8 @@ func restore_state_after_stun():
 
 # DAMAGE HANDLING WITH PARRY
 func take_damage(amount: int):
-	print("Enemy take_damage called - amount: ", amount, " state: ", current_state)
-	print("  parry_active: ", parry_active, " parry_type: ", parry_type)
-	
 	# If stunned, just take damage and don't try to parry
 	if current_state == states.Stunned:
-		print("  -> Taking damage while stunned")
 		health -= amount
 		blood_particles.emitting = true
 		
@@ -525,18 +525,15 @@ func take_damage(amount: int):
 	
 	# Perfect parry
 	if parry_active and parry_type == 1:
-		print("  -> PERFECT PARRY!")
 		perform_perfect_enemy_parry()
 		return
 	
 	# Good parry
 	if parry_active and parry_type == 2:
-		print("  -> GOOD PARRY!")
 		perform_good_enemy_parry()
 		return
 	
 	# Take damage normally
-	print("  -> Taking normal damage")
 	health -= amount
 	blood_particles.emitting = true
 	
@@ -563,7 +560,6 @@ func perform_perfect_enemy_parry():
 	Engine.time_scale = 0.01
 	await get_tree().create_timer(0.025 * 0.01).timeout
 	Engine.time_scale = 1.0
-	posture_damage(-10)
 	
 	# After successful parry, counter-attack
 	current_state = states.Chase
@@ -576,10 +572,10 @@ func perform_good_enemy_parry():
 	parry_particles.emitting = true
 	parry_particles.modulate = Color(1.0, 1.0, 1.0)
 	
-	posture_damage(10)
+	current_posture += 10
 	
 	if player and player.has_method("take_posture_damage"):
-		player.current_posture += 5
+		player.current_posture += 10
 	
 	Engine.time_scale = 0.01
 	await get_tree().create_timer(0.019 * 0.01).timeout
@@ -591,7 +587,15 @@ func perform_good_enemy_parry():
 func on_attack_timer_timeout():
 	attack_cooldown = false
 	
-	# After cooldown, continue pressure if player is in range
-	if current_state in [states.Chase, states.Attack]:
-		if ray_cast.is_colliding() and ray_cast.get_collider() == player:
-			current_state = states.Chase
+	# After cooldown, check if we should attack again or chase
+	if current_state in [states.Chase, states.Attack] and ray_cast.is_colliding():
+		var collider = ray_cast.get_collider()
+		if collider == player:
+			var distance = get_raycast_collision_distance()
+			# If player is in attack range, go to attack wait state
+			if distance <= attack_range_threshold:
+				current_state = states.AttackWait
+				attack_hesitation_timer = attack_hesitation_time * (1.0 - aggression_level * 0.5)
+			else:
+				# Too far - keep chasing
+				current_state = states.Chase
