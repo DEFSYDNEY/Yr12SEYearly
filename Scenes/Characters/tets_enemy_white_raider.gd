@@ -119,7 +119,7 @@ func _physics_process(delta):
 	combat_ai_logic()
 
 func update_raycast_direction():
-	# Point raycast toward player if we have one
+	# Point raycast toward player
 	if player and aggro:
 		var direction_to_player = (player.global_position - global_position).normalized()
 		ray_cast.target_position = direction_to_player * max_detection_range
