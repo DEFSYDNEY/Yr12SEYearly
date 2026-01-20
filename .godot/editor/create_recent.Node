@@ -1,5 +1,7 @@
-Marker2D
+CanvasLayer
 TextureProgressBar
+ProgressBar
+Marker2D
 RigidBody2D
 StaticBody2D
 Area2D
@@ -7,9 +9,6 @@ CollisionShape2D
 AnimatedSprite2D
 Sprite2D
 Camera2D
-ProgressBar
-CanvasLayer
 AnimationPlayer
 CanvasModulate
 Label      - Matches the "text" keyword.
-Button

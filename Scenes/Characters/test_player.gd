@@ -17,7 +17,7 @@ extends CharacterBody2D
 @export var vertical_offset: float = -59.0
 
 @export_category("Combat Stats")
-@export var health: int = 1000
+@export var health = 4
 @export var max_posture: int = 100
 @export var damage: int = 1
 @export var posture_damage_to_enemy: int = 100
@@ -26,6 +26,8 @@ extends CharacterBody2D
 @export var perfect_parry_frames := 1      # Perfect on first 1 frame (frame 0)
 @export var good_parry_frames := 2         # Good on frames 1-2
 # Late parry = frame 3 (chips health)
+@export var health_ui:TextureProgressBar
+@export var posture_ui:TextureProgressBar
 
 # ============================================
 # NODE REFERENCES
@@ -37,8 +39,9 @@ extends CharacterBody2D
 @onready var parry_box = $ParryHitBox
 @onready var parry_shape = $ParryHitBox/CollisionShape2D
 @onready var parry_particles = $ParryParticles
-@onready var death_screen = $"../CanvasLayer"
+@onready var death_screen = $"../Death UI"
 @onready var death_player = $"../CanvasModulate/AnimationPlayer"
+@onready var ui = $CanvasLayer
 
 # ============================================
 # INTERNAL VARIABLES
@@ -81,6 +84,9 @@ signal parry_executed(result: ParryResult)
 
 func _ready():
 	sprite.play("Idle")
+	health_ui.value = health
+	posture_ui.value = current_posture
+	ui.visible = true
 
 # ============================================
 # PHYSICS PROCESS - Movement & Physics
@@ -284,7 +290,8 @@ func execute_good_parry(enemy):
 	parry_particles.emitting = true
 	parry_particles.modulate = Color(0.298, 0.596, 1.0, 1.0)  # White
 	
-	current_posture += 3  # Very small posture damage
+	current_posture += 9  # Very small posture damage
+	posture_ui.value = current_posture
 	enemy.posture_damage(posture_damage_to_enemy * 0.9)  # 90% posture damage
 	
 	apply_hitstop(0.05)
@@ -297,9 +304,10 @@ func execute_late_parry(enemy):
 	parry_particles.emitting = true
 	parry_particles.modulate = Color(1.0, 0.3, 0.3)  # Red
 	
-	var chip_damage = enemy.damage / 3  # 33% damage gets through
-	health -= chip_damage
-	current_posture += 8  # Moderate posture damage
+	health -= 0.5
+	health_ui.value = health
+	current_posture += 20
+	posture_ui.value = current_posture
 	
 	enemy.posture_damage(posture_damage_to_enemy * 0.7)  # 70% posture damage
 	
@@ -320,9 +328,12 @@ func take_damage(amount: int):
 	if parry_active and parry_blocked_this_attack:
 		return
 	
+	
 	# Take full damage
 	health -= amount
 	current_posture += 15  # Taking damage increases posture
+	health_ui.value = health
+	posture_ui.value = current_posture
 	
 	print("💔 Took damage: ", amount, " | Health: ", health)
 	
@@ -346,6 +357,7 @@ func die():
 	set_process(false)
 	set_collision_layer_value(2, false)
 	death_player.play("Death")
+	ui.visible = false
 
 # ============================================
 # HITSTOP / FREEZE FRAMES

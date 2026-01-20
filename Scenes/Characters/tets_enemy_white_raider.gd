@@ -542,9 +542,8 @@ func take_damage(amount: int):
 	bloods.call_deferred("set_global_position", global_position)
 	
 	# Become aggressive when hit
-	if not aggro:
-		aggro = true
-		current_state = states.Chase
+	aggro = true
+	current_state = states.Chase
 	
 	if health <= 0:
 		queue_free()

@@ -174,31 +174,31 @@ position = Vector2(736, 448)
 player = NodePath("../../Player")
 stationary = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Death UI" type="CanvasLayer" parent="."]
 visible = false
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Label" type="Label" parent="Death UI"]
 offset_left = 288.0
 offset_top = 117.0
 offset_right = 375.0
 offset_bottom = 140.0
 text = "Game Over"
 
-[node name="Label2" type="Label" parent="CanvasLayer"]
+[node name="Label2" type="Label" parent="Death UI"]
 offset_left = 298.0
 offset_top = 149.0
 offset_right = 366.0
 offset_bottom = 172.0
 text = "You died"
 
-[node name="Button" type="Button" parent="CanvasLayer"]
+[node name="Button" type="Button" parent="Death UI"]
 offset_left = 298.0
 offset_top = 184.0
 offset_right = 363.0
 offset_bottom = 215.0
 text = "Restart"
 
-[node name="Button2" type="Button" parent="CanvasLayer"]
+[node name="Button2" type="Button" parent="Death UI"]
 offset_left = 298.0
 offset_top = 220.0
 offset_right = 363.0
@@ -221,5 +221,5 @@ offset = Vector2(0, -31)
 limit_smoothed = true
 position_smoothing_enabled = true
 
-[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Death UI/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Death UI/Button2" to="." method="_on_button_2_pressed"]
