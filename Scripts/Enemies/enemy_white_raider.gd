@@ -41,12 +41,11 @@ var attack_cooldown:bool = false
 var is_stunned:bool = false
 var aggro:bool = false
 var current_posture = 0
+var current_state = states.Patrol
 
 # -------- PARRY SYSTEM --------
 var parry_active: bool = false        # parry window currently open
 var parry_consumed: bool = false      # player's current attack not blocked
-
-#signal enemy_parry
 
 enum states {
 	Lookout,
@@ -56,7 +55,6 @@ enum states {
 	Stunned,
 }
 
-var current_state = states.Patrol
 
 func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)
@@ -200,8 +198,6 @@ func _on_timer_timeout():
 	aggro = false
 
 func _on_attack_area_body_entered(body):
-	if current_state == states.Stunned:
-			return
 	if body.is_in_group("Player"):
 		current_state = states.Attack
 		aggro = true
@@ -209,17 +205,14 @@ func _on_attack_area_body_entered(body):
 			attack()
 
 func _on_attack_area_body_exited(body):
-	if current_state == states.Stunned:
-			return
 	if body.is_in_group("Player") and current_state == states.Attack:
 		current_state = states.Chase
 
 func attack():
-	current_state = states.Attack
 	sprite.play("Attack")
 
 func _on_sprite_frame_changed():
-	if sprite.animation == "Attack" and attack_cooldown == false:
+	if sprite.animation == "Attack":
 		# Check if on the damage frames
 		var frame = sprite.frame
 		if frame == 1:
@@ -242,8 +235,6 @@ func _on_sprite_animation_finished():
 	
 	if sprite.animation == "Attack":
 		sword_hitbox_collision.disabled = true
-		if current_state == states.Stunned:
-			return
 		if ray_cast.is_colliding() and current_state != states.Stunned:
 			if ray_cast.get_collider().is_in_group("Player"):
 				current_state = states.Chase

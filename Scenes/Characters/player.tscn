@@ -1,93 +1,94 @@
-[gd_scene load_steps=33 format=3 uid="uid://1ot4f7uvan0c"]
+[gd_scene load_steps=36 format=3 uid="uid://mpqkj677pfdt"]
 
-[ext_resource type="Script" uid="uid://cndglpdj0yk1l" path="res://Scripts/player/player.gd" id="1_cvnsp"]
-[ext_resource type="Texture2D" uid="uid://c8b165je6roll" path="res://Art/Player/Player-Sheet.png" id="1_v0iea"]
-[ext_resource type="Texture2D" uid="uid://cfjdk4l6ichyi" path="res://Art/Player/Player-Sheet-Attack.png" id="2_6t5aa"]
-[ext_resource type="Texture2D" uid="uid://duood3l0hafdc" path="res://Art/Player/Player-Sheet-Parry.png" id="4_gy20a"]
+[ext_resource type="Script" uid="uid://cmvuopsha255b" path="res://Scripts/player/Player.gd" id="1_y2jrh"]
+[ext_resource type="Texture2D" uid="uid://cfjdk4l6ichyi" path="res://Art/Player/Player-Sheet-Attack.png" id="2_kcu8b"]
+[ext_resource type="Texture2D" uid="uid://c8b165je6roll" path="res://Art/Player/Player-Sheet.png" id="3_yiryc"]
+[ext_resource type="Texture2D" uid="uid://duood3l0hafdc" path="res://Art/Player/Player-Sheet-Parry.png" id="4_gn1ev"]
+[ext_resource type="Texture2D" uid="uid://pl3knw5oj2wt" path="res://Art/UI/UIFace.png" id="5_yiryc"]
+[ext_resource type="Texture2D" uid="uid://cn30ftsn4e8h1" path="res://Art/UI/Health.png" id="6_yiryc"]
+[ext_resource type="Texture2D" uid="uid://qohjbatkgyxy" path="res://Art/UI/no health.png" id="7_gn1ev"]
+[ext_resource type="Texture2D" uid="uid://blc6a2ei81dnf" path="res://Art/UI/No Posture.png" id="8_g263p"]
+[ext_resource type="Texture2D" uid="uid://b1drvxbtn17vm" path="res://Art/UI/Sword Posture.png" id="9_qcuf1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
-atlas = ExtResource("2_6t5aa")
+atlas = ExtResource("2_kcu8b")
 region = Rect2(320, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3smsa"]
-atlas = ExtResource("2_6t5aa")
+atlas = ExtResource("2_kcu8b")
 region = Rect2(480, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
-atlas = ExtResource("2_6t5aa")
+atlas = ExtResource("2_kcu8b")
 region = Rect2(640, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
-atlas = ExtResource("2_6t5aa")
+atlas = ExtResource("2_kcu8b")
 region = Rect2(800, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l6n3p"]
-atlas = ExtResource("2_6t5aa")
+atlas = ExtResource("2_kcu8b")
 region = Rect2(960, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_olqyp"]
-atlas = ExtResource("2_6t5aa")
+atlas = ExtResource("2_kcu8b")
 region = Rect2(1120, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(0, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tx1dd"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(160, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(320, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pu2lt"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(480, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ukyrk"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(640, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7dp3o"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(800, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h4iuc"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(960, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fd4e3"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(1120, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qqcod"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(1280, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_igrcy"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(1440, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fs7ks"]
-atlas = ExtResource("1_v0iea")
+atlas = ExtResource("3_yiryc")
 region = Rect2(1600, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cqrjx"]
-atlas = ExtResource("4_gy20a")
+atlas = ExtResource("4_gn1ev")
 region = Rect2(160, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_khnq4"]
-atlas = ExtResource("4_gy20a")
+atlas = ExtResource("4_gn1ev")
 region = Rect2(320, 0, 160, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_utp2y"]
-atlas = ExtResource("4_gy20a")
+atlas = ExtResource("4_gn1ev")
 region = Rect2(480, 0, 160, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gdgf0"]
-atlas = ExtResource("4_gy20a")
-region = Rect2(640, 0, 160, 80)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_cvnsp"]
 animations = [{
@@ -163,15 +164,15 @@ animations = [{
 "texture": SubResource("AtlasTexture_utp2y")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gdgf0")
+"texture": SubResource("AtlasTexture_utp2y")
 }],
 "loop": false,
 "name": &"Parry",
-"speed": 9.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_v0iea")
+"texture": ExtResource("3_yiryc")
 }],
 "loop": true,
 "name": &"default",
@@ -195,23 +196,20 @@ points = PackedVector2Array(-8, 2, 0, 0, 8, -6, 19, -6, 28, -1, 28, 4, 24, 9, 18
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0.21348321), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="Gradient" id="Gradient_cqrjx"]
-colors = PackedColorArray(1, 0.47843137, 0, 1, 1, 1, 0, 1)
-
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health_ui", "posture_ui") groups=["Player"]]
 z_index = 1
 collision_layer = 2
 collision_mask = 15
-script = ExtResource("1_cvnsp")
-coyote_time = 0.09
-decel = 2500.0
+script = ExtResource("1_y2jrh")
+health_ui = NodePath("CanvasLayer/Ui/Health")
+posture_ui = NodePath("CanvasLayer/Ui/Posture")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
 animation = &"Parry"
-frame = 1
-frame_progress = 0.24376957
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, 1)
@@ -258,8 +256,36 @@ initial_velocity_max = 107.58
 damping_max = 70.103
 angle_max = 267.2
 scale_amount_curve = SubResource("Curve_gy20a")
-color_ramp = SubResource("Gradient_cqrjx")
 hue_variation_max = 1.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Ui" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(332, 180)
+texture = ExtResource("5_yiryc")
+
+[node name="Health" type="TextureProgressBar" parent="CanvasLayer/Ui"]
+offset_left = -248.0
+offset_top = -149.0
+offset_right = 392.0
+offset_bottom = 211.0
+max_value = 4.0
+step = 0.5
+value = 4.0
+allow_greater = true
+allow_lesser = true
+texture_under = ExtResource("7_gn1ev")
+texture_progress = ExtResource("6_yiryc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Posture" type="TextureProgressBar" parent="CanvasLayer/Ui"]
+offset_left = -247.0
+offset_top = -130.0
+offset_right = 9.0
+offset_bottom = -119.0
+value = 15.0
+texture_under = ExtResource("8_g263p")
+texture_progress = ExtResource("9_qcuf1")
 
 [connection signal="body_entered" from="SwordHitBox" to="." method="_on_sword_hit_box_body_entered"]
 [connection signal="area_entered" from="ParryHitBox" to="." method="_on_parry_hit_box_area_entered"]
