@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://cfjdk4l6ichyi" path="res://Art/Player/Player-Sheet-Attack.png" id="2_kcu8b"]
 [ext_resource type="Texture2D" uid="uid://c8b165je6roll" path="res://Art/Player/Player-Sheet.png" id="3_yiryc"]
 [ext_resource type="Texture2D" uid="uid://duood3l0hafdc" path="res://Art/Player/Player-Sheet-Parry.png" id="4_gn1ev"]
-[ext_resource type="Texture2D" uid="uid://pl3knw5oj2wt" path="res://Art/UI/UIFace.png" id="5_yiryc"]
-[ext_resource type="Texture2D" uid="uid://cn30ftsn4e8h1" path="res://Art/UI/Health.png" id="6_yiryc"]
-[ext_resource type="Texture2D" uid="uid://qohjbatkgyxy" path="res://Art/UI/no health.png" id="7_gn1ev"]
-[ext_resource type="Texture2D" uid="uid://blc6a2ei81dnf" path="res://Art/UI/No Posture.png" id="8_g263p"]
-[ext_resource type="Texture2D" uid="uid://b1drvxbtn17vm" path="res://Art/UI/Sword Posture.png" id="9_qcuf1"]
+[ext_resource type="Texture2D" uid="uid://pl3knw5oj2wt" path="res://Art/UI/Game/UIFace.png" id="5_yiryc"]
+[ext_resource type="Texture2D" uid="uid://cn30ftsn4e8h1" path="res://Art/UI/Game/Health.png" id="6_yiryc"]
+[ext_resource type="Texture2D" uid="uid://qohjbatkgyxy" path="res://Art/UI/Game/no health.png" id="7_gn1ev"]
+[ext_resource type="Texture2D" uid="uid://blc6a2ei81dnf" path="res://Art/UI/Game/No Posture.png" id="8_g263p"]
+[ext_resource type="Texture2D" uid="uid://b1drvxbtn17vm" path="res://Art/UI/Game/Sword Posture.png" id="9_qcuf1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
 atlas = ExtResource("2_kcu8b")
@@ -201,6 +201,8 @@ z_index = 1
 collision_layer = 2
 collision_mask = 15
 script = ExtResource("1_y2jrh")
+health = 54
+posture_damage_to_enemy = 75
 health_ui = NodePath("CanvasLayer/Ui/Health")
 posture_ui = NodePath("CanvasLayer/Ui/Posture")
 

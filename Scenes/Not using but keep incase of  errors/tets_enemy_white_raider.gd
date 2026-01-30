@@ -3,294 +3,299 @@ extends CharacterBody2D
 @export var player: CharacterBody2D
 
 @export_category("Stats")
-@export var speed: int = 100
-@export var chase_speed: int = 250
-@export var accel: int = 2000
+@export var speed:int = 100
+@export var chase_speed:int = 250
+@export var accel:int = 2000
 @export var health: int = 2
 @export var damage: int = 1
-@export var max_posture: int = 100
+@export var max_posture:int = 100
 @export var posture_reduction: float = 0.9
 
 @export_category("Combat Behavior")
-@export var aggression_level: float = 0.8         # 0-1: how aggressive
-@export var attack_hesitation_time: float = 0.3   # Brief pause before attacking
-@export var retreat_chance: float = 0.2           # Chance to back off after attack
-@export var min_safe_distance: float = 40.0       # Don't get closer than this
-@export var backup_speed_multiplier: float = 1.3  # How fast to back up when too close
+# These new variables control the Sekiro-style combat flow
+@export var combo_attack_count_min: int = 2  # Minimum attacks in a combo
+@export var combo_attack_count_max: int = 3  # Maximum attacks in a combo
+@export var recovery_time: float = 1.5  # How long enemy is vulnerable after attacking
+@export var defensive_time: float = 1.0  # How long enemy stays defensive before attacking again
+@export var attack_spacing_distance: float = 80.0  # Preferred distance to attack from
 
-@export_category("RayCast Detection")
-@export var max_detection_range: float = 400.0    # Max raycast length
-@export var attack_range_percentage: float = 0.3  # Attack when ray is 30% of max length
-@export var too_close_percentage: float = 0.15    # Back up when ray is 15% of max length
-
-@export_category("AI Parrying")
+@export_category("Parrying")
 @export var parry_chance := 0.25
-@export var perfect_parry_chance := 0.15
 @export var parry_window := 0.25
-@export var parry_prediction_time := 0.3
+@export var parry_cooldown: float = 2.0  # Prevent parry spam
 
 @export_category("Patrol Limits")
 @export var left_bound_range = -150
 @export var right_bound_range = 150
-@export var stationary: bool = false
+@export var stationary:bool = false
+
+@export_category("Debug")
+@export var show_debug_info: bool = true  # Toggle to show/hide debug display in-game
 
 @onready var sprite = $Sprite
 @onready var ray_cast = $Sprite/RayCast2D
 @onready var player_loss_sight_timer = $PlayerLossSightTimer
 @onready var attack_area = $"Attack area"
 @onready var sword_hitbox_collision = $SwordHitBox/CollisionShape2D
+@onready var defensive_area = $Defensive_Area
 @onready var blood_particles = $BloodParticles
 @onready var parry_particles = $ParryParticles
 @onready var attack_timer = $Attack_timer
 @onready var attack_indication = $FlashIndication/AnimationPlayer
 @onready var blood = preload("res://Scenes/World/blood.tscn")
 @onready var posture_bar = $"Posture Bar"
+@onready var shield_icon = $Shield
+#@onready var recover_icon = 
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var dir := Vector2.ZERO
 var right_bounds: Vector2
 var left_bounds: Vector2
 var patrol_paused: bool = false
-var attack_cooldown = 1.5
-var is_stunned: bool = false
-var aggro: bool = false
+var attack_cooldown:bool = false
+var is_stunned:bool = false
+var aggro:bool = false
 var current_posture = 0
+var current_state = states.Patrol
 
-# Combat AI variables
-var current_ray_length: float = 0.0
-var attack_range_threshold: float = 0.0
-var too_close_threshold: float = 0.0
-var attack_hesitation_timer: float = 0.0
-var retreat_timer: float = 0.0
-var last_attack_time: float = 0.0
-
-# Parry system
+# -------- PARRY SYSTEM --------
 var parry_active: bool = false
-var parry_type: int = 0
-var parry_start_time: float = 0.0
-var last_parry_attempt: float = 0.0
+var parry_consumed: bool = false
+var can_parry: bool = true  # New: prevents parry spam
+var parry_cooldown_timer: float = 0.0
+
+# -------- SEKIRO-STYLE COMBAT FLOW --------
+var current_combo_count: int = 0  # How many attacks we've done in current combo
+var total_combo_attacks: int = 0  # Total attacks planned for this combo
+var in_recovery: bool = false  # Enemy is recovering after combo, vulnerable window
+var in_defensive_stance: bool = false  # Enemy is in defensive stance, waiting to attack
+var recovery_timer: float = 0.0
+var defensive_timer: float = 0.0
+
+# -------- DEBUG DISPLAY --------
+var debug_label: Label = null  # Dynamically created label to show state and velocity
 
 enum states {
-	Lookout,
-	Patrol,
-	Chase,
-	AttackWait,
-	Attack,
-	Retreat,
-	Stunned,
+	Lookout, # Stands still 
+	Patrol, # Wanders from two points set using code
+	Chase, # Chases player even if cant see will chase for a little
+	Attack, # Attacking the player
+	Stunned, # From having posture broken unable to move or do any action
+	Recovery,  #vulnerable after attacking
+	Defensive  #observing player and parrying
 }
-
-var current_state = states.Patrol
 
 func _ready():
 	left_bounds = self.position + Vector2(left_bound_range, 0)
 	right_bounds = self.position + Vector2(right_bound_range, 0)
-	
-	# Calculate thresholds based on percentages
-	too_close_threshold = max_detection_range * too_close_percentage
-	
-	# Set initial raycast length
-	update_raycast_direction()
-	
-	if player:
-		player.connect("attack_started", Callable(self, "on_player_attack_started"))
-	
-	if stationary:
+	player.connect("attack_started", Callable(self, "on_player_attack_started"))
+	if stationary == true:
 		current_state = states.Lookout
+	
+	# Create debug display if enabled
+	if show_debug_info:
+		setup_debug_display()
 
 func _process(delta):
-	posture_bar.visible = current_posture > 0
 	velocity.y += gravity * delta
-	# Posture recovery
-	if current_posture > 0 and not parry_active:
-		current_posture = max(0, current_posture - int(10.0 * delta))
 	
-	# Update combat timers
-	if attack_hesitation_timer > 0:
-		attack_hesitation_timer -= delta
-	if retreat_timer > 0:
-		retreat_timer -= delta
+	# Update debug display every frame if enabled
+	if show_debug_info and debug_label != null:
+		update_debug_display()
+	
+	if current_posture > 0:
+		posture_bar.visible = true
+	else:
+		posture_bar.visible = false
+	
+	# Handle timers for combat flow
+	if parry_cooldown_timer > 0:
+		parry_cooldown_timer -= delta
+		if parry_cooldown_timer <= 0:
+			can_parry = true
+	
+	# Handle recovery state timer
+	if recovery_timer > 0:
+		recovery_timer -= delta
+		if recovery_timer <= 0:
+			end_recovery()
+	
+	# Handle defensive stance timer
+	if defensive_timer > 0:
+		defensive_timer -= delta
+		if defensive_timer <= 0:
+			end_defensive_stance()
 
 func _physics_process(delta):
-	update_raycast_direction()
 	movement(delta)
 	change_direction()
 	look_for_player()
-	combat_ai_logic()
-
-func update_raycast_direction():
-	# Point raycast toward player
-	if player and aggro:
-		var direction_to_player = (player.global_position - global_position).normalized()
-		ray_cast.target_position = direction_to_player * max_detection_range
-	elif not aggro:
-		# During patrol, keep raycast pointing forward based on sprite direction
-		if sprite.flip_h:
-			ray_cast.target_position = Vector2(max_detection_range, 0)
-		else:
-			ray_cast.target_position = Vector2(-max_detection_range, 0)
-
-func get_raycast_collision_distance() -> float:
-	# Get the actual distance to collision point
-	if ray_cast.is_colliding():
-		var collision_point = ray_cast.get_collision_point()
-		return global_position.distance_to(collision_point)
-	else:
-		return max_detection_range
-
-func combat_ai_logic():
-	# Intelligent combat positioning using raycast distance
-	if not player or current_state == states.Stunned:
-		return
-	
-	# Get current distance from raycast
-	current_ray_length = get_raycast_collision_distance()
-	
-	# State machine for combat
-	match current_state:
-		states.Chase:
-			# Check if we can see player with raycast
-			if ray_cast.is_colliding() and ray_cast.get_collider() == player:
-				# Player is visible
-				if current_ray_length <= too_close_threshold or is_too_close_to_player():
-					# Too close - back up!
-					current_state = states.Retreat
-					retreat_timer = 0.5
-				elif current_ray_length <= attack_range_threshold:
-					# Perfect attack range - prepare to strike
-					if not attack_cooldown:
-						current_state = states.AttackWait
-						attack_hesitation_timer = attack_hesitation_time * (1.0 - aggression_level * 0.5)
-				# else: keep chasing (too far away)
-		
-		states.AttackWait:
-			# Brief pause before attacking
-			if attack_hesitation_timer <= 0:
-				current_state = states.Attack
-				attack()
-			# Check if player moved out of range during hesitation
-			elif current_ray_length > attack_range_threshold * 1.5:
-				current_state = states.Chase
-		
-		states.Retreat:
-			# Back off after attack or when too close
-			if retreat_timer <= 0:
-				# Check if we're at a better distance now
-				if current_ray_length > too_close_threshold * 1.5:
-					current_state = states.Chase
-
-func is_too_close_to_player() -> bool:
-	# Additional check using direct distance calculation
-	if player:
-		var distance = global_position.distance_to(player.global_position)
-		return distance < min_safe_distance
-	return false
 
 func movement(delta):
 	match current_state:
 		states.Patrol:
 			velocity = velocity.move_toward(dir * speed, accel * delta)
-		
+			velocity.y += gravity * delta
+			
 		states.Chase:
-			# Aggressive chase - full speed toward player
-			velocity = velocity.move_toward(dir * chase_speed, accel * delta)
-		
-		states.AttackWait:
-			# Slow down when about to attack for more deliberate feel
-			velocity = velocity.move_toward(Vector2.ZERO, accel * delta * 2.0)
-		
+			# Smarter chasing: slow down when close to player for better spacing
+			var distance_to_player = global_position.distance_to(player.global_position)
+			var effective_speed = chase_speed
+			
+			# Slow down when getting close to maintain spacing
+			if distance_to_player < attack_spacing_distance * 1.5:
+				effective_speed = chase_speed * 0.5
+			
+			velocity = velocity.move_toward(dir * effective_speed, accel * delta)
+			velocity.y += gravity * delta
+			
 		states.Attack:
-			# Minimal movement during attack
-			velocity = velocity.move_toward(Vector2.ZERO, accel * delta * 3.0)
-		
-		states.Retreat:
-			# Back away quickly
-			var retreat_speed = speed * backup_speed_multiplier
-			velocity = velocity.move_toward(-dir * retreat_speed, accel * delta)
-		
-		states.Lookout, states.Stunned:
+			# Very slight movement during attack for better feel
+			velocity = velocity.move_toward(Vector2.ZERO, accel * delta * 2)
+			velocity.y += gravity * delta
+			
+		states.Lookout:
 			velocity = Vector2.ZERO
-	
+			velocity.y += gravity * delta
+			
+		states.Stunned:
+			# Stunned state keeps some momentum
+			velocity = velocity.move_toward(Vector2.ZERO, accel * delta * 0.5)
+			velocity.y += gravity * delta
+			
+		states.Recovery:
+			# Vulnerable, can't move much
+			velocity = velocity.move_toward(Vector2.ZERO, accel * delta * 3)
+			velocity.y += gravity * delta
+			
+		states.Defensive:
+			# They're observing, ready to parry, creating tension slowly creeping forward if needed
+			var distance_to_player = global_position.distance_to(player.global_position)
+			var direction = (player.global_position - global_position).normalized()
+			var effective_speed = 30
+			
+			if distance_to_player < 60:
+				velocity = velocity.move_toward(-dir, accel * delta)
+			else:
+				velocity = velocity.move_toward(direction * effective_speed, accel * delta)
+				velocity.y += gravity * delta
+
+
 	move_and_slide()
 
 func change_direction():
-	if current_state == states.Stunned:
+	if current_state == states.Stunned or current_state == states.Recovery:
 		return
 	
-	# PATROL
+	# ------------------- PATROL -------------------
 	if current_state == states.Patrol:
 		aggro = false
 		if sprite.flip_h:
 			if self.position.x <= right_bounds.x:
-				dir = Vector2(1, 0)
+				dir = Vector2(1,0)
 			else:
-				pause_and_flip(Vector2(-1, 0), false, -max_detection_range, -1, 1)
+				pause_and_flip(Vector2(-1,0), false, -125, -1, 1, 1)
 		else:
 			if self.position.x >= left_bounds.x:
-				dir = Vector2(-1, 0)
+				dir = Vector2(-1,0)
 			else:
-				pause_and_flip(Vector2(1, 0), true, max_detection_range, 1, -1)
-	
-	# COMBAT STATES - face player
-	elif current_state in [states.Chase, states.AttackWait, states.Attack, states.Retreat]:
-		if not player:
+				pause_and_flip(Vector2(1,0), true, 125, 1, -1, -1)
+
+	# -------------------- CHASE --------------------
+	elif current_state == states.Chase:
+		if !player: 
 			return
 		
 		aggro = true
+		
 		var x_only = player.position - self.position
 		x_only.y = 0
 		dir = x_only.normalized()
-		
-		# Update sprite and hitboxes to face player
+
 		if dir.x > 0:
 			sprite.flip_h = true
+			ray_cast.target_position = Vector2(180,0)
 			attack_area.scale.x = -1
+			defensive_area.scale.x = -1
 			sword_hitbox_collision.scale.x = 1
 			parry_particles.position.x = 18
 		else:
 			sprite.flip_h = false
+			ray_cast.target_position = Vector2(-180,0)
 			attack_area.scale.x = 1
+			defensive_area.scale.x = 1
 			sword_hitbox_collision.scale.x = -1
 			parry_particles.position.x = -18
-
-func pause_and_flip(new_dir: Vector2, flip_h: bool, raycast_new_pos: float, sword_scale: int, attack_scale: int):
-	if current_state != states.Patrol:
-		return
 	
+	# -------------------- DEFENSIVE --------------------
+	elif current_state == states.Defensive:
+		if !player: 
+			return
+		
+		aggro = true
+		
+		# Only update facing direction, not movement direction
+		# Enemy holds ground but tracks player with their eyes/body
+		var x_only = player.position - self.position
+		x_only.y = 0
+		var facing_dir = x_only.normalized()
+
+		if facing_dir.x > 0:
+			sprite.flip_h = true
+			ray_cast.target_position = Vector2(180,0)
+			attack_area.scale.x = -1
+			defensive_area.scale.x = -1
+			sword_hitbox_collision.scale.x = 1
+			parry_particles.position.x = 18
+		else:
+			sprite.flip_h = false
+			ray_cast.target_position = Vector2(-180,0)
+			attack_area.scale.x = 1
+			defensive_area.scale.x = 1
+			sword_hitbox_collision.scale.x = -1
+			parry_particles.position.x = -18
+		
+		# Keep dir at zero so enemy doesn't walk during defensive stance
+		dir = Vector2.ZERO
+
+func pause_and_flip(new_dir: Vector2, flip_h: bool, raycast_new_pos: int, sword_hitbox_scale: int, attack_hitbox: int, defensive_area_scale: int):
+	if current_state != states.Patrol: 
+		return
+
 	patrol_paused = true
 	dir = Vector2.ZERO
 	await get_tree().create_timer(1).timeout
-	
+
 	if current_state == states.Attack or current_state == states.Chase:
 		return
-	
+
 	sprite.flip_h = flip_h
 	ray_cast.target_position.x = raycast_new_pos
 	dir = new_dir
-	sword_hitbox_collision.scale.x = sword_scale
-	attack_area.scale.x = attack_scale
+	sword_hitbox_collision.scale.x = sword_hitbox_scale
+	attack_area.scale.x = attack_hitbox
+	defensive_area.scale.x = defensive_area_scale
 	patrol_paused = false
 
 func look_for_player():
-	if not player or current_state == states.Stunned:
+	if !player:
 		return
 	
-	# Use raycast to check if player is visible
+	if current_state == states.Stunned:
+		return
+	
 	if ray_cast.is_colliding():
 		var collider = ray_cast.get_collider()
-		if collider and collider.is_in_group("Player"):
-			# Player detected!
-			if current_state not in [states.Attack, states.AttackWait, states.Retreat]:
-				chase_player()
+		if collider.is_in_group("Player") and current_state != states.Attack and current_state != states.Stunned and current_state != states.Recovery and current_state != states.Defensive:
+			aggro = true
+			chase_player()
 		elif current_state == states.Chase:
-			# Lost sight of player
 			stop_chase()
 	elif current_state == states.Chase:
-		# No collision = lost sight
 		stop_chase()
 
 func chase_player():
-	if current_state == states.Stunned:
+	if current_state == states.Stunned or current_state == states.Recovery:
 		return
 	player_loss_sight_timer.stop()
 	current_state = states.Chase
@@ -304,297 +309,365 @@ func _on_timer_timeout():
 	aggro = false
 
 func _on_attack_area_body_entered(body):
-	if current_state == states.Stunned:
-		return
 	if body.is_in_group("Player"):
-		# Player got too close - immediately engage
-		current_state = states.AttackWait
+		# Only attack if not in recovery or defensive stance
+		if current_state != states.Recovery and current_state != states.Defensive and current_state != states.Stunned:
+			initiate_attack_combo()
 
 func _on_attack_area_body_exited(body):
-	# AI handles its own positioning - don't change state here
-	pass
+	if body.is_in_group("Player"):
+		# If we're not attacking, go back to chase
+		if current_state == states.Attack:
+			current_state = states.Chase
+		elif current_state == states.Recovery:
+			# Still in recovery, but player left - stay in recovery
+			# Don't change state, let the recovery timer complete
+			pass
+		elif current_state == states.Defensive:
+			# Player left defensive range
+			# DON'T immediately chase - let the defensive stance complete
+			# The defensive timer will handle the transition naturally
+			# This prevents the flickering you're seeing
+			pass
 
-func attack():
+# ============================================================
+#                      ATTACK SYSTEM
+# ============================================================
+
+func initiate_attack_combo():
+	#Enemy commits to a sequence of attacks, creating pressure but also
+	#leaving them vulnerable afterwards.
+	if attack_cooldown:
+		return
+	
+	if current_state == states.Recovery or current_state == states.Stunned:
+		return
+	
 	current_state = states.Attack
+	current_combo_count = 0
+	
+	# Randomly decide how many attacks in this combo from max and min combo
+	total_combo_attacks = randi_range(combo_attack_count_min, combo_attack_count_max)
+	
+	# Start the first attack
+	execute_attack()
+
+func execute_attack():
+	#Execute a single attack in the combo sequence
 	sprite.play("Attack")
-	last_attack_time = Time.get_ticks_msec() / 1000.0
+	current_combo_count += 1 # Track how many times attacked
 
 func _on_sprite_frame_changed():
-	if sprite.animation == "Attack" and not attack_cooldown:
+	if sprite.animation == "Attack":
 		var frame = sprite.frame
 		if frame == 1:
 			attack_indication.play("attack")
-		elif frame == 4 or frame == 5:
+			sword_hitbox_collision.disabled = true
+		elif frame == 4:
 			sword_hitbox_collision.disabled = false
+		elif frame == 5:
+			sword_hitbox_collision.disabled = true
 	else:
 		sword_hitbox_collision.disabled = true
 
 func _on_sword_hit_box_body_entered(body):
 	if body.is_in_group("Player"):
-		# Always call take_damage - let the player decide if parry was successful
 		body.take_damage(damage)
-		attack_cooldown = true
-		attack_timer.start()
 
 func _on_sprite_animation_finished():
 	if sprite.animation == "Attack":
 		sword_hitbox_collision.disabled = true
 		
-		if current_state == states.Stunned:
-			return
-		
-		# After attack, decide next action
-		if randf() < retreat_chance:
-			# Back off after attacking
-			current_state = states.Retreat
-			retreat_timer = 0.4
+		# Check if it should continue the combo or enter recovery
+		if current_combo_count < total_combo_attacks and current_state != states.Stunned:
+			# Continue combo with a small delay for rhythm
+			await get_tree().create_timer(0.3).timeout
+			if current_state == states.Attack:  # Make sure its still in attack state
+				execute_attack()
 		else:
-			var bodies = attack_area.get_overlapping_bodies()
-			if bodies.has(player):
-				current_state = states.AttackWait
-			# Check if player still visible for continued pressure
-			if ray_cast.is_colliding() and ray_cast.get_collider() == player: ########## Change this to fix enemy
-				var distance = get_raycast_collision_distance()
-				if distance < attack_range_threshold * 2.0:
-					# Stay aggressive
-					current_state = states.AttackWait
-					aggro = true
-				else:
-					current_state = states.Chase
-					aggro = true
-			else:
-				current_state = states.Patrol
-				aggro = false
-	
-	elif sprite.animation == "Parry":
-		parry_active = false
-		parry_type = 0
-		
-		# After parry animation, don't just stand still - return to combat
-		if current_state != states.Stunned and aggro:
-			current_state = states.AttackWait
-	
-	elif sprite.animation == "Stagger":
-		# Handled by staggered() function - don't do anything here
-		pass
+			# Combo finished - enter recovery state (THIS IS THE PLAYER OPENING)
+			enter_recovery()
 
-# SEKIRO-STYLE PARRY SYSTEM
+func enter_recovery():
+	#Enter recovery state after finishing attack combo.
+	
+	current_state = states.Recovery
+	in_recovery = true
+	recovery_timer = recovery_time
+	attack_cooldown = true
+	
+	# During recovery, enemy cannot parry
+	can_parry = false
+	sprite.play("Test")
+	# Play recovery animation if you have one
+	dir = Vector2.ZERO
+	velocity = Vector2.ZERO
+
+func end_recovery():
+	#Exit recovery state and enter defensive stance.
+	#Enemy becomes cautious, waiting and ready to parry.
+	in_recovery = false
+	attack_cooldown = false
+	
+	# Check if player is still in range
+	var bodies_in_range = defensive_area.get_overlapping_bodies()
+	var player_in_range = false
+	
+	for body in bodies_in_range:
+		if body.is_in_group("Player"):
+			player_in_range = true
+			break
+	
+	if player_in_range:
+		# Enter defensive stance - this creates the back-and-forth rhythm
+		enter_defensive_stance()
+	else:
+		# Player left, go back to chasing
+		current_state = states.Chase
+
+func enter_defensive_stance():
+	#Enemy enters a defensive/observant state.
+	#They're ready to parry and waiting for the right moment to attack again.
+	
+	current_state = states.Defensive
+	in_defensive_stance = true
+	defensive_timer = defensive_time
+	can_parry = true  # Ready to parry during defensive stance
+	shield_icon.visible = true
+	
+	# Stop movement when entering defensive stance - enemy holds their ground
+	#dir = Vector2.ZERO
+	#velocity = Vector2.ZERO
+
+func end_defensive_stance():
+	#Exit defensive stance and potentially attack again.
+	
+	in_defensive_stance = false
+	# Check if player is still in range
+	var bodies_in_range = attack_area.get_overlapping_bodies()
+	var player_in_range = false
+	
+	for body in bodies_in_range:
+		if body.is_in_group("Player"):
+			player_in_range = true
+			break
+	
+	if player_in_range:
+		# 70% chance to attack again, 30% chance to stay defensive longer
+		if randf() < 0.7:
+			initiate_attack_combo()
+			shield_icon.visible = false
+		else:
+			# Stay defensive a bit longer
+			print("Continue defense")
+			defensive_timer = defensive_time * 0.5
+	else:
+		current_state = states.Chase
+		shield_icon.visible = false
+
+# ============================================================
+#                    PARRY SYSTEM
+# ============================================================
+
 func on_player_attack_started():
-	# CRITICAL: Don't respond to any signals while stunned
-	if current_state == states.Stunned:
-		print("Ignoring attack signal - enemy is stunned")
+	#Called when player starts an attack.
+	#Enemy may attempt to parry if conditions are right.
+	
+	# Cannot parry during recovery
+	if current_state == states.Recovery:
 		return
 	
+	# Cannot parry when stunned
+	if current_state == states.Stunned:
+		return
+	
+	# Cannot parry if on cooldown
+	if not can_parry:
+		return
+	
+	if not aggro:
+		return
+	
+	# Check if attack is dangerous
 	if not is_player_attack_dangerous():
-		print("Player attack not dangerous - ignoring")
 		return
 	
-	# Roll for parry attempt
-	if randf() >= parry_chance:
-		print("Failed parry chance roll")
-		return
-	
-	print("Enemy attempting parry...")
-	
-	# Determine parry quality and SET PARRY ACTIVE IMMEDIATELY
-	var perfect_roll = randf() < perfect_parry_chance
-	
-	if perfect_roll:
-		parry_type = 1
-	else:
-		parry_type = 2
-	
-	# CRITICAL: Activate parry NOW, before the delay
-	# This ensures parry_active is true when take_damage is called
+	# Activate parry window
 	parry_active = true
-	parry_start_time = Time.get_ticks_msec() / 1000.0
-	last_parry_attempt = parry_start_time
-	
-	# Wait before playing animation (AI reaction time)
-	if perfect_roll:
-		await get_tree().create_timer(parry_prediction_time * 0.8).timeout
-	else:
-		var timing_variation = randf_range(0.9, 1.1)
-		await get_tree().create_timer(parry_prediction_time * timing_variation).timeout
-	
-	# Check again after waiting - might have been stunned during the delay
-	if current_state == states.Stunned:
-		print("Became stunned during parry wait - canceling parry")
-		parry_type = 0
-		parry_active = false
-		return
-	
-	print("Playing parry animation after delay")
-	play_parry_animation()
-
-func play_parry_animation():
-	# Just play the visual animation - parry is already active
-	if current_state == states.Stunned:
-		parry_active = false
-		parry_type = 0
-		return
-	
+	parry_consumed = false
 	sprite.play("Parry")
 	
-	var timer = get_tree().create_timer(parry_window)
-	timer.timeout.connect(Callable(self, "_on_parry_window_timeout"))
+	# Put parry on cooldown
+	can_parry = false
+	parry_cooldown_timer = parry_cooldown
+	
+	# Schedule closing of parry window
+	var t = get_tree().create_timer(parry_window)
+	t.timeout.connect(Callable(self, "_on_parry_window_timeout"))
 
 func _on_parry_window_timeout():
 	parry_active = false
-	parry_type = 0
 
 func is_player_attack_dangerous() -> bool:
 	if not player:
 		return false
 	
-	var player_sword = player.get_node_or_null("SwordHitBox/CollisionShape2D")
-	if not player_sword:
-		return false
-	
-	var sword_shape = player_sword.shape
-	if not sword_shape:
-		return false
-	
-	var sword_transform = player_sword.global_transform
+	var sword_shape = player.sword_hit_box.shape
+	var sword_transform = player.sword_hit_box.global_transform
 	var enemy_shape = $CollisionShape2D.shape
 	var enemy_transform = global_transform
 	
 	return sword_shape.collide(sword_transform, enemy_shape, enemy_transform)
 
-# POSTURE SYSTEM
-func posture_damage(player_damage: int):
-	var adjusted_damage = player_damage * posture_reduction
-	current_posture += int(adjusted_damage)
-	
-	print("Enemy posture: ", current_posture, "/", max_posture)
-	posture_bar.value = current_posture
-	
-	if current_posture >= max_posture:
-		staggered()
-		current_posture = 0
+# ============================================================
+#                    STAGGER/POSTURE SYSTEM
+# ============================================================
 
 func staggered():
-	print("Enemy STAGGERED!")
+	#Enemy is staggered when posture breaks.
+	#This is a punish opportunity for the player.
+	
 	aggro = true
 	current_state = states.Stunned
 	dir = Vector2.ZERO
 	velocity = Vector2.ZERO
-	
-	# Cancel any active parry
-	parry_active = false
-	parry_type = 0
-	
+	in_recovery = false  # Clear recovery state
+	in_defensive_stance = false  # Clear defensive state
 	sprite.play("Stagger")
 	await sprite.animation_finished
 	restore_state_after_stun()
 
 func restore_state_after_stun():
-	# After stun, check if player is in attack range for immediate counter
-	if ray_cast.is_colliding() and ray_cast.get_collider() == player:
-		var distance = get_raycast_collision_distance()
-		if distance <= attack_range_threshold and not attack_cooldown:
-			# Player is in attack range - immediately attack!
-			current_state = states.AttackWait
-			attack_hesitation_timer = attack_hesitation_time * 0.5  # Faster counter-attack
-		else:
-			# Too far - chase
-			current_state = states.Chase
-	else:
-		# Can't see player - go back to patrol
-		current_state = states.Patrol
-		aggro = false
+	#After being staggered, enemy returns to combat but in defensive stance.
+	#They're more cautious after being broken.
 	
-	# Clear any lingering parry state
-	parry_active = false
-	parry_type = 0
+	var bodies = attack_area.get_overlapping_bodies()
+	for body in bodies:
+		if body.is_in_group("Player"):
+			# Player is close, enter defensive stance rather than attacking immediately
+			enter_defensive_stance()
+			return
+	
+	# No player nearby, return to chase
+	current_state = states.Chase
 
-# DAMAGE HANDLING WITH PARRY
+func posture_damage(player_posture_damage: int):
+	#Handle posture damage. When posture breaks, enemy is staggered.
+	
+	current_posture += player_posture_damage * posture_reduction
+	posture_bar.value = current_posture
+	
+	# Brief hitstop for feedback
+	#Engine.time_scale = 0.01
+	#await get_tree().create_timer(0.01).timeout
+	#Engine.time_scale = 1.0
+	
+	if current_posture >= max_posture:
+		staggered()
+		current_posture = 0
+
+# ============================================================
+#                    DAMAGE HANDLING
+# ============================================================
+
 func take_damage(amount: int):
-	# If stunned, just take damage and don't try to parry
-	if current_state == states.Stunned:
-		health -= amount
-		blood_particles.emitting = true
-		
-		var bloods = blood.instantiate()
-		get_tree().current_scene.call_deferred("add_child", bloods)
-		bloods.call_deferred("set_global_position", global_position)
-		
-		if health <= 0:
-			queue_free()
+	#Handle taking damage from player attacks.
+	#Parry system is integrated here.
+	
+	# Blocked because enemy is currently parrying
+	if parry_active and not parry_consumed:
+		parry_consumed = true
+		perform_parry_effects()
+		return
+
+	# If parry was active but already consumed, ignore extra hit
+	if parry_active and parry_consumed:
 		return
 	
-	# Perfect parry
-	if parry_active and parry_type == 1:
-		perform_perfect_enemy_parry()
-		return
-	
-	# Good parry
-	if parry_active and parry_type == 2:
-		perform_good_enemy_parry()
-		return
-	
-	# Take damage normally
+	# Take Damage Normally
 	health -= amount
 	blood_particles.emitting = true
 	
+	# Spawn blood effect
 	var bloods = blood.instantiate()
 	get_tree().current_scene.call_deferred("add_child", bloods)
 	bloods.call_deferred("set_global_position", global_position)
 	
-	# Become aggressive when hit
-	aggro = true
-	current_state = states.Chase
-	
+	# If hit while not aggressive, turn around to face attacker
+	if aggro != true:
+		enter_defensive_stance()
+		if sprite.flip_h:
+			ray_cast.target_position = Vector2(-180,0)
+		else:
+			ray_cast.target_position = Vector2(180,0)
+
 	if health <= 0:
 		queue_free()
 
-func perform_perfect_enemy_parry():
-	print("Enemy PERFECT PARRY!")
+func perform_parry_effects():
+	#Visual and mechanical effects when enemy successfully parries.
 	parry_particles.emitting = true
-	parry_particles.modulate = Color(1.0, 0.85, 0.0)
 	
-	if player and player.has_method("take_posture_damage"):
-		player.current_posture += 30
-	
-	Engine.time_scale = 0.01
-	await get_tree().create_timer(0.025 * 0.01).timeout
-	Engine.time_scale = 1.0
-	
-	# After successful parry, counter-attack
-	current_state = states.Chase
-	
-	parry_active = false
-	parry_type = 0
-
-func perform_good_enemy_parry():
-	print("Enemy Good Parry")
-	parry_particles.emitting = true
-	parry_particles.modulate = Color(1.0, 1.0, 1.0)
-	
-	current_posture += 10
-	
-	if player and player.has_method("take_posture_damage"):
-		player.current_posture += 10
-	
-	Engine.time_scale = 0.01
-	await get_tree().create_timer(0.019 * 0.01).timeout
-	Engine.time_scale = 1.0
-	
-	parry_active = false
-	parry_type = 0
+	# Could add knockback to player here if you want
+	# player.apply_knockback(...)
 
 func on_attack_timer_timeout():
 	attack_cooldown = false
+
+# ============================================================
+#                    DEBUG DISPLAY SYSTEM
+# ============================================================
+
+func setup_debug_display():
+	#Creates a Label node that floats above the enemy showing real-time debug info.
+	# helps with bug fixes
+	# Create a new Label node
+	debug_label = Label.new()
 	
-	# After cooldown, check if we should attack again or chase
-	if current_state in [states.Chase, states.Attack] and ray_cast.is_colliding():
-		var collider = ray_cast.get_collider()
-		if collider == player:
-			var distance = get_raycast_collision_distance()
-			# If player is in attack range, go to attack wait state
-			if distance <= attack_range_threshold:
-				current_state = states.AttackWait
-				attack_hesitation_timer = attack_hesitation_time * (1.0 - aggression_level * 0.5)
-			else:
-				# Too far - keep chasing
-				current_state = states.Chase
+	# Position it above the enemy's head (adjust Y value based on your sprite size)
+	debug_label.position = Vector2(-50, -100)  # X offset for centering, Y offset above head
+	
+	# Make the text more readable
+	debug_label.add_theme_font_size_override("font_size", 12)
+	
+	# Add a semi-transparent background so text is always readable
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = Color(0, 0, 0, 0.7)  # Black with 70% opacity
+	style_box.set_corner_radius_all(4)
+	style_box.set_content_margin_all(4)
+	debug_label.add_theme_stylebox_override("normal", style_box)
+	
+	# Make sure the label doesn't affect physics or mouse input
+	debug_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	# Add the label as a child of this enemy
+	add_child(debug_label)
+
+func update_debug_display():
+	#Updates the debug label every frame with current state and velocity info.
+	
+	if debug_label == null:
+		return
+	
+	# Get the state name as a string for display
+	var state_name = states.keys()[current_state]
+	
+	# Format velocity values to 1 decimal place for readability
+	var vel_x = snappedf(velocity.x, 0.1)
+	var vel_y = snappedf(velocity.y, 0.1)
+	
+	# Build the debug text with all relevant info
+	var debug_text = "State: %s\n" % state_name
+	debug_text += "Vel: (%.1f, %.1f)\n" % [vel_x, vel_y]
+	debug_text += "Dir: (%.1f, %.1f)" % [dir.x, dir.y]
+	
+	# Optional: Add more debug info as needed
+	if in_recovery:
+		debug_text += "\n[VULNERABLE]"
+	if can_parry and current_state == states.Defensive:
+		debug_text += "\n[CAN PARRY]"
+	if attack_cooldown:
+		debug_text += "\n[COOLDOWN]"
+	
+	# Update the label text
+	debug_label.text = debug_text

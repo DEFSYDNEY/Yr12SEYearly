@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bne63kwh4i15x"
+path="res://.godot/imported/Blades of Vengeance.mp3-9e211bca7e3d077607a11d65502eb8df.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/Blades of Vengeance.mp3"
+dest_files=["res://.godot/imported/Blades of Vengeance.mp3-9e211bca7e3d077607a11d65502eb8df.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

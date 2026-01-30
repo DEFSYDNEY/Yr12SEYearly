@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://cjirey7kexnpf"]
+[gd_scene load_steps=22 format=4 uid="uid://cjirey7kexnpf"]
 
 [ext_resource type="Script" uid="uid://b5smusjg4a0h4" path="res://Scripts/World/test_level_game_manager.gd" id="1_k8b6b"]
 [ext_resource type="PackedScene" uid="uid://ce47ku87iwb3b" path="res://Scenes/World/camera_lock_zone.tscn" id="2_4k50d"]
@@ -9,8 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://ca3n7w4vu5lds" path="res://Art/Background Gloomy Forrest/Layer_0007_Lights.png" id="6_k8b6b"]
 [ext_resource type="Texture2D" uid="uid://cyguueuygftkc" path="res://Art/Background Gloomy Forrest/Layer_0011_0.png" id="6_tc6tp"]
 [ext_resource type="Texture2D" uid="uid://ckkcdr0fov847" path="res://Art/Background Gloomy Forrest/Layer_0008_3.png" id="7_tc6tp"]
-[ext_resource type="PackedScene" uid="uid://b71yncaw8ag18" path="res://Scenes/Characters/Enemy_white_raider.tscn" id="11_lx7qo"]
+[ext_resource type="AudioStream" uid="uid://nbpmf558gnyj" path="res://Audio/Music/Echoes of the Ronin.mp3" id="10_lx7qo"]
 [ext_resource type="PackedScene" uid="uid://mpqkj677pfdt" path="res://Scenes/Characters/Player.tscn" id="12_lx7qo"]
+[ext_resource type="PackedScene" uid="uid://dfexrhtm7hgmf" path="res://Scenes/Not using but keep incase of  errors/tets_Enemy_white_raider.tscn" id="13_dkv23"]
+[ext_resource type="PackedScene" uid="uid://ci5oluc4m4jdo" path="res://Scenes/Characters/archer.tscn" id="14_x458k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x458k"]
 texture = ExtResource("4_dkv23")
@@ -71,6 +73,15 @@ _data = {
 &"Death": SubResource("Animation_k8b6b"),
 &"RESET": SubResource("Animation_lx7qo")
 }
+
+[sub_resource type="LabelSettings" id="LabelSettings_k8b6b"]
+font_size = 256
+
+[sub_resource type="LabelSettings" id="LabelSettings_lx7qo"]
+font_size = 256
+
+[sub_resource type="LabelSettings" id="LabelSettings_dkv23"]
+font_size = 256
 
 [node name="Test_level" type="Node2D"]
 script = ExtResource("1_k8b6b")
@@ -179,25 +190,10 @@ position = Vector2(3505, 201)
 [node name="After Boss Fight" parent="CameraZones/CameraUnlock" instance=ExtResource("2_4k50d")]
 position = Vector2(4215, 168)
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Audio" type="Node2D" parent="."]
 
-[node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("11_lx7qo")]
-position = Vector2(736, 448)
-player = NodePath("../../Player")
-stationary = true
-
-[node name="EnemyWhiteRaider2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("11_lx7qo")]
-position = Vector2(1519, 450)
-player = NodePath("../../Player")
-stationary = true
-
-[node name="EnemyWhiteRaider3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("11_lx7qo")]
-position = Vector2(2401, 435)
-player = NodePath("../../Player")
-
-[node name="EnemyWhiteRaider4" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("11_lx7qo")]
-position = Vector2(3139, 378)
-player = NodePath("../../Player")
+[node name="Background Music" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("10_lx7qo")
 
 [node name="Death UI" type="CanvasLayer" parent="."]
 visible = false
@@ -236,6 +232,54 @@ text = "Quit"
 libraries = {
 &"": SubResource("AnimationLibrary_lx7qo")
 }
+
+[node name="Tutorial" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Movement" type="Label" parent="Tutorial"]
+layout_mode = 0
+offset_left = -608.0
+offset_top = 492.0
+offset_right = 2985.0
+offset_bottom = 841.0
+scale = Vector2(0.06, 0.06)
+text = "WASD or Arrow keys to move"
+label_settings = SubResource("LabelSettings_k8b6b")
+
+[node name="Attack" type="Label" parent="Tutorial"]
+layout_mode = 0
+offset_left = -264.00003
+offset_top = 493.0
+offset_right = 3211.0
+offset_bottom = 842.0
+scale = Vector2(0.06, 0.06)
+text = "Left Mouse Button to Attack"
+label_settings = SubResource("LabelSettings_lx7qo")
+
+[node name="Parry" type="Label" parent="Tutorial"]
+layout_mode = 0
+offset_left = 72.00001
+offset_top = 492.0
+offset_right = 4913.0
+offset_bottom = 1193.0
+scale = Vector2(0.06, 0.06)
+text = "Right Mouse Button to Parry
+The later the parry the more rewarding"
+label_settings = SubResource("LabelSettings_dkv23")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Archer" parent="Enemies" instance=ExtResource("14_x458k")]
+position = Vector2(2401, 400)
+
+[node name="EnemyWhiteRaider" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("13_dkv23")]
+position = Vector2(40, 449)
+player = NodePath("../../Player")
+attack_spacing_distance = 60.0
+parry_cooldown = 1.0
 
 [node name="Player" parent="." instance=ExtResource("12_lx7qo")]
 position = Vector2(-425, 450)

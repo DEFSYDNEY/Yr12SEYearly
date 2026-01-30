@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://jhl4h1nimawc"
+path="res://.godot/imported/Valley of the Wandering Blade.mp3-961638bc66ef13bd6ef1341033d0afa7.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/Valley of the Wandering Blade.mp3"
+dest_files=["res://.godot/imported/Valley of the Wandering Blade.mp3-961638bc66ef13bd6ef1341033d0afa7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

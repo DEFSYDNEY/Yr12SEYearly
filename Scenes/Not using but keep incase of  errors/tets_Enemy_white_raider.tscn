@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dfexrhtm7hgmf"]
+[gd_scene load_steps=43 format=3 uid="uid://dfexrhtm7hgmf"]
 
 [ext_resource type="Script" uid="uid://cajmo7nq80aws" path="res://Scenes/Not using but keep incase of  errors/tets_enemy_white_raider.gd" id="1_8leil"]
 [ext_resource type="Texture2D" uid="uid://ba1fxidnjk8ud" path="res://Art/Enemy/Enemy 1-Attack.png" id="2_dwafh"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b85a7jeet4264" path="res://Art/Enemy/Enemy 1-Sheet-Stagger.png" id="4_eehf5"]
 [ext_resource type="Texture2D" uid="uid://ckk10xe7vg2gl" path="res://Art/Enemy/Enemy main.png" id="5_ym4ju"]
 [ext_resource type="Texture2D" uid="uid://buqk6v75vn4cr" path="res://Art/Player/Flash_Indication.png" id="6_wbnrq"]
+[ext_resource type="Texture2D" uid="uid://bv6jjqc27barq" path="res://Art/Enemy/Shield.png" id="7_aqv66"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ueocl"]
 atlas = ExtResource("2_dwafh")
@@ -270,17 +271,17 @@ height = 1
 fill_from = Vector2(1, 0)
 fill_to = Vector2(0, 0)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqv66"]
+size = Vector2(103, 47)
+
 [node name="EnemyWhiteRaider" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 2
 collision_mask = 15
 script = ExtResource("1_8leil")
-health = 3
-max_detection_range = 180.0
-attack_range_percentage = 0.34
-too_close_percentage = 0.01
+combo_attack_count_min = 1
+defensive_time = 2.5
+attack_spacing_distance = 70.0
 parry_chance = 1.0
-perfect_parry_chance = 0.2
-parry_prediction_time = 0.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
@@ -375,12 +376,26 @@ libraries = {
 
 [node name="Posture Bar" type="TextureProgressBar" parent="."]
 offset_left = -13.0
-offset_top = -28.0
+offset_top = -27.000006
 offset_right = 51.0
-offset_bottom = -27.0
+offset_bottom = -26.000006
 scale = Vector2(0.435, 2.01)
 texture_under = SubResource("GradientTexture1D_c6xim")
 texture_progress = SubResource("GradientTexture2D_bnf7m")
+
+[node name="Shield" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -32)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_aqv66")
+
+[node name="Defensive_Area" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Defensive_Area"]
+position = Vector2(-56.5, 1.5)
+shape = SubResource("RectangleShape2D_aqv66")
 
 [connection signal="animation_finished" from="Sprite" to="." method="_on_sprite_animation_finished"]
 [connection signal="frame_changed" from="Sprite" to="." method="_on_sprite_frame_changed"]

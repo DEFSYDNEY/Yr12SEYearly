@@ -278,8 +278,7 @@ script = ExtResource("1_v5cc0")
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 1)
 sprite_frames = SubResource("SpriteFrames_cvnsp")
-animation = &"Test"
-frame_progress = 0.14214242
+animation = &"Attack"
 
 [node name="RayCast2D" type="RayCast2D" parent="Sprite"]
 position = Vector2(0, -17)

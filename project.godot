@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Yr 12 SE Yearly Project"
-run/main_scene="uid://cjirey7kexnpf"
+run/main_scene="uid://c12eqlvd6dmd6"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Music="*res://Audio/Music/audio_stream_player.tscn"
 
 [display]
 

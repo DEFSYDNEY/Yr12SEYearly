@@ -1,14 +1,15 @@
-CanvasLayer
-TextureProgressBar
-ProgressBar
-Marker2D
-RigidBody2D
-StaticBody2D
+RayCast2D
 Area2D
 CollisionShape2D
-AnimatedSprite2D
 Sprite2D
+AnimatedSprite2D
+CharacterBody2D
+Label
+AudioStreamPlayer
+Node2D
 Camera2D
-AnimationPlayer
-CanvasModulate
-Label      - Matches the "text" keyword.
+TextureButton
+CPUParticles2D
+Control
+CanvasLayer
+TextureProgressBar

@@ -1,0 +1,4 @@
+res://Scenes/Characters/arrow.tscn
+res://Scenes/Characters/archer.tscn
+res://Levels/test_level.tscn
+res://Scripts/Enemies/archer.gd

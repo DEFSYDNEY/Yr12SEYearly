@@ -217,8 +217,11 @@ func _on_sprite_frame_changed():
 		var frame = sprite.frame
 		if frame == 1:
 			attack_indication.play("attack") # Has the blue orb appear so player can react
-		elif frame == 4 or frame == 5:
+			sword_hitbox_collision.disabled = true
+		elif frame == 4:
 			sword_hitbox_collision.disabled = false
+		elif frame == 5 or frame == 6:
+			sword_hitbox_collision.disabled = true
 	else:
 		sword_hitbox_collision.disabled = true # Fully works but gives an error
 
@@ -307,7 +310,7 @@ func posture_damage(player_damage: int):
 	print(current_posture)
 	posture_bar.value = current_posture
 	Engine.time_scale = 0.01
-	global_position += lerp(global_position, Vector2(70,-30), 1)
+	global_position += lerp(global_position, Vector2(70, 0), 1) # This is my fix to the ai, otherwise it just runs into player
 	if current_posture >= max_posture:
 		staggered()
 		current_posture = 0

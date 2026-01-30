@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://c12eqlvd6dmd6"]
+
+[ext_resource type="Texture2D" uid="uid://clnfftsk30e16" path="res://Art/UI/Menu/Menu.png" id="1_r1q1u"]
+[ext_resource type="Texture2D" uid="uid://dst8hwuksidhs" path="res://Art/UI/Menu/NewGame.png" id="2_16q67"]
+[ext_resource type="Script" uid="uid://ukhwqt8eje7v" path="res://Scripts/World/menu.gd" id="2_k63d0"]
+[ext_resource type="Texture2D" uid="uid://c1xpsys14vrqr" path="res://Art/UI/Menu/buttons.png" id="2_sbixa"]
+[ext_resource type="Texture2D" uid="uid://byk0x3aw4to24" path="res://Art/UI/Menu/Credits.png" id="4_xarby"]
+[ext_resource type="Texture2D" uid="uid://y0galq77gw15" path="res://Art/UI/Menu/Quit.png" id="5_k63d0"]
+
+[node name="Menu" type="Sprite2D"]
+position = Vector2(307, 203.99998)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_r1q1u")
+script = ExtResource("2_k63d0")
+
+[node name="Buttons" type="Sprite2D" parent="."]
+position = Vector2(252.49994, 2.5000305)
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("2_sbixa")
+
+[node name="NewGame" type="TextureButton" parent="."]
+z_index = 1
+offset_left = -20.0
+offset_top = -94.999954
+offset_right = 550.0
+offset_bottom = 17.000046
+scale = Vector2(0.955, 0.85)
+texture_hover = ExtResource("2_16q67")
+
+[node name="Credits" type="TextureButton" parent="."]
+z_index = 1
+offset_left = -20.0
+offset_top = 50.00006
+offset_right = 550.0
+offset_bottom = 162.00006
+scale = Vector2(0.955, 0.85)
+texture_hover = ExtResource("4_xarby")
+
+[node name="Quit" type="TextureButton" parent="."]
+z_index = 1
+offset_left = -20.0
+offset_top = 192.50008
+offset_right = 550.0
+offset_bottom = 304.50006
+scale = Vector2(0.955, 0.85)
+texture_hover = ExtResource("5_k63d0")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 3.9577484e-05)
+zoom = Vector2(1.045, 0.885)
+
+[connection signal="pressed" from="NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

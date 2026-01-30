@@ -22,10 +22,12 @@ extends CharacterBody2D
 @export var damage: int = 1
 @export var posture_damage_to_enemy: int = 100
 
-@export_category("Parry System - Traditional Fighting Game Style")
+@export_category("Parry System")
 @export var perfect_parry_frames := 1      # Perfect on first 1 frame (frame 0)
 @export var good_parry_frames := 2         # Good on frames 1-2
 # Late parry = frame 3 (chips health)
+
+
 @export var health_ui:TextureProgressBar
 @export var posture_ui:TextureProgressBar
 
@@ -167,6 +169,9 @@ func _process(delta):
 	# Check for posture break
 	if current_posture <= 15:
 		posture_break()
+	
+	if health <= 0:
+		die()
 		
 func update_camera():
 	if not camera_locked:
@@ -291,7 +296,7 @@ func execute_perfect_parry(enemy):
 	parry_particles.modulate = Color(1.0, 0.85, 0.0)  # Gold
 	
 	# No posture damage to player
-	enemy.posture_damage(posture_damage_to_enemy * 1.3)  # 130% posture damage
+	enemy.posture_damage(posture_damage_to_enemy * 0.8)  # 80% posture damage
 	
 	apply_hitstop(0.08)  # Longer hitstop for satisfaction
 	
@@ -304,7 +309,7 @@ func execute_good_parry(enemy):
 	parry_particles.modulate = Color(0.298, 0.596, 1.0, 1.0)  # White
 	
 	current_posture -= 9  # Very small posture damage
-	enemy.posture_damage(posture_damage_to_enemy * 0.9)  # 90% posture damage
+	enemy.posture_damage(posture_damage_to_enemy * 0.55)  # 55% posture damage
 	
 	apply_hitstop(0.07)
 	
@@ -319,7 +324,7 @@ func execute_late_parry(enemy):
 	health -= 0.5
 	current_posture -= 20
 	
-	enemy.posture_damage(posture_damage_to_enemy * 0.45)  # 45% posture damage
+	enemy.posture_damage(posture_damage_to_enemy * 0.30)  # 30% posture damage
 	
 	apply_hitstop(0.05)
 	
@@ -327,7 +332,7 @@ func execute_late_parry(enemy):
 	print("⚠️ Late Parry - took chip damage")
 	
 	if health <= 0:
-		die()
+		health = 0.5
 
 # ============================================
 # DAMAGE SYSTEM
@@ -346,16 +351,11 @@ func take_damage(amount: int):
 	
 	print("💔 Took damage: ", amount, " | Health: ", health)
 	
-	# Check for death
-	if health <= 0:
-		die()
-	
 	await get_tree().create_timer(0.5).timeout
 	hurt = false
 
 
 func posture_break():
-	print("⚠️ POSTURE BROKEN!")
 	global_position -= Vector2(40, 10)
 	current_posture = max_posture
 	print(current_posture)
