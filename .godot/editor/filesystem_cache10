@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1769761237
+::res://::1770192916
 default_bus_layout.tres::AudioBusLayout::5108220378497586738::1769496780::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::5289248671878863312::1762059115::1762059121::1::::<><><>0<>0<>145ca7476687530cb9d15a3522f8db4d<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1763779589::0::1::::<><><>0<>0<><>::
@@ -91,34 +91,34 @@ Blades of Vengeance.mp3::AudioStreamMP3::3309065950585204459::1769494658::176949
 Echoes of the Ronin.mp3::AudioStreamMP3::915451839835133165::1769494802::1769494864::1::::<><><>0<>0<>4af1b2dcfe03bfcd715ab78558e79cf3<>res://.godot/imported/Echoes of the Ronin.mp3-79416325aff1470899b9bd7faa1d3b51.mp3str::
 Valley of the Wandering Blade.mp3::AudioStreamMP3::646870320394572398::1769494742::1769494864::1::::<><><>0<>0<>d241d4983ac895b56e24bbf200f14ba0<>res://.godot/imported/Valley of the Wandering Blade.mp3-961638bc66ef13bd6ef1341033d0afa7.mp3str::
 ::res://Audio/Sound Effects/::1769591626
-::res://Levels/::1769683652
+::res://Levels/::1769838487
 menu.tscn::PackedScene::6653761552383811165::1769497126::0::1::::<><><>0<>0<><>::uid://clnfftsk30e16::::res://Art/UI/Menu/Menu.png<>uid://dst8hwuksidhs::::res://Art/UI/Menu/NewGame.png<>uid://ukhwqt8eje7v::::res://Scripts/World/menu.gd<>uid://c1xpsys14vrqr::::res://Art/UI/Menu/buttons.png<>uid://byk0x3aw4to24::::res://Art/UI/Menu/Credits.png<>uid://y0galq77gw15::::res://Art/UI/Menu/Quit.png
-test_level.tscn::PackedScene::5422096624668385135::1769683652::0::1::::<><><>0<>0<><>::uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://8u5p50at5m0j::::res://Art/Tileset/tiles.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png<>uid://nbpmf558gnyj::::res://Audio/Music/Echoes of the Ronin.mp3<>uid://mpqkj677pfdt::::res://Scenes/Characters/Player.tscn<>uid://dfexrhtm7hgmf::::res://Scenes/Not using but keep incase of  errors/tets_Enemy_white_raider.tscn<>uid://ci5oluc4m4jdo::::res://Scenes/Characters/archer.tscn
+test_level.tscn::PackedScene::5422096624668385135::1769838487::0::1::::<><><>0<>0<><>::uid://b5smusjg4a0h4::::res://Scripts/World/test_level_game_manager.gd<>uid://ce47ku87iwb3b::::res://Scenes/World/camera_lock_zone.tscn<>uid://d31muh1hug2uk::::res://Art/Background Gloomy Forrest/Layer_0003_6.png<>uid://c41t33qegua35::::res://Art/Background Gloomy Forrest/Layer_0002_7.png<>uid://8u5p50at5m0j::::res://Art/Tileset/tiles.png<>uid://cd36k4inukohg::::res://Art/Background Gloomy Forrest/Layer_0005_5.png<>uid://ca3n7w4vu5lds::::res://Art/Background Gloomy Forrest/Layer_0007_Lights.png<>uid://cyguueuygftkc::::res://Art/Background Gloomy Forrest/Layer_0011_0.png<>uid://ckkcdr0fov847::::res://Art/Background Gloomy Forrest/Layer_0008_3.png<>uid://nbpmf558gnyj::::res://Audio/Music/Echoes of the Ronin.mp3<>uid://mpqkj677pfdt::::res://Scenes/Characters/Player.tscn<>uid://dfexrhtm7hgmf::::res://Scenes/Not using but keep incase of  errors/tets_Enemy_white_raider.tscn<>uid://ci5oluc4m4jdo::::res://Scenes/Characters/archer.tscn
 ::res://Resources (not using currently)/::1768963717
 ::res://Resources (not using currently)/Enemies/::1768963717
 ::res://Resources (not using currently)/Enemies/Resources/::1768963720
 ::res://Resources (not using currently)/Enemies/Scripts/::1768963717
 Enemy_resource.gd::GDScript::7013947958438149401::1767612475::0::1::::<>Resource<><>0<>0<><>::
 ::res://Scenes/::1769415381
-::res://Scenes/Characters/::1769684029
-archer.tscn::PackedScene::5397154185635364192::1769684011::0::1::::<><><>0<>0<><>::uid://dm8ue1i17stjw::::res://Art/Temp Art/Archer/Dead.png<>uid://dj2q66ssujm1p::::res://Scripts/Enemies/archer.gd<>uid://d3y2kkspvhyb0::::res://Art/Temp Art/Archer/Idle.png<>uid://yk0t34p7c7tr::::res://Art/Temp Art/Archer/Shot.png<>uid://daq5kucfewah5::::res://Art/Temp Art/Archer/Walk.png<>uid://2jwlt8mns3xn::::res://Art/Temp Art/Archer/Hurt.png
-arrow.tscn::PackedScene::7916003169611004413::1769684029::0::1::::<><><>0<>0<><>::uid://c8ptf56q74gk7::::res://Scripts/Enemies/arrow.gd
+::res://Scenes/Characters/::1769842678
+archer.tscn::PackedScene::5397154185635364192::1769842582::0::1::::<><><>0<>0<><>::uid://dm8ue1i17stjw::::res://Art/Temp Art/Archer/Dead.png<>uid://dj2q66ssujm1p::::res://Scripts/Enemies/archer.gd<>uid://d3y2kkspvhyb0::::res://Art/Temp Art/Archer/Idle.png<>uid://yk0t34p7c7tr::::res://Art/Temp Art/Archer/Shot.png<>uid://daq5kucfewah5::::res://Art/Temp Art/Archer/Walk.png<>uid://2jwlt8mns3xn::::res://Art/Temp Art/Archer/Hurt.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png
+arrow.tscn::PackedScene::7916003169611004413::1769842678::0::1::::<><><>0<>0<><>::uid://c8ptf56q74gk7::::res://Scripts/Enemies/arrow.gd<>uid://cify64eweu8j2::::res://Art/Temp Art/Archer/Arrow.png
 Enemy_white_raider.tscn::PackedScene::4687618030953236861::1769499226::0::1::::<><><>0<>0<><>::uid://cdtlinjcepr7j::::res://Scripts/Enemies/enemy_white_raider.gd<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png
-Player.tscn::PackedScene::874221641886977605::1769507571::0::1::::<><><>0<>0<><>::uid://cmvuopsha255b::::res://Scripts/player/Player.gd<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png<>uid://pl3knw5oj2wt::::res://Art/UI/Game/UIFace.png<>uid://cn30ftsn4e8h1::::res://Art/UI/Game/Health.png<>uid://qohjbatkgyxy::::res://Art/UI/Game/no health.png<>uid://blc6a2ei81dnf::::res://Art/UI/Game/No Posture.png<>uid://b1drvxbtn17vm::::res://Art/UI/Game/Sword Posture.png
+Player.tscn::PackedScene::874221641886977605::1769834889::0::1::::<><><>0<>0<><>::uid://cmvuopsha255b::::res://Scripts/player/Player.gd<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png<>uid://pl3knw5oj2wt::::res://Art/UI/Game/UIFace.png<>uid://cn30ftsn4e8h1::::res://Art/UI/Game/Health.png<>uid://qohjbatkgyxy::::res://Art/UI/Game/no health.png<>uid://blc6a2ei81dnf::::res://Art/UI/Game/No Posture.png<>uid://b1drvxbtn17vm::::res://Art/UI/Game/Sword Posture.png
 test_enemy.tscn::PackedScene::2460833164240602980::1766986494::0::1::::<><><>0<>0<><>::uid://q6yqivrlmdpt::::res://Scenes/Characters/test_enemy.gd<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png
-::res://Scenes/Not using but keep incase of  errors/::1769683837
+::res://Scenes/Not using but keep incase of  errors/::1769837186
 FallBack.tscn::PackedScene::1855016947018763096::1769415317::0::1::::<><><>0<>0<><>::uid://cndglpdj0yk1l::::res://Scripts/player/FallBack.gd<>uid://c8b165je6roll::::res://Art/Player/Player-Sheet.png<>uid://cfjdk4l6ichyi::::res://Art/Player/Player-Sheet-Attack.png<>uid://duood3l0hafdc::::res://Art/Player/Player-Sheet-Parry.png
 tets_enemy_white_raider.gd::GDScript::4792176073802317462::1769510017::0::1::::<>CharacterBody2D<><>0<>0<><>::
-tets_Enemy_white_raider.tscn::PackedScene::7519891027218721325::1769683837::0::1::::<><><>0<>0<><>::uid://cajmo7nq80aws::::res://Scenes/Not using but keep incase of  errors/tets_enemy_white_raider.gd<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png<>uid://bv6jjqc27barq::::res://Art/Enemy/Shield.png
+tets_Enemy_white_raider.tscn::PackedScene::7519891027218721325::1769837186::0::1::::<><><>0<>0<><>::uid://cajmo7nq80aws::::res://Scenes/Not using but keep incase of  errors/tets_enemy_white_raider.gd<>uid://ba1fxidnjk8ud::::res://Art/Enemy/Enemy 1-Attack.png<>uid://cv5kb1qem70jj::::res://Art/Enemy/Enemy 1-pARRY.png<>uid://b85a7jeet4264::::res://Art/Enemy/Enemy 1-Sheet-Stagger.png<>uid://ckk10xe7vg2gl::::res://Art/Enemy/Enemy main.png<>uid://buqk6v75vn4cr::::res://Art/Player/Flash_Indication.png<>uid://bv6jjqc27barq::::res://Art/Enemy/Shield.png
 ::res://Scenes/World/::1768609368
 blood.tscn::PackedScene::2454238807966475953::1768609368::0::1::::<><><>0<>0<><>::uid://cay5230j1wbw2::::res://Scripts/World/blood.gd<>uid://64vmrmjt27dp::::res://Art/Enemy/blood.png
 camera_lock_zone.tscn::PackedScene::5115425601424680621::1763443655::0::1::::<><><>0<>0<><>::uid://bjw0wmta37uql::::res://Scripts/Camera/camera_lock_zone.gd
 ::res://Scripts/::1768094699
 ::res://Scripts/Camera/::1764830534
 camera_lock_zone.gd::GDScript::3065094458979961339::1764830534::0::1::::<>Area2D<><>0<>1<><>::
-::res://Scripts/Enemies/::1769684027
-archer.gd::GDScript::7847728331551790587::1769683980::0::1::::<>CharacterBody2D<><>0<>0<><>::
-arrow.gd::GDScript::7121203049944572596::1769684027::0::1::::<>Area2D<><>0<>0<><>::
+::res://Scripts/Enemies/::1769842582
+archer.gd::GDScript::7847728331551790587::1769842582::0::1::::<>CharacterBody2D<><>0<>0<><>::
+arrow.gd::GDScript::7121203049944572596::1769837743::0::1::::<>Area2D<><>0<>0<><>::
 enemy_white_raider.gd::GDScript::5023313945702723397::1769497787::0::1::::<>CharacterBody2D<><>0<>0<><>::
 ::res://Scripts/player/::1769502005
 FallBack.gd::GDScript::5691874206560303447::1768629847::0::1::::<>CharacterBody2D<><>0<>0<><>::
